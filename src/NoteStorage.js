@@ -1,22 +1,36 @@
 import Note from "./Note";
 
 export default class NoteStorage {
-  notes = [];
+  currentId;
+  notes: Note[] = [];
+  update;
 
-  constructor() {
-
+  constructor(update) {
+    this.update = update;
   }
 
-  add() {
-    const note = new Note();
-    this.notes.push(note);
+  gets() {
+    return this.notes;
   }
 
-  update() {
-
+  getNote(id) {
+    return this.notes.find(e => e.id == id);
   }
+
+  select(id) {
+    this.currentId = id;
+    this.update();
+  }
+
+  add(title) {
+    let notes = this.notes;
+    const note = new Note(notes.length, 'title');
+    notes.push(note);
+    // this.update();
+  }
+
 
   remove() {
-
+    this.update();
   }
 }

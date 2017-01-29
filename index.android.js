@@ -4,50 +4,106 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  StatusBar,
+  Navigator,
 } from 'react-native';
+import NavBar, { NavButton, NavButtonText, NavTitle } from 'react-native-nav'
+import PhotoView from 'react-native-photo-view';
+import NoteList from "./src/NoteList";
+import NoteComp from "./src/NoteComp";
+import NoteStorage from "./src/NoteStorage";
+
 
 export default class PhotoNotes extends Component {
+
+  routes;
+
+  constructor() {
+    super();
+    this.state = {
+      selectedId: 0,
+      noteStorage: new NoteStorage(this.forceUpdate.bind(this)),
+    };
+    this.routes = [
+      {index: 0, comp:
+        <View>
+          <NoteList choose={this.selectNote} notes={this.state.noteStorage}/>
+        </View>},
+      {index: 1, comp:
+        <NoteComp note={this.state.selectedId} notes={this.state.noteStorage}/>},
+    ];
+  }
+
+  componentWillMount() {
+    for (let i = 0; i < 20; i++) {
+      this.state.noteStorage.add('title');
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    this.setState({selectedId: nextState.noteStorage.currentId});
+    return true;
+  }
+
+  selectNote = (id) => {
+    this.setState({selectedId: id});
+  };
+
+  navigatorRender = (route, navigator) => {
+    console.log(route);
+    return route.comp;
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+      <View style={css.container}>
+        <NavBar>
+          <NavTitle>{"Photo Notes"}</NavTitle>
+        </NavBar>
+        <Navigator
+          initialRoute={this.routes[0]}
+          initialRouteStack={this.routes}
+          renderScene={this.navigatorRender}/>
       </View>
+
+      /*<View style={styles.container}>
+       <NoteList/>
+       {/!*<PhotoView
+       source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+       onLoad={() => console.log("onLoad called")}
+       onTap={() => console.log("onTap called")}
+       minimumZoomScale={0.5}
+       maximumZoomScale={3}
+       androidScaleType="center"
+       style={styles.photo} />*!/}
+       </View>*/
     );
   }
 }
 
-const styles = StyleSheet.create({
+const css = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  photo: {
+    width: 300,
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  text: {
+    backgroundColor: "transparent",
+    color: "#FFF",
+  }
 });
+
 
 AppRegistry.registerComponent('PhotoNotes', () => PhotoNotes);
