@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
 } from 'react-native';
-import NoteStorage from "./NoteStorage";
+import store, {NotesAction} from "./NoteStore";
 import Note from "./Note";
 
 export default class NoteList extends Component {
@@ -18,7 +18,7 @@ export default class NoteList extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(props.notes.gets()),
+      dataSource: ds.cloneWithRows(store.getState().notes),
     };
   }
 
@@ -28,7 +28,7 @@ export default class NoteList extends Component {
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData: Note) =>
-            <TouchableNativeFeedback onPress={this.props.choose.bind(null, rowData.id)}>
+            <TouchableNativeFeedback onPress={() => NotesAction.showItem(rowData.id)}>
               <View>
                 <Text style={css.item}>{rowData.title + rowData.id}</Text>
               </View>

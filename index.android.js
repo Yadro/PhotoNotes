@@ -14,52 +14,42 @@ import {
   StatusBar,
   Navigator,
 } from 'react-native';
-import NavBar, { NavButton, NavButtonText, NavTitle } from 'react-native-nav'
+import NavBar, {NavButton, NavButtonText, NavTitle} from 'react-native-nav'
 import PhotoView from 'react-native-photo-view';
 import NoteList from "./src/NoteList";
 import NoteComp from "./src/NoteComp";
-import NoteStorage from "./src/NoteStorage";
+import store, {NotesAction} from "./src/NoteStore";
 
+const routes = [
+  {index: 'list', comp: <View><NoteList/></View>},
+  {index: 'item', comp: <NoteComp/>}
+];
 
 export default class PhotoNotes extends Component {
 
-  routes;
-
   constructor() {
     super();
-    this.state = {
-      selectedId: 0,
-      noteStorage: new NoteStorage(this.forceUpdate.bind(this)),
-    };
-    this.routes = [
-      {index: 0, comp:
-        <View>
-          <NoteList choose={this.selectNote} notes={this.state.noteStorage}/>
-        </View>},
-      {index: 1, comp:
-        <NoteComp note={this.state.selectedId} notes={this.state.noteStorage}/>},
-    ];
+    this.state = store.getState();
   }
+
+  navigatorRender = (_route, navigator) => {
+    const {view} = store.getState();
+    const route = routes.find(r => r.index == view);
+    return route ? route.comp : routes[0].comp;
+  };
 
   componentWillMount() {
     for (let i = 0; i < 20; i++) {
-      this.state.noteStorage.add('title');
+      NotesAction.add('title');
     }
+    store.subscribe((e) => {
+      const state = store.getState();
+      if (state.update) {
+        state.update = false;
+        this.setState({store});
+      }
+    });
   }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    this.setState({selectedId: nextState.noteStorage.currentId});
-    return true;
-  }
-
-  selectNote = (id) => {
-    this.setState({selectedId: id});
-  };
-
-  navigatorRender = (route, navigator) => {
-    console.log(route);
-    return route.comp;
-  };
 
   render() {
     return (
@@ -68,8 +58,8 @@ export default class PhotoNotes extends Component {
           <NavTitle>{"Photo Notes"}</NavTitle>
         </NavBar>
         <Navigator
-          initialRoute={this.routes[0]}
-          initialRouteStack={this.routes}
+          initialRoute={routes[0]}
+          initialRouteStack={routes}
           renderScene={this.navigatorRender}/>
       </View>
 
