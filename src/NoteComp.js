@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -22,8 +21,9 @@ export default class NoteComp extends Component {
 
   constructor(props) {
     super(props);
-    const {currentId, notes} = store.getState();
-    const note: Note = notes.find(e => e.id == currentId);
+    const {notes} = store.getState();
+    const {id} = props.navigation.state.params;
+    const note: Note = notes.find(e => e.id == id);
     this.state = {note};
     this.onChange = this.onChange.bind(this);
   }
@@ -36,6 +36,7 @@ export default class NoteComp extends Component {
 
   render() {
     const {id, title, content} = this.state.note;
+    const { params, navigate } = this.props.navigation;
     return (
       <ScrollView style={css.container}>
         <Text>{id}</Text>
@@ -45,10 +46,10 @@ export default class NoteComp extends Component {
         <TextInput value={content}
                    type="text"/>
         <View style={css.buttons}>
-          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => NotesAction.show('list')}/>
+          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
           <Button style={css.saveBtn} title={'Save'} onPress={() => {
             NotesAction.update(this.state.note);
-            NotesAction.show('list');
+            navigate('Main');
           }}/>
         </View>
       </ScrollView>

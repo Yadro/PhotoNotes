@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   ListView,
   ScrollView,
-  TouchableHighlight,
   TouchableNativeFeedback,
 } from 'react-native';
 import { ActionSheetProvider, connectActionSheet } from '@exponent/react-native-action-sheet';

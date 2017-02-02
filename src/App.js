@@ -5,13 +5,12 @@ import {
   View,
   Image,
   Button,
-  StatusBar,
-  Navigator,
+
 } from 'react-native';
-import {
+/*import {
   ActionSheetProvider,
   connectActionSheet
-} from '@exponent/react-native-action-sheet';
+} from '@exponent/react-native-action-sheet';*/
 
 
 import PhotoView from 'react-native-photo-view';
