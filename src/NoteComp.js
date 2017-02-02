@@ -16,6 +16,10 @@ import Note from "./Note";
 
 export default class NoteComp extends Component {
 
+  static navigationOptions = {
+    title: 'Note'
+  };
+
   constructor(props) {
     super(props);
     const {currentId, notes} = store.getState();
@@ -41,8 +45,8 @@ export default class NoteComp extends Component {
         <TextInput value={content}
                    type="text"/>
         <View style={css.buttons}>
-          <Button style={css.margR} title={'Cancel'} onPress={() => NotesAction.show('list')}/>
-          <Button style={css.margL} title={'Save'} onPress={() => {
+          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => NotesAction.show('list')}/>
+          <Button style={css.saveBtn} title={'Save'} onPress={() => {
             NotesAction.update(this.state.note);
             NotesAction.show('list');
           }}/>
@@ -59,12 +63,12 @@ const css = StyleSheet.create({
   buttons: {
     flex: 1,
     flexDirection: 'row',
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
   },
-  margR: {
-    marginRight: 5
+  cancelBtn: {
+    flex: 1,
   },
-  margL: {
-    marginLeft: 5
+  saveBtn: {
+    flex: 1,
   }
 });

@@ -20,7 +20,8 @@ const store = createStore(
       case 'add':
         const id = state.notes.length;
         newState = Object.assign({}, state, {update: true});
-        newState.notes.push(new Note(id, actions.title));
+        const {title, content, image} = actions;
+        newState.notes.push(new Note(id, title, content, image));
         return newState;
       case 'update':
         const {note} = actions;

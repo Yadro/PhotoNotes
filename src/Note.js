@@ -6,8 +6,10 @@ export default class Note {
   image;
 
 
-  constructor(id, title) {
+  constructor(id, title, content, image) {
     this.id = id;
     this.title = title;
+    this.content = content;
+    this.image = image;
   }
 }

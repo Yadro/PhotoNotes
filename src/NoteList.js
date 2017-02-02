@@ -9,9 +9,12 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
 } from 'react-native';
+import { ActionSheetProvider, connectActionSheet } from '@exponent/react-native-action-sheet';
+
 import store, {NotesAction} from "./NoteStore";
 import Note from "./Note";
 
+@connectActionSheet
 export default class NoteList extends Component {
 
   constructor(props) {
@@ -20,21 +23,33 @@ export default class NoteList extends Component {
     this.state = {
       dataSource: ds.cloneWithRows(store.getState().notes),
     };
+    this.onLongPress = this.onLongPress.bind(this);
+  }
+
+  onLongPress() {
+    const options = {
+      options: ['Delete', 'Save', 'Cancel'],
+      cancelButtonIndex: 2,
+      destructiveButtonIndex: 0,
+    };
+    this.props.showActionSheetWithOptions(options, () => {});
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <ScrollView>
         <ListView
+          contentContainerStyle={css.container}
           dataSource={this.state.dataSource}
           renderRow={(rowData: Note) =>
-            <TouchableNativeFeedback onPress={() => NotesAction.showItem(rowData.id)}>
+            <TouchableNativeFeedback delayLongPress={3800}
+                                     onPress={() => navigate('NoteComp', {id: rowData.id})}>
               <View>
                 <Text style={css.item}>{rowData.title + rowData.id}</Text>
               </View>
             </TouchableNativeFeedback>
           }
-          contentContainerStyle={css.container}
         />
       </ScrollView>
     );
