@@ -22,8 +22,17 @@ const store = createStore(
         newState = Object.assign({}, state, {update: true});
         newState.notes.push(new Note(id, actions.title));
         return newState;
-      /*case 'set-id':
-        return Object.assign({}, state, {currentId: actions.id});*/
+      case 'update':
+        const {note} = actions;
+        newState = Object.assign({}, state);
+        newState.notes = newState.notes.map(e => {
+          if (e.id == note.id) {
+            return note;
+          }
+          return e;
+        });
+        return newState;
+
       case 'show-view.list':
         return Object.assign({}, state, {view: 'list', update: true});
       case 'show-view.item':
@@ -39,6 +48,10 @@ export default store;
 export const NotesAction = {
   add(title) {
     return store.dispatch({type: 'add', title});
+  },
+
+  update(note) {
+    return store.dispatch({type: 'update', note});
   },
 
   showItem(id) {

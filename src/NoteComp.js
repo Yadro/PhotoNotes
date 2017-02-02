@@ -20,17 +20,18 @@ export default class NoteComp extends Component {
     super(props);
     const {currentId, notes} = store.getState();
     const note: Note = notes.find(e => e.id == currentId);
-    const {id, title, content, image} = note;
-    this.state = {id, title, content, image};
+    this.state = {note};
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(field, text) {
-    this.setState({[field]: text});
+    const {note} = this.state;
+    note[field] = text;
+    this.setState({note});
   }
 
   render() {
-    const {id, title, content} = this.state;
+    const {id, title, content} = this.state.note;
     return (
       <ScrollView style={css.container}>
         <Text>{id}</Text>
@@ -40,8 +41,11 @@ export default class NoteComp extends Component {
         <TextInput value={content}
                    type="text"/>
         <View style={css.buttons}>
-          <Button title={'Cancel'} onPress={() => NotesAction.show('list')}/>
-          <Button title={'Save'} onPress={() => NotesAction}/>
+          <Button style={css.margR} title={'Cancel'} onPress={() => NotesAction.show('list')}/>
+          <Button style={css.margL} title={'Save'} onPress={() => {
+            NotesAction.update(this.state.note);
+            NotesAction.show('list');
+          }}/>
         </View>
       </ScrollView>
     );
@@ -55,6 +59,12 @@ const css = StyleSheet.create({
   buttons: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignSelf: 'stretch',
   },
+  margR: {
+    marginRight: 5
+  },
+  margL: {
+    marginLeft: 5
+  }
 });
