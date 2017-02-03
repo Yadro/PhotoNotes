@@ -14,7 +14,7 @@ const DefaultState: NoteState = {
 };
 
 const store = createStore(
-  (state: NoteState = DefaultState, actions): NoteState => {
+  (state: NoteState, actions): NoteState => {
     let newState;
     switch (actions.type) {
       case 'add':
@@ -42,7 +42,9 @@ const store = createStore(
       default:
         return state;
     }
-  }
+  },
+  DefaultState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({/* options */})
 );
 export default store;
 

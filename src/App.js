@@ -5,30 +5,28 @@ import {
   View,
   Image,
   Button,
-
 } from 'react-native';
-/*import {
-  ActionSheetProvider,
-  connectActionSheet
-} from '@exponent/react-native-action-sheet';*/
-
-
-import PhotoView from 'react-native-photo-view';
 import NoteList from "./NoteList";
 import NoteComp from "./NoteComp";
 import store, {NotesAction} from "./NoteStore";
+import NoteView from "./NoteView";
 
 
-// @connectActionSheet
 export default class App extends Component {
 
   static navigationOptions = {
     title: 'Welcome',
+    header: (e) => {
+      return {
+        right: <Button title={'New'} onPress={() => e.navigate('NoteView', {id: 0})}/>
+      }
+    },
   };
 
   constructor() {
     super();
     this.state = store.getState();
+    console.log('App start');
   }
 
   componentWillMount() {
@@ -46,23 +44,11 @@ export default class App extends Component {
 
   render() {
     const state = store.getState();
-    const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
         <NoteList navigation={this.props.navigation}/>
       </View>
-
-      /*<View style={styles.container}>
-       <NoteList/>
-       {/!*<PhotoView
-       source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-       onLoad={() => console.log("onLoad called")}
-       onTap={() => console.log("onTap called")}
-       minimumZoomScale={0.5}
-       maximumZoomScale={3}
-       androidScaleType="center"
-       style={styles.photo} />*!/}
-       </View>*/
     );
   }
 }

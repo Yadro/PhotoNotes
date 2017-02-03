@@ -7,12 +7,10 @@ import {
   ScrollView,
   TouchableNativeFeedback,
 } from 'react-native';
-import { ActionSheetProvider, connectActionSheet } from '@exponent/react-native-action-sheet';
 
 import store, {NotesAction} from "./NoteStore";
 import Note from "./Note";
 
-@connectActionSheet
 export default class NoteList extends Component {
 
   constructor(props) {
@@ -41,8 +39,7 @@ export default class NoteList extends Component {
           contentContainerStyle={css.container}
           dataSource={this.state.dataSource}
           renderRow={(rowData: Note) =>
-            <TouchableNativeFeedback delayLongPress={3800}
-                                     onPress={() => navigate('NoteComp', {id: rowData.id})}>
+            <TouchableNativeFeedback onPress={() => navigate('NoteView', {id: rowData.id})}>
               <View>
                 <Text style={css.item}>{rowData.title + rowData.id}</Text>
               </View>
