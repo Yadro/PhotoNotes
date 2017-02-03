@@ -15,16 +15,17 @@ const DefaultState: NoteState = {
 
 const store = createStore(
   (state: NoteState, actions): NoteState => {
-    let newState;
+    let newState, note;
     switch (actions.type) {
       case 'add':
         const id = state.notes.length;
         newState = Object.assign({}, state, {update: true});
-        const {title, content, image} = actions;
-        newState.notes.push(new Note(id, title, content, image));
+        note = actions.note;
+        note.id = id;
+        newState.notes.push(note);
         return newState;
       case 'update':
-        const {note} = actions;
+        note = actions.note;
         newState = Object.assign({}, state);
         newState.notes = newState.notes.map(e => {
           if (e.id == note.id) {
@@ -49,8 +50,8 @@ const store = createStore(
 export default store;
 
 export const NotesAction = {
-  add(title) {
-    return store.dispatch({type: 'add', title});
+  add(note) {
+    return store.dispatch({type: 'add', note});
   },
 
   update(note) {

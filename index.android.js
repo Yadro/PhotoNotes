@@ -13,14 +13,16 @@ import {
 import {StackNavigator} from 'react-navigation';
 
 import App from './src/App';
-import NoteComp from './src/NoteComp';
+import NoteEdit from './src/NoteEdit';
 import NoteView from "./src/NoteView";
+import NoteCreate from "./src/NoteCreate";
 
 
 const BasicApp = StackNavigator({
   Main: {screen: App},
-  NoteComp: {screen: NoteComp},
+  NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
+  NoteCreate: {screen: NoteCreate},
 });
 
 AppRegistry.registerComponent('PhotoNotes', () => BasicApp);

@@ -39,7 +39,7 @@ export default class NoteList extends Component {
           contentContainerStyle={css.container}
           dataSource={this.state.dataSource}
           renderRow={(rowData: Note) =>
-            <TouchableNativeFeedback onPress={() => navigate('NoteView', {id: rowData.id})}>
+            <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
               <View>
                 <Text style={css.item}>{rowData.title + rowData.id}</Text>
               </View>

@@ -13,7 +13,7 @@ import {
 import store, {NotesAction, NoteState} from "./NoteStore";
 import Note from "./Note";
 
-export default class NoteComp extends Component {
+export default class NoteEdit extends Component {
 
   static navigationOptions = {
     title: 'Note'
@@ -22,9 +22,13 @@ export default class NoteComp extends Component {
   constructor(props) {
     super(props);
     const {notes} = store.getState();
-    const {id} = props.navigation.state.params;
-    const note: Note = notes.find(e => e.id == id);
-    this.state = {note};
+    const params = props.navigation.state.params;
+    if (params && params.id != null) {
+      const note: Note = notes.find(e => e.id == params.id);
+      this.state = {note};
+    } else {
+      this.state = {note: new Note()}
+    }
     this.onChange = this.onChange.bind(this);
   }
 

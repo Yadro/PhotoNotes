@@ -6,10 +6,16 @@ import {
   Image,
   Button,
 } from 'react-native';
+import {
+  FloatingActionButton,
+  NestedScrollView,
+  CoordinatorLayout,
+  BottomSheetBehavior,
+} from 'react-native-bottom-sheet-behavior'
 import NoteList from "./NoteList";
-import NoteComp from "./NoteComp";
 import store, {NotesAction} from "./NoteStore";
 import NoteView from "./NoteView";
+import Note from "./Note";
 
 
 export default class App extends Component {
@@ -31,7 +37,7 @@ export default class App extends Component {
 
   componentWillMount() {
     for (let i = 0; i < 20; i++) {
-      NotesAction.add('title');
+      NotesAction.add(new Note('Note'));
     }
     store.subscribe((e) => {
       const state = store.getState();
@@ -48,6 +54,7 @@ export default class App extends Component {
     return (
       <View style={css.container}>
         <NoteList navigation={this.props.navigation}/>
+        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
     );
   }
@@ -67,15 +74,12 @@ const css = StyleSheet.create({
   text: {
     backgroundColor: "transparent",
     color: "#FFF",
+  },
+  button: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    right: 10,
+    bottom: 10,
   }
 });
-
-class AppContainer extends React.Component {
-  render() {
-    return (
-      <ActionSheetProvider>
-        <PhotoNotes/>
-      </ActionSheetProvider>
-    );
-  }
-}
