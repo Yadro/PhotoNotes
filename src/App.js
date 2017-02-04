@@ -16,8 +16,6 @@ import NoteList from "./NoteList";
 import store from "./redux/Store";
 import {Actions, ActionOther} from "./redux/Actions";
 import NoteView from "./NoteView";
-import Note from "./Note";
-
 
 export default class App extends Component {
 
@@ -40,7 +38,7 @@ export default class App extends Component {
 
   componentWillMount() {
     this.disp = store.subscribe((e) => {
-      const other = store.getState().other;
+      const {other, notes} = store.getState();
       if (other.update) {
         other.update = false;
         this.setState({other});

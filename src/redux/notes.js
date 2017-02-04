@@ -2,14 +2,10 @@ import Note from "../Note";
 
 export type NoteState = {
   notes: Note[],
-  currentId: number,
-  view: string
 };
 
 export const DefaultState: NoteState = {
   notes: [],
-  currentId: 0,
-  view: 'list'
 };
 
 export default (state: NoteState = DefaultState, actions): NoteState => {
@@ -17,7 +13,7 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
   switch (actions.type) {
     case 'ADD':
       const id = state.notes.length;
-      newState = Object.assign({}, state, {update: true});
+      newState = Object.assign({}, state);
       note = actions.note;
       note.id = id;
       newState.notes.push(note);
@@ -32,12 +28,9 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
         return e;
       });
       return newState;
+    case 'IMPORT':
+      return Object.assign({}, state, {notes: actions.notes});
 
-    case 'show-view.list':
-      return Object.assign({}, state, {view: 'list', update: true});
-    case 'show-view.item':
-      const {currentId} = actions;
-      return Object.assign({}, state, {view: 'item', update: true, currentId});
     default:
       return state;
   }

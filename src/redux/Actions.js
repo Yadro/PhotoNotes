@@ -1,20 +1,19 @@
 import store from './Store';
+import {exportNotes} from "./StoreImport";
 
 export const Actions = {
   add(note) {
-    return store.dispatch({type: 'ADD', note});
+    store.dispatch({type: 'ADD', note});
+    exportNotes(store.getState().notes.notes);
   },
 
   update(note) {
-    return store.dispatch({type: 'UPDATE', note});
+    store.dispatch({type: 'UPDATE', note});
+    exportNotes(store.getState().notes.notes);
   },
 
-  showItem(id) {
-    return store.dispatch({type: 'show-view.item', currentId: id});
-  },
-
-  show(screen: 'list' | 'item') {
-    return store.dispatch({type: 'show-view.' + screen});
+  importNotes(notes) {
+    store.dispatch({type: 'IMPORT', notes});
   },
 };
 
