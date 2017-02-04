@@ -10,7 +10,8 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
 } from 'react-native';
-import store, {NotesAction, NoteState} from "./NoteStore";
+import store from "./redux/Store";
+import Actions from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteEdit extends Component {
@@ -21,7 +22,7 @@ export default class NoteEdit extends Component {
 
   constructor(props) {
     super(props);
-    const {notes} = store.getState();
+    const {notes} = store.getState().notes;
     const params = props.navigation.state.params;
     if (params && params.id != null) {
       const note: Note = notes.find(e => e.id == params.id);
@@ -54,7 +55,7 @@ export default class NoteEdit extends Component {
         <View style={css.buttons}>
           <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
           <Button style={css.saveBtn} title={'Save'} onPress={() => {
-            NotesAction.update(this.state.note);
+            Actions.update(this.state.note);
             navigate('Main');
           }}/>
         </View>

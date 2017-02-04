@@ -13,7 +13,8 @@ import {
   BottomSheetBehavior,
 } from 'react-native-bottom-sheet-behavior'
 import NoteList from "./NoteList";
-import store, {NotesAction} from "./NoteStore";
+import store from "./redux/Store";
+import Actions from "./redux/Actions";
 import NoteView from "./NoteView";
 import Note from "./Note";
 
@@ -37,7 +38,7 @@ export default class App extends Component {
 
   componentWillMount() {
     for (let i = 0; i < 20; i++) {
-      NotesAction.add(new Note('Note'));
+      Actions.add(new Note('Note'));
     }
     store.subscribe((e) => {
       const state = store.getState();
@@ -54,7 +55,6 @@ export default class App extends Component {
   }
 
   render() {
-    const state = store.getState();
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container} onLayout={this.onLayout}>

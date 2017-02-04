@@ -7,8 +7,8 @@ import {
   ScrollView,
   TouchableNativeFeedback,
 } from 'react-native';
-
-import store, {NotesAction} from "./NoteStore";
+import store from "./redux/Store";
+import Actions from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteList extends Component {
@@ -17,7 +17,7 @@ export default class NoteList extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(store.getState().notes),
+      dataSource: ds.cloneWithRows(store.getState().notes.notes),
     };
     this.onLongPress = this.onLongPress.bind(this);
   }

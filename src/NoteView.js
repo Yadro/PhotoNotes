@@ -10,7 +10,8 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import PhotoView from 'react-native-photo-view';
-import store, {NotesAction} from "./NoteStore";
+import store from "./redux/Store";
+import Actions from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteView extends Component {
@@ -18,7 +19,7 @@ export default class NoteView extends Component {
   static navigationOptions = {
     title: (e) => {
       const id = e.state.params.id;
-      const item = store.getState().notes.find(e => e.id == id);
+      const item = store.getState().notes.notes.find(e => e.id == id);
       return item && item.title;
     },
     header: (e) => {
@@ -30,7 +31,7 @@ export default class NoteView extends Component {
 
   constructor(props) {
     super(props);
-    const {notes} = store.getState();
+    const {notes} = store.getState().notes;
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
     this.state = {
