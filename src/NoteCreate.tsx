@@ -32,6 +32,7 @@ export default class NoteCreate extends Component<any, any> {
     this.onChange = this.onChange.bind(this);
     this.showPicker = this.showPicker.bind(this);
     this.getImageSize = this.getImageSize.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   getImageSize(image: string) {
@@ -75,10 +76,19 @@ export default class NoteCreate extends Component<any, any> {
     this.setState({note});
   }
 
+  onSave() {
+    const {navigate} = this.props.navigation;
+    const {note, image} = this.state;
+    note.image = image.uri;
+    note.title = note.title || '' + Date.now();
+    Actions.add(note);
+    navigate('Main');
+  }
+
   render() {
     const {note, size, image} = this.state;
     const {title, content} = note;
-    const {navigate, goBack} = this.props.navigation;
+    const {goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
         {image.uri ? <Image source={image} style={size}/> : null}
@@ -93,14 +103,9 @@ export default class NoteCreate extends Component<any, any> {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <Button title="Picker" onPress={this.showPicker}/>
-          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => goBack()}/>
-          <Button style={css.saveBtn} title={'Save'} onPress={() => {
-            note.image = image.uri;
-            note.title = note.title || '' + Date.now();
-            Actions.add(note);
-            navigate('Main');
-          }}/>
+          <View style={css.button}><Button title="Cancel" onPress={() => goBack()} color="grey"/></View>
+          <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
+          <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
         </View>
       </ScrollView>
     );
@@ -113,4 +118,17 @@ const css = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
+    marginBottom: 20
+  },
+  button: {
+
+  },
+  text: {
+
+  }
 });

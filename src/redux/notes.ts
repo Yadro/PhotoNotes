@@ -9,10 +9,10 @@ export const DefaultState: NoteState = {
 };
 
 export default (state: NoteState = DefaultState, actions): NoteState => {
-  let newState, note;
+  let newState, note, id;
   switch (actions.type) {
     case 'ADD':
-      const id = state.notes.length;
+      id = state.notes.length;
       newState = Object.assign({}, state);
       note = actions.note;
       note.id = id;
@@ -27,6 +27,12 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
         }
         return e;
       });
+      return newState;
+
+    case 'REMOVE':
+      newState = Object.assign({}, state);
+      id = actions.id;
+      newState.notes = newState.notes.filter(e => e.id != id);
       return newState;
     case 'IMPORT':
       return Object.assign({}, state, {notes: actions.notes});

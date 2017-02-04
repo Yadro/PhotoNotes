@@ -46,6 +46,8 @@ export default class NoteEdit extends Component<any, any> {
     this.onChange = this.onChange.bind(this);
     this.showPicker = this.showPicker.bind(this);
     this.getImageSize = this.getImageSize.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
@@ -95,10 +97,23 @@ export default class NoteEdit extends Component<any, any> {
     this.setState({note});
   }
 
+  onSave() {
+    const {navigate} = this.props.navigation;
+    const {note} = this.state;
+    Actions.add(note);
+    navigate('Main');
+  }
+
+  onDelete() {
+    const {navigate} = this.props.navigation;
+    Actions.remove(this.state.id);
+    navigate('Main');
+  }
+
   render() {
     const {note, id, size, image} = this.state;
     const {title, content} = note;
-    const {navigate} = this.props.navigation;
+    const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
         <Image source={image} style={size}/>
@@ -114,16 +129,10 @@ export default class NoteEdit extends Component<any, any> {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <Button title={'picker'} onPress={this.showPicker}/>
-          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
-          <Button style={css.saveBtn} title={'Save'} onPress={() => {
-            if (!this.state.id) {
-              Actions.add(note);
-            } else {
-              Actions.update(note);
-            }
-            navigate('Main');
-          }}/>
+          <View style={css.button}><Button title="Cancel" onPress={() => goBack()} color="grey"/></View>
+          <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
+          <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
+          <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
         </View>
       </ScrollView>
     );
@@ -140,7 +149,12 @@ const css = StyleSheet.create({
   buttons: {
     flex: 1,
     flexDirection: 'row',
-    // alignSelf: 'stretch',
+    justifyContent: 'space-between',
+    margin: 5,
+    marginBottom: 20
+  },
+  button: {
+
   },
   cancelBtn: {
     flex: 1,
