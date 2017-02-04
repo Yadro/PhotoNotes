@@ -53,8 +53,11 @@ export default class App extends Component {
   }
 
   onLayout(event) {
-    const {x, y, width, height} = event.nativeEvent.layout;
-    ActionOther.setViewSize({width: width + x, height: height + y});
+    const {size} = store.getState().other;
+    if (!size) {
+      const {x, y, width, height} = event.nativeEvent.layout;
+      ActionOther.setViewSize({width: width + x, height: height + y});
+    }
   }
 
   render() {
@@ -62,7 +65,7 @@ export default class App extends Component {
     return (
       <View style={css.container} onLayout={this.onLayout}>
         <NoteList navigation={this.props.navigation}/>
-        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
+        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
       </View>
     );
   }
