@@ -14,7 +14,7 @@ import {
 } from 'react-native-bottom-sheet-behavior'
 import NoteList from "./NoteList";
 import store from "./redux/Store";
-import Actions from "./redux/Actions";
+import {Actions, ActionOther} from "./redux/Actions";
 import NoteView from "./NoteView";
 import Note from "./Note";
 
@@ -32,7 +32,7 @@ export default class App extends Component {
 
   constructor() {
     super();
-    this.state = store.getState();
+    this.state = store.getState().other;
     console.log('App start');
   }
 
@@ -41,17 +41,17 @@ export default class App extends Component {
       Actions.add(new Note('Note'));
     }
     store.subscribe((e) => {
-      const state = store.getState();
-      if (state.update) {
-        state.update = false;
-        this.setState({store});
+      const other = store.getState().other;
+      if (other.update) {
+        other.update = false;
+        this.setState({other});
       }
     });
   }
 
   onLayout(event) {
-    var {x, y, width, height} = event.nativeEvent.layout;
-    console.log(event.nativeEvent.layout);
+    const {x, y, width, height} = event.nativeEvent.layout;
+    ActionOther.setViewSize({width: width + x, height: height + y});
   }
 
   render() {

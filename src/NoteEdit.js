@@ -11,7 +11,7 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import store from "./redux/Store";
-import Actions from "./redux/Actions";
+import {Actions} from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteEdit extends Component {

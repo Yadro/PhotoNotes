@@ -1,12 +1,12 @@
 import store from './Store';
 
-export default Actions = {
+export const Actions = {
   add(note) {
-    return store.dispatch({type: 'add', note});
+    return store.dispatch({type: 'ADD', note});
   },
 
   update(note) {
-    return store.dispatch({type: 'update', note});
+    return store.dispatch({type: 'UPDATE', note});
   },
 
   showItem(id) {
@@ -16,4 +16,11 @@ export default Actions = {
   show(screen: 'list' | 'item') {
     return store.dispatch({type: 'show-view.' + screen});
   },
+};
+
+
+export const ActionOther = {
+  setViewSize(size) {
+    store.dispatch({type: 'SET_VIEW_SIZE', size});
+  }
 };

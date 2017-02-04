@@ -15,14 +15,14 @@ export const DefaultState: NoteState = {
 export default (state: NoteState = DefaultState, actions): NoteState => {
   let newState, note;
   switch (actions.type) {
-    case 'add':
+    case 'ADD':
       const id = state.notes.length;
       newState = Object.assign({}, state, {update: true});
       note = actions.note;
       note.id = id;
       newState.notes.push(note);
       return newState;
-    case 'update':
+    case 'UPDATE':
       note = actions.note;
       newState = Object.assign({}, state);
       newState.notes = newState.notes.map(e => {

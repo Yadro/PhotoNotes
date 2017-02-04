@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PhotoView from 'react-native-photo-view';
 import store from "./redux/Store";
-import Actions from "./redux/Actions";
+import {Actions} from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteView extends Component {
