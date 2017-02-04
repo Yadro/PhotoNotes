@@ -31,36 +31,41 @@ export default class NoteView extends Component {
 
   constructor(props) {
     super(props);
-    const {notes} = store.getState().notes;
+    const state = store.getState();
+    const {notes} = state.notes;
+    const {size} = state.other;
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
     this.state = {
       note,
+      viewSize: size,
       size: null,
       image: 'http://www.animalsglobe.ru/wp-content/uploads/2011/09/%D1%81%D0%BE%D0%B2%D0%B0.jpg'
     };
   }
 
   componentDidMount() {
+    const {image, viewSize} = this.state;
     Image.getSize(this.state.image, (width, height) => {
-      const size = {width, height};
+      const size = {
+        width: Math.min(viewSize.width, width),
+        height
+      };
       this.setState({size});
     });
   }
 
   render() {
-    const {size, image} = this.state;
+    const {size, viewSize, image} = this.state;
     const {id, title, content} = this.state.note;
     return (
       <ScrollView style={css.container}>
-        <Image source={{uri: image}}
-               style={size}/>
         <PhotoView
           source={{uri: image}}
           onLoad={() => console.log("onLoad called")}
           onTap={() => console.log("onTap called")}
-          minimumZoomScale={0.5}
-          maximumZoomScale={3}
+          minimumZoomScale={1}
+          maximumZoomScale={4}
           androidScaleType="center"
           style={size}/>
         <Text>Title:</Text>
@@ -77,7 +82,7 @@ const css = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
   },
   item: {
     padding: 20,
