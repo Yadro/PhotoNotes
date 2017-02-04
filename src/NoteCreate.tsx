@@ -12,7 +12,7 @@ import {
   Platform
 } from 'react-native';
 import {Actions} from "./redux/Actions";
-import * as ImagePicker from "react-native-image-picker";
+import ImagePicker, {Response} from "react-native-image-picker";
 import Note from "./Note";
 import store from "./redux/Store";
 
@@ -45,7 +45,7 @@ export default class NoteCreate extends Component<any, any> {
   }
 
   showPicker() {
-    ImagePicker.showImagePicker({storageOptions: true}, (response) => {
+    ImagePicker.showImagePicker({storageOptions: true}, (response: Response) => {
       console.log('Response = ', response);
       if (response.didCancel) {
         console.log('User cancelled image picker');

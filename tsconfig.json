@@ -14,8 +14,7 @@
     "typeRoots" : ["./node_modules/@types"]
   },
   "include": [
-    "src/**/*",
-    "./node_modules/react-native-image-picker/index.d.ts"
+    "src/**/*"
   ],
   "exclude": [
     "index.android.js",

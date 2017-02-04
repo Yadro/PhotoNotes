@@ -11,7 +11,7 @@ import {
   NestedScrollView,
   CoordinatorLayout,
   BottomSheetBehavior,
-} from 'react-native-bottom-sheet-behavior'
+} from 'react-native-bottom-sheet-behavior';
 import NoteList from "./NoteList";
 import store from "./redux/Store";
 import {Actions, ActionOther} from "./redux/Actions";
@@ -29,26 +29,6 @@ export default class App extends Component<any, any> {
       }
     },
   };
-
-  constructor() {
-    super();
-    this.state = store.getState().other;
-    console.log('App start');
-  }
-
-  componentWillMount() {
-    this.disp = store.subscribe((e) => {
-      const {other, notes} = store.getState();
-      if (other.update) {
-        other.update = false;
-        this.setState({other});
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.disp();
-  }
 
   onLayout(event) {
     const {size} = store.getState().other;
