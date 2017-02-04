@@ -5,13 +5,28 @@ import {
   View,
   ListView,
   ScrollView,
+  Button,
   TouchableNativeFeedback,
 } from 'react-native';
+import {
+  FloatingActionButton,
+  NestedScrollView,
+  CoordinatorLayout,
+  BottomSheetBehavior,
+} from 'react-native-bottom-sheet-behavior';
 import store from "./redux/Store";
-import {Actions} from "./redux/Actions";
 import Note from "./Note";
 
 export default class NoteList extends Component<any, any> {
+
+  static navigationOptions = {
+    title: 'Welcome',
+    header: (e) => {
+      return {
+        right: <Button title={'New'} onPress={() => e.navigate('NoteView', {id: 0})}/>
+      }
+    },
+  };
 
   constructor(props) {
     super(props);
@@ -34,19 +49,22 @@ export default class NoteList extends Component<any, any> {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView>
-        <ListView
-          contentContainerStyle={css.container}
-          dataSource={this.state.dataSource}
-          renderRow={(rowData: Note) =>
-            <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
-              <View>
-                <Text style={css.item}>{rowData.title + rowData.id}</Text>
-              </View>
-            </TouchableNativeFeedback>
-          }
-        />
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <ScrollView>
+          <ListView
+            contentContainerStyle={css.container}
+            dataSource={this.state.dataSource}
+            renderRow={(rowData: Note) =>
+              <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
+                <View>
+                  <Text style={css.item}>{rowData.title + rowData.id}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            }
+          />
+        </ScrollView>
+        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
+      </View>
     );
   }
 }
@@ -66,5 +84,12 @@ const css = StyleSheet.create({
   text: {
     backgroundColor: "transparent",
     color: "#FFF",
+  },
+  button: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    right: 10,
+    bottom: 10,
   }
 });
