@@ -78,7 +78,7 @@ export default class NoteCreate extends Component<any, any> {
   render() {
     const {note, size, image} = this.state;
     const {title, content} = note;
-    const {navigate} = this.props.navigation;
+    const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
         {image.uri ? <Image source={image} style={size}/> : null}
@@ -94,7 +94,7 @@ export default class NoteCreate extends Component<any, any> {
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
           <Button title="Picker" onPress={this.showPicker}/>
-          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
+          <Button style={css.cancelBtn} title={'Cancel'} onPress={() => goBack()}/>
           <Button style={css.saveBtn} title={'Save'} onPress={() => {
             note.image = image.uri;
             note.title = note.title || '' + Date.now();

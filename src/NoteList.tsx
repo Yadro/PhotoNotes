@@ -52,13 +52,12 @@ export default class NoteList extends Component<any, any> {
       <View style={{flex: 1}}>
         <ScrollView>
           <ListView
+            enableEmptySections
             contentContainerStyle={css.container}
             dataSource={this.state.dataSource}
             renderRow={(rowData: Note) =>
               <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
-                <View>
-                  <Text style={css.item}>{rowData.title + rowData.id}</Text>
-                </View>
+                <Text style={css.item}>{rowData.title}</Text>
               </TouchableNativeFeedback>
             }
           />
