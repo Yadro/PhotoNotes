@@ -11,7 +11,7 @@ import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
 
-export default class NoteList extends Component {
+export default class NoteList extends Component<any, any> {
 
   constructor(props) {
     super(props);

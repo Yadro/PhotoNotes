@@ -17,7 +17,7 @@ import store from "./redux/Store";
 import {Actions, ActionOther} from "./redux/Actions";
 import NoteView from "./NoteView";
 
-export default class App extends Component {
+export default class App extends Component<any, any> {
 
   disp;
 

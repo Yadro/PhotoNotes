@@ -2,36 +2,57 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
-  Button,
   Image,
+  TextInput,
+  Button,
   ListView,
   ScrollView,
+  TouchableHighlight,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
-import {Actions} from "./redux/Actions";
-import * as ImagePicker from "react-native-image-picker";
-import Note from "./Note";
+import ImagePicker from 'react-native-image-picker';
 import store from "./redux/Store";
+import {Actions} from "./redux/Actions";
+import Note from "./Note";
 
-export default class NoteCreate extends Component {
+export default class NoteEdit extends Component<any, any> {
 
   static navigationOptions = {
-    title: 'Create new note'
+    title: 'NoteEdit'
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      note: new Note(),
-      size: null,
-      image: {uri: null}
-    };
+    const {notes} = store.getState().notes;
+    const params = props.navigation.state.params;
+    if (params && params.id != null) {
+      const note: Note = notes.find(e => e.id == params.id);
+      this.state = {
+        note,
+        id: params.id,
+        size: null,
+        image: {uri: note.image}
+      };
+    } else {
+      this.state = {
+        note: new Note(),
+        id: null,
+        size: null,
+        image: null,
+      };
+    }
     this.onChange = this.onChange.bind(this);
     this.showPicker = this.showPicker.bind(this);
     this.getImageSize = this.getImageSize.bind(this);
+  }
+
+  componentDidMount() {
+    const {image} = this.state;
+    if (image.uri) {
+      this.getImageSize(image.uri);
+    }
   }
 
   getImageSize(image: string) {
@@ -61,7 +82,6 @@ export default class NoteCreate extends Component {
         } else {
           source = {uri: response.uri.replace('file://', '')};
         }
-        this.getImageSize(source.uri);
         this.setState({
           image: source
         });
@@ -76,12 +96,13 @@ export default class NoteCreate extends Component {
   }
 
   render() {
-    const {note, size, image} = this.state;
+    const {note, id, size, image} = this.state;
     const {title, content} = note;
     const {navigate} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        {image.uri ? <Image source={image} style={size}/> : null}
+        <Image source={image} style={size}/>
+        <Text>note id = {id}</Text>
         <TextInput value={title}
                    style={css.text}
                    type="text"
@@ -93,23 +114,40 @@ export default class NoteCreate extends Component {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <Button title="Picker" onPress={this.showPicker}/>
+          <Button title={'picker'} onPress={this.showPicker}/>
           <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
           <Button style={css.saveBtn} title={'Save'} onPress={() => {
-            note.image = image.uri;
-            note.title = note.title || '' + Date.now();
-            Actions.add(note);
+            if (!this.state.id) {
+              Actions.add(note);
+            } else {
+              Actions.update(note);
+            }
             navigate('Main');
           }}/>
         </View>
       </ScrollView>
     );
   }
-}
+};
 
 const css = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
+    margin: 10,
   },
+  text: {
+    fontSize: 15,
+  },
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    // alignSelf: 'stretch',
+  },
+  cancelBtn: {
+    flex: 1,
+    margin: 5,
+  },
+  saveBtn: {
+    flex: 1,
+    margin: 5,
+  }
 });

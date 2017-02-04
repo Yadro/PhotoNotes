@@ -14,7 +14,7 @@ import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
 
-export default class NoteView extends Component {
+export default class NoteView extends Component<any, any> {
 
   static navigationOptions = {
     title: (e) => {
