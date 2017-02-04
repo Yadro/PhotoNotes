@@ -43,10 +43,12 @@ export default class NoteEdit extends Component {
     const { params, navigate } = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        <Text>{id}</Text>
+        <Text>note id = {id}</Text>
+        <Text>Title:</Text>
         <TextInput value={title}
                    type="text"
                    onChangeText={this.onChange.bind(null, 'title')}/>
+        <Text>Content:</Text>
         <TextInput value={content}
                    type="text"/>
         <View style={css.buttons}>

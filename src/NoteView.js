@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   Button,
   ListView,
   ScrollView,
@@ -32,24 +33,41 @@ export default class NoteView extends Component {
     const {notes} = store.getState();
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
-    this.state = {note};
+    this.state = {
+      note,
+      size: null,
+      image: 'http://www.animalsglobe.ru/wp-content/uploads/2011/09/%D1%81%D0%BE%D0%B2%D0%B0.jpg'
+    };
+  }
+
+  componentDidMount() {
+    Image.getSize(this.state.image, (width, height) => {
+      const size = {width, height};
+      this.setState({size});
+    });
   }
 
   render() {
+    const {size, image} = this.state;
     const {id, title, content} = this.state.note;
     return (
-      <View>
+      <ScrollView style={css.container}>
+        <Image source={{uri: image}}
+               style={size}/>
         <PhotoView
-          source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+          source={{uri: image}}
           onLoad={() => console.log("onLoad called")}
           onTap={() => console.log("onTap called")}
           minimumZoomScale={0.5}
           maximumZoomScale={3}
           androidScaleType="center"
-          style={css.photo}/>
+          style={size}/>
+        <Text>Title:</Text>
+        <Text>{title}</Text>
+        <Text>Content:</Text>
         <Text>{content}</Text>
         <Text>{id}</Text>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -58,8 +76,7 @@ const css = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'grey',
   },
   item: {
     padding: 20,
@@ -69,11 +86,5 @@ const css = StyleSheet.create({
   text: {
     backgroundColor: "transparent",
     color: "#FFF",
-  },
-  photo: {
-    width: 300,
-    height: 300,
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
 });

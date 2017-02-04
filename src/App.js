@@ -48,11 +48,16 @@ export default class App extends Component {
     });
   }
 
+  onLayout(event) {
+    var {x, y, width, height} = event.nativeEvent.layout;
+    console.log(event.nativeEvent.layout);
+  }
+
   render() {
     const state = store.getState();
     const {navigate} = this.props.navigation;
     return (
-      <View style={css.container}>
+      <View style={css.container} onLayout={this.onLayout}>
         <NoteList navigation={this.props.navigation}/>
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
