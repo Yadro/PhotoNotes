@@ -19,7 +19,7 @@ import store from "./redux/Store";
 export default class NoteCreate extends Component<any, any> {
 
   static navigationOptions = {
-    title: 'Create new note'
+    title: 'Create new note',
   };
 
   constructor(props) {

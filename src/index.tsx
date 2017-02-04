@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import {StackNavigator} from 'react-navigation';
+import {
+  StackNavigator,
+  TabNavigator,
+  DrawerNavigator,
+} from 'react-navigation';
 import store from "./redux/Store";
 import NoteEdit from './NoteEdit';
 import NoteView from "./NoteView";
