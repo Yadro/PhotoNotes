@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   TextInput,
   Button,
   ListView,
@@ -17,7 +18,7 @@ import Note from "./Note";
 export default class NoteEdit extends Component {
 
   static navigationOptions = {
-    title: 'Note'
+    title: 'NoteEdit'
   };
 
   constructor(props) {
@@ -26,11 +27,26 @@ export default class NoteEdit extends Component {
     const params = props.navigation.state.params;
     if (params && params.id != null) {
       const note: Note = notes.find(e => e.id == params.id);
-      this.state = {note};
+      this.state = {note, id: params.id};
     } else {
-      this.state = {note: new Note()}
+      this.state = {
+        note: new Note(),
+        id: null,
+        size: null
+      };
     }
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount() {
+    const {other} = store.getState();
+    Image.getSize(this.state.note.image, (width, height) => {
+      const size = {
+        width: other.size.width,
+        height,
+      };
+      this.setState({size});
+    });
   }
 
   onChange(field, text) {
@@ -40,10 +56,12 @@ export default class NoteEdit extends Component {
   }
 
   render() {
-    const {id, title, content} = this.state.note;
-    const { params, navigate } = this.props.navigation;
+    const {note, id, size} = this.state;
+    const {title, content, image} = note;
+    const {navigate} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
+        <Image source={{uri: image}} style={size}/>
         <Text>note id = {id}</Text>
         <Text>Title:</Text>
         <TextInput value={title}
@@ -55,7 +73,11 @@ export default class NoteEdit extends Component {
         <View style={css.buttons}>
           <Button style={css.cancelBtn} title={'Cancel'} onPress={() => navigate('Main')}/>
           <Button style={css.saveBtn} title={'Save'} onPress={() => {
-            Actions.update(this.state.note);
+            if (!this.state.id) {
+              Actions.add(note);
+            } else {
+              Actions.update(note);
+            }
             navigate('Main');
           }}/>
         </View>
@@ -75,8 +97,10 @@ const css = StyleSheet.create({
   },
   cancelBtn: {
     flex: 1,
+    margin: 5,
   },
   saveBtn: {
     flex: 1,
+    margin: 5,
   }
 });

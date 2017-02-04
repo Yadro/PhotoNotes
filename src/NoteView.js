@@ -56,8 +56,8 @@ export default class NoteView extends Component {
   }
 
   render() {
-    const {size, viewSize, image} = this.state;
-    const {id, title, content} = this.state.note;
+    const {size, viewSize} = this.state;
+    const {id, title, content, image} = this.state.note;
     return (
       <ScrollView style={css.container}>
         <PhotoView

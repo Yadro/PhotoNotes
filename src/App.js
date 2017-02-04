@@ -21,6 +21,8 @@ import Note from "./Note";
 
 export default class App extends Component {
 
+  disp;
+
   static navigationOptions = {
     title: 'Welcome',
     header: (e) => {
@@ -37,16 +39,17 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    for (let i = 0; i < 20; i++) {
-      Actions.add(new Note('Note'));
-    }
-    store.subscribe((e) => {
+    this.disp = store.subscribe((e) => {
       const other = store.getState().other;
       if (other.update) {
         other.update = false;
         this.setState({other});
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.disp();
   }
 
   onLayout(event) {
