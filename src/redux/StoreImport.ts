@@ -14,7 +14,6 @@ export function importNotes(callback) {
       return RNFS.readFile(path, 'utf8');
     })
     .then((contents) => {
-      console.log(contents);
       contents = JSON.parse(contents);
       callback(contents);
     })
@@ -24,7 +23,7 @@ export function importNotes(callback) {
 }
 
 function writeFile(path, data) {
-  RNFS.writeFile(path, data || 'Lorem ipsum dolor sit amet', 'utf8')
+  RNFS.writeFile(path, data, 'utf8')
     .then((success) => {
       console.log('FILE WRITTEN!');
     })
