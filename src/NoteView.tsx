@@ -45,7 +45,7 @@ export default class NoteView extends Component<any, any> {
   }
 
   componentDidMount() {
-    const {image, viewSize} = this.state;
+    const {viewSize} = this.state;
     Image.getSize(this.state.image, (width, height) => {
       const size = {
         width: Math.min(viewSize.width, width),

@@ -34,22 +34,13 @@ export default class NoteEdit extends Component<any, any> {
     super(props);
     const {notes} = store.getState().notes;
     const params = props.navigation.state.params;
-    if (params && params.id != null) {
-      const note: Note = notes.find(e => e.id == params.id);
-      this.state = {
-        note,
-        id: params.id,
-        size: null,
-        image: {uri: note.image}
-      };
-    } else {
-      this.state = {
-        note: new Note(),
-        id: null,
-        size: null,
-        image: null,
-      };
-    }
+    const note: Note = notes.find(e => e.id == params.id);
+    this.state = {
+      note,
+      id: params.id,
+      size: null,
+      image: {uri: note.image}
+    };
     this.onChange = this.onChange.bind(this);
     this.showPicker = this.showPicker.bind(this);
     this.getImageSize = this.getImageSize.bind(this);
@@ -120,7 +111,7 @@ export default class NoteEdit extends Component<any, any> {
     const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        <Image source={image} style={size}/>
+        <Image source={image} resizeMode="contain" style={size}/>
         <Text>note id = {id}</Text>
         <TextInput value={title}
                    style={css.text}
@@ -145,7 +136,7 @@ export default class NoteEdit extends Component<any, any> {
 
 const css = StyleSheet.create({
   container: {
-    margin: 10,
+    flex: 1,
   },
   text: {
     fontSize: 15,
