@@ -127,7 +127,6 @@ export default class NoteEdit extends Component<any, any> {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <View style={css.button}><Button title="Cancel" onPress={() => goBack()} color="grey"/></View>
           <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
           <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
           <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>

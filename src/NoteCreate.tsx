@@ -109,7 +109,6 @@ export default class NoteCreate extends Component<any, any> {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <View style={css.button}><Button title="Cancel" onPress={() => goBack(null)} color="grey"/></View>
           <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
           <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
         </View>
