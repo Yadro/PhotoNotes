@@ -86,9 +86,9 @@ const css = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    width: 50,
-    height: 50,
-    right: 10,
-    bottom: 10,
+    width: 56,
+    height: 56,
+    right: 20,
+    bottom: 20,
   }
 });
