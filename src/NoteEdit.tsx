@@ -17,6 +17,7 @@ import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
+import PhotoView from "./PhotoView";
 
 export default class NoteEdit extends Component<any, any> {
 
@@ -111,7 +112,9 @@ export default class NoteEdit extends Component<any, any> {
     const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        <Image source={image} resizeMode="contain" style={size}/>
+        <View onTouchEnd={() => navigate('PhotoView', {img: image})}>
+          <Image source={image} resizeMode="contain" style={size}/>
+        </View>
         <Text>note id = {id}</Text>
         <TextInput value={title}
                    style={css.text}
