@@ -15,12 +15,19 @@ import {Actions} from "./redux/Actions";
 import ImagePicker, {Response} from "react-native-image-picker";
 import Note from "./Note";
 import store from "./redux/Store";
+import {NavigationActions} from "react-navigation";
 
 export default class NoteCreate extends Component<any, any> {
 
   static navigationOptions = {
     title: 'Create new note',
   };
+  static resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({routeName: 'Main'})
+    ]
+  });
 
   constructor(props) {
     super(props);
@@ -77,12 +84,11 @@ export default class NoteCreate extends Component<any, any> {
   }
 
   onSave() {
-    const {navigate} = this.props.navigation;
     const {note, image} = this.state;
     note.image = image.uri;
     note.title = note.title || '' + Date.now();
     Actions.add(note);
-    navigate('Main');
+    this.props.navigation.dispatch(NoteCreate.resetAction);
   }
 
   render() {
@@ -103,7 +109,7 @@ export default class NoteCreate extends Component<any, any> {
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
         <View style={css.buttons}>
-          <View style={css.button}><Button title="Cancel" onPress={() => goBack()} color="grey"/></View>
+          <View style={css.button}><Button title="Cancel" onPress={() => goBack(null)} color="grey"/></View>
           <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
           <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
         </View>

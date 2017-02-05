@@ -16,12 +16,19 @@ import ImagePicker from 'react-native-image-picker';
 import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
+import {NavigationActions} from "react-navigation";
 
 export default class NoteEdit extends Component<any, any> {
 
   static navigationOptions = {
     title: 'NoteEdit'
   };
+  static resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({routeName: 'Main'})
+    ]
+  });
 
   constructor(props) {
     super(props);
@@ -98,16 +105,13 @@ export default class NoteEdit extends Component<any, any> {
   }
 
   onSave() {
-    const {navigate} = this.props.navigation;
-    const {note} = this.state;
-    Actions.add(note);
-    navigate('Main');
+    Actions.add(this.state.note);
+    this.props.navigation.dispatch(NoteEdit.resetAction);
   }
 
   onDelete() {
-    const {navigate} = this.props.navigation;
     Actions.remove(this.state.id);
-    navigate('Main');
+    this.props.navigation.dispatch(NoteEdit.resetAction);
   }
 
   render() {

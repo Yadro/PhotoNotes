@@ -12,15 +12,15 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
   let newState, note, id;
   switch (actions.type) {
     case 'ADD':
-      id = state.notes.length;
-      newState = Object.assign({}, state);
+      id = getMax(state.notes) + 1;
+      newState = copy(state);
       note = actions.note;
       note.id = id;
       newState.notes.push(note);
       return newState;
     case 'UPDATE':
       note = actions.note;
-      newState = Object.assign({}, state);
+      newState = copy(state);
       newState.notes = newState.notes.map(e => {
         if (e.id == note.id) {
           return note;
@@ -30,7 +30,7 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
       return newState;
 
     case 'REMOVE':
-      newState = Object.assign({}, state);
+      newState = copy(state);
       id = actions.id;
       newState.notes = newState.notes.filter(e => e.id != id);
       return newState;
@@ -41,3 +41,15 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
       return state;
   }
 };
+
+function getMax(arr: {id}[]) {
+  let max = 0;
+  arr.forEach(e => {
+    max = Math.max(e.id, max)
+  });
+  return max;
+}
+
+function copy(o) {
+  return JSON.parse(JSON.stringify(o));
+}

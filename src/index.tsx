@@ -23,16 +23,14 @@ export default class AppWithStore extends Component<any, any> {
   disp;
   constructor() {
     super();
-    this.state = store.getState().other;
+    // this.state = store.getState().other;
     console.log('App start');
   }
   componentWillMount() {
     this.disp = store.subscribe((e) => {
-      const {other, notes} = store.getState();
-      if (other.update) {
-        other.update = false;
-        this.setState({other});
-      }
+      // const {other, notes} = store.getState();
+      // this.setState({time: Date.now()});
+      this.forceUpdate();
     });
   }
   componentWillUnmount() {

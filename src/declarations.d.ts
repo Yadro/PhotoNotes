@@ -42,10 +42,10 @@ declare module 'react-navigation' {
   export function StackNavigator(RouteConfigs: any, StackNavigatorConfig?: StackNavigatorConfig);
   export function TabNavigator();
   export function DrawerNavigator();
-  export interface NavigationActions {
-    navigate;
-    reset;
-    setParams;
+  export class NavigationActions {
+    static navigate(params);
+    static reset(params);
+    static setParams(params);
   }
 }
 

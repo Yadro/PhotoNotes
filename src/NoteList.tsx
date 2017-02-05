@@ -57,7 +57,7 @@ export default class NoteList extends Component<any, any> {
             dataSource={this.state.dataSource}
             renderRow={(rowData: Note) =>
               <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
-                <Text style={css.item}>{rowData.title}</Text>
+                <View><Text style={css.item}>{rowData.title}</Text></View>
               </TouchableNativeFeedback>
             }
           />
