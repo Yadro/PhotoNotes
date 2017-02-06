@@ -84,7 +84,7 @@ const css = StyleSheet.create({
     flexDirection: 'column',
     // backgroundColor: 'grey',
   },
-  item: {
+  text: {
     padding: 20,
     fontSize: 17,
     color: 'black',

@@ -16,14 +16,19 @@ import {
 } from 'react-native-bottom-sheet-behavior';
 import store from "./redux/Store";
 import Note from "./Note";
+import {ActionOther} from "./redux/Actions";
 
 export default class NoteList extends Component<any, any> {
 
   static navigationOptions = {
     title: 'Welcome',
     header: (e) => {
-      return {
-        right: <Button title={'New'} onPress={() => e.navigate('NoteView', {id: 0})}/>
+      const multi = store.getState().other.multi;
+      if (multi) {
+        return {
+          left: <Button title={'Cancel'} onPress={() => e.navigate('NoteView', {id: 0})}/>,
+          right: <Button title={'Remove'} onPress={() => e.navigate('NoteView', {id: 0})}/>
+        }
       }
     },
   };
@@ -35,14 +40,17 @@ export default class NoteList extends Component<any, any> {
     this.state = {
       dataSource: this.ds.cloneWithRows(store.getState().notes.notes),
     };
-    this.onLongPress = this.onLongPress.bind(this);
+    this.longPressHandler = this.longPressHandler.bind(this);
   }
 
   componentWillMount() {
     this.disp = store.subscribe((e) => {
+      const {notes, other} = store.getState();
       this.setState({
-        dataSource: this.ds.cloneWithRows(store.getState().notes.notes)
-      })
+        dataSource: this.ds.cloneWithRows(notes.notes),
+        multi: false,
+        selected: []
+      });
     });
   }
 
@@ -59,20 +67,55 @@ export default class NoteList extends Component<any, any> {
     this.props.showActionSheetWithOptions(options, () => {});
   }
 
+  longPressHandler = (id) => {
+    const {selected} = this.state;
+    selected.push(id);
+    this.setState({
+      multi: true,
+      selected
+    });
+  }
+
+  pressHandler = (multi, id) => () => {
+    const { navigate } = this.props.navigation;
+    if (multi) {
+      let {selected} = this.state;
+      if (selected.includes(id)) {
+        selected = selected.filter(e => e != id);
+      } else {
+        selected.push(id);
+      }
+      this.setState({selected});
+    } else {
+      navigate('NoteEdit', {id: id})
+    }
+  }
+
+  renderRow = (rowData: Note) => {
+    const {id} = rowData;
+    const {selected, multi} = this.state;
+    const isSelected = selected.includes(id);
+    console.log(isSelected);
+    return (
+      <TouchableNativeFeedback onPress={this.pressHandler(multi, id)}
+                               onLongPress={this.longPressHandler.bind(null, rowData.id)}
+                               delayLongPress={3000}>
+        <View style={isSelected ? css.selectedItem : null}>
+          <Text style={css.text}>{rowData.title}</Text>
+        </View>
+      </TouchableNativeFeedback>
+    );
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={{flex: 1}}>
         <ScrollView>
-          <ListView
-            enableEmptySections
+          <ListView enableEmptySections
             contentContainerStyle={css.container}
             dataSource={this.state.dataSource}
-            renderRow={(rowData: Note) =>
-              <TouchableNativeFeedback onPress={() => navigate('NoteEdit', {id: rowData.id})}>
-                <View><Text style={css.item}>{rowData.title}</Text></View>
-              </TouchableNativeFeedback>
-            }
+            renderRow={this.renderRow}
           />
         </ScrollView>
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
@@ -88,15 +131,18 @@ const css = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: '#F5FCFF',
   },
+  selectedItem: {
+    backgroundColor: '#ddd',
+  },
   item: {
+
+  },
+  text: {
     padding: 20,
     fontSize: 17,
     color: 'black',
   },
-  text: {
-    backgroundColor: "transparent",
-    color: "#FFF",
-  },
+
   button: {
     position: 'absolute',
     width: 56,

@@ -26,5 +26,8 @@ export const Actions = {
 export const ActionOther = {
   setViewSize(size) {
     store.dispatch({type: 'SET_VIEW_SIZE', size});
+  },
+  setMultiChoose(multi) {
+    store.dispatch({type: 'SET_MULTI_CHOOSE', multi});
   }
 };
