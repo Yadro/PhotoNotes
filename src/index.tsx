@@ -22,21 +22,11 @@ const BasicApp = StackNavigator({
 });
 
 export default class AppWithStore extends Component<any, any> {
-  disp;
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     // this.state = store.getState().other;
     console.log('App start');
-  }
-  componentWillMount() {
-    this.disp = store.subscribe((e) => {
-      // const {other, notes} = store.getState();
-      // this.setState({time: Date.now()});
-      this.forceUpdate();
-    });
-  }
-  componentWillUnmount() {
-    this.disp();
   }
 
   onLayout(event) {

@@ -27,14 +27,27 @@ export default class NoteList extends Component<any, any> {
       }
     },
   };
+  private disp;
+  private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(store.getState().notes.notes),
+      dataSource: this.ds.cloneWithRows(store.getState().notes.notes),
     };
     this.onLongPress = this.onLongPress.bind(this);
+  }
+
+  componentWillMount() {
+    this.disp = store.subscribe((e) => {
+      this.setState({
+        dataSource: this.ds.cloneWithRows(store.getState().notes.notes)
+      })
+    });
+  }
+
+  componentWillUnmount() {
+    this.disp();
   }
 
   onLongPress() {
