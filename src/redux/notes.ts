@@ -34,6 +34,13 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
       id = actions.id;
       newState.notes = newState.notes.filter(e => e.id != id);
       return newState;
+
+    case 'REMOVE_ARR':
+      newState = copy(state);
+      const {ids} = actions;
+      newState.notes = newState.notes.filter(e => !ids.includes(e.id));
+      return newState;
+
     case 'IMPORT':
       return Object.assign({}, state, {notes: actions.notes});
 

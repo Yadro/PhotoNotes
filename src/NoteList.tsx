@@ -16,7 +16,7 @@ import {
 } from 'react-native-bottom-sheet-behavior';
 import store from "./redux/Store";
 import Note from "./Note";
-import {ActionOther} from "./redux/Actions";
+import {ActionOther, Actions} from "./redux/Actions";
 
 export default class NoteList extends Component<any, any> {
 
@@ -39,8 +39,9 @@ export default class NoteList extends Component<any, any> {
     super(props);
     this.state = {
       dataSource: this.ds.cloneWithRows(store.getState().notes.notes),
+      multi: false,
+      selected: []
     };
-    this.longPressHandler = this.longPressHandler.bind(this);
   }
 
   componentWillMount() {
@@ -48,8 +49,6 @@ export default class NoteList extends Component<any, any> {
       const {notes, other} = store.getState();
       this.setState({
         dataSource: this.ds.cloneWithRows(notes.notes),
-        multi: false,
-        selected: []
       });
     });
   }
@@ -65,6 +64,15 @@ export default class NoteList extends Component<any, any> {
       destructiveButtonIndex: 0,
     };
     this.props.showActionSheetWithOptions(options, () => {});
+  }
+
+  disableMultiSelect = () => {
+    this.setState({multi: false, selected: []})
+  }
+
+  removeItems(ids) {
+    Actions.removes(ids);
+    this.disableMultiSelect();
   }
 
   longPressHandler = (id) => {
@@ -95,7 +103,6 @@ export default class NoteList extends Component<any, any> {
     const {id} = rowData;
     const {selected, multi} = this.state;
     const isSelected = selected.includes(id);
-    console.log(isSelected);
     return (
       <TouchableNativeFeedback onPress={this.pressHandler(multi, id)}
                                onLongPress={this.longPressHandler.bind(null, rowData.id)}
@@ -107,10 +114,21 @@ export default class NoteList extends Component<any, any> {
     );
   }
 
+  renderTools = () => {
+    return (
+      <View style={css.toolBox}>
+        <Button title="cancel" onPress={() => this.disableMultiSelect()}/>
+        <Button title="delete" onPress={() => this.removeItems(this.state.selected)}/>
+      </View>
+    )
+  }
+
   render() {
+    const {multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={{flex: 1}}>
+        {multi ? this.renderTools() : null}
         <ScrollView>
           <ListView enableEmptySections
             contentContainerStyle={css.container}
@@ -129,7 +147,13 @@ const css = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
+  },
+  toolBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    backgroundColor: 'white'
   },
   selectedItem: {
     backgroundColor: '#ddd',

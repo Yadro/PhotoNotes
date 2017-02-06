@@ -17,6 +17,11 @@ export const Actions = {
     exportNotes(store.getState().notes.notes);
   },
 
+  removes(ids) {
+    store.dispatch({type: 'REMOVE_ARR', ids});
+    exportNotes(store.getState().notes.notes);
+  },
+
   importNotes(notes) {
     store.dispatch({type: 'IMPORT', notes});
   },
