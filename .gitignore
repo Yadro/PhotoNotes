@@ -52,7 +52,12 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-android
+android/.gradle
+android/gradle
+android/build
+android/keystores
+android/app/build
+
 ios
 
 # Windows
