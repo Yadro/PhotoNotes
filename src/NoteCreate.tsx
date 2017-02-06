@@ -16,8 +16,9 @@ import ImagePicker, {Response} from "react-native-image-picker";
 import Note from "./Note";
 import store from "./redux/Store";
 import {NavigationActions} from "react-navigation";
+import {ScreenNavigationProp} from "react-navigation";
 
-export default class NoteCreate extends Component<any, any> {
+export default class NoteCreate extends Component<ScreenNavigationProp, any> {
 
   static navigationOptions = {
     title: 'Create new note',

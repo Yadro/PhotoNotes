@@ -13,39 +13,82 @@ declare module "react-native-button" {
 declare module 'react-navigation' {
 
   export interface StackNavigatorConfig {
-    initialRouteName?; //Sets the default screen of the stack. Must match one of the keys in route configs.
-    initialRouteParams?; //The params for the initial route
-    navigationOptions?; //Default navigation options to use for screens
-    paths?; //A mapping of overrides for the paths set in the route configs
-    modal?; //- Make the screens slide in from the bottom which is a common iOS pattern. Only works on iOS, has no effect on Android.
+    /**
+     * Sets the default screen of the stack. Must match one of the keys in route configs.
+     */
+    initialRouteName?;
+    /**
+     * The params for the initial route
+     */
+    initialRouteParams?;
+    /**
+     * Default navigation options to use for screens
+     */
+    navigationOptions?;
+    /**
+     * A mapping of overrides for the paths set in the route configs
+     */
+    paths?;
+    /**
+     * - Make the screens slide in from the bottom which is a common iOS pattern. Only works on iOS, has no effect on Android.
+     */
+    modal?; //
     mode?;
-    headerMode?; //- Specifies how the header should be rendered:
-    cardStyle?; //- Use this prop to override or extend the default style for an individual card in stack.
-  }
-
-  export interface NavigationProp {
-    navigate?: {
-      routeName; // - A destination routeName that has been registered somewhere in the app's router
-      params; // - Params to merge into the destination route
-      action; // - (advanced) The sub-action to run in the child router, if the screen is a navigator.
-    };
-    state?: {
-      routeName; // - the name of the route config in the router
-      key; // - a unique identifier used to sort routes
-      params; // - an optional object of string options for this screen
-    };
-    setParams?;
-    goBack?;
-    dispatch?;
+    /**
+     * - Specifies how the header should be rendered:
+     */
+    headerMode?;
+    /**
+     * - Use this prop to override or extend the default style for an individual card in stack.
+     */
+    cardStyle?;
   }
 
   export function StackNavigator(RouteConfigs: any, StackNavigatorConfig?: StackNavigatorConfig);
   export function TabNavigator();
   export function DrawerNavigator();
+
+  type Action = any;
   export class NavigationActions {
-    static navigate(params);
-    static reset(params);
+    static navigate(params): Action;
+    static reset(params): Action;
     static setParams(params);
+  }
+
+  export interface ScreenNavigationProp {
+    navigation: {
+      navigate?: {
+        /**
+         * A destination routeName that has been registered somewhere in the app's router
+         */
+        routeName;
+        /**
+         * Params to merge into the destination route
+         */
+        params;
+        /**
+         * (advanced) The sub-action to run in the child router, if the screen is a navigator.
+         */
+        action;
+      };
+      state?: {
+        /**
+         * the name of the route config in the router
+         */
+        routeName;
+        /**
+         * a unique identifier used to sort routes
+         */
+        key;
+        /**
+         * an optional object of string options for this screen
+         */
+        params;
+      };
+      setParams?: (param: any) => void;
+      goBack?: (route: string) => void;
+      dispatch?: (action: Action) => void; // Send an action to the router
+    }
   }
 }
 
