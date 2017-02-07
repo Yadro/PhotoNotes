@@ -44,10 +44,12 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
   }
 
   getImageSize(image: string) {
+    const screenWidth = store.getState().other.size.width;
     Image.getSize(image, (width, height) => {
+      const delta = Math.abs((screenWidth - width) / width * 100);
       const size = {
-        width: store.getState().other.size.width,
-        height,
+        width: screenWidth,
+        height: height - height / 100 * delta,
       };
       this.setState({size});
     });
@@ -98,7 +100,8 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
     const {goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        {image.uri ? <Image source={image} style={size}/> : null}
+        {image.uri
+          ? <Image source={image} resizeMode="contain" style={size}/> : null}
         <TextInput value={title}
                    style={css.text}
                    type="text"

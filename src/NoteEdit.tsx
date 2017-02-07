@@ -57,10 +57,12 @@ export default class NoteEdit extends Component<any, any> {
   }
 
   getImageSize(image: string) {
+    const screenWidth = store.getState().other.size.width;
     Image.getSize(image, (width, height) => {
+      const delta = Math.abs((screenWidth - width) / width * 100);
       const size = {
-        width: store.getState().other.size.width,
-        height,
+        width: screenWidth,
+        height: height - height / 100 * delta,
       };
       this.setState({size});
     });
@@ -112,7 +114,7 @@ export default class NoteEdit extends Component<any, any> {
     const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        <View onTouchEnd={() => navigate('PhotoView', {img: image})}>
+        <View onTouchEnd={() => navigate('PhotoView', {img: image})} style={{flex: 1}}>
           <Image source={image} resizeMode="contain" style={size}/>
         </View>
         <Text>note id = {id}</Text>
