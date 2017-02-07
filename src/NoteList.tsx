@@ -7,6 +7,7 @@ import {
   ScrollView,
   Button,
   TouchableNativeFeedback,
+  Vibration,
 } from 'react-native';
 import {
   FloatingActionButton,
@@ -17,6 +18,8 @@ import {
 import store from "./redux/Store";
 import Note from "./Note";
 import {ActionOther, Actions} from "./redux/Actions";
+
+const delay = __DEV__ ? 3000 : 1300;
 
 export default class NoteList extends Component<any, any> {
 
@@ -82,7 +85,9 @@ export default class NoteList extends Component<any, any> {
       multi: true,
       selected
     });
-  }
+
+    Vibration.vibrate([300, 300], false);
+  };
 
   pressHandler = (multi, id) => () => {
     const { navigate } = this.props.navigation;
@@ -106,7 +111,7 @@ export default class NoteList extends Component<any, any> {
     return (
       <TouchableNativeFeedback onPress={this.pressHandler(multi, id)}
                                onLongPress={this.longPressHandler.bind(null, rowData.id)}
-                               delayLongPress={3000}>
+                               delayLongPress={delay}>
         <View style={isSelected ? css.selectedItem : null}>
           <Text style={css.text}>{rowData.title}</Text>
         </View>
@@ -128,7 +133,7 @@ export default class NoteList extends Component<any, any> {
     const { navigate } = this.props.navigation;
     return (
       <View style={{flex: 1}}>
-        {multi ? this.renderTools() : null}
+
         <ScrollView>
           <ListView enableEmptySections
             contentContainerStyle={css.container}
@@ -136,7 +141,10 @@ export default class NoteList extends Component<any, any> {
             renderRow={this.renderRow}
           />
         </ScrollView>
-        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
+        {multi
+          ? this.renderTools()
+          : <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
+        }
       </View>
     );
   }
