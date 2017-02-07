@@ -41,7 +41,7 @@ export default class NoteList extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: this.ds.cloneWithRows(store.getState().notes.notes),
+      dataSource: this.ds.cloneWithRows(store.getState().notes),
       multi: false,
       selected: []
     };
@@ -51,7 +51,7 @@ export default class NoteList extends Component<any, any> {
     this.disp = store.subscribe((e) => {
       const {notes, other} = store.getState();
       this.setState({
-        dataSource: this.ds.cloneWithRows(notes.notes),
+        dataSource: this.ds.cloneWithRows(notes),
       });
     });
   }

@@ -8,20 +8,20 @@ export const DefaultState: NoteState = {
   notes: [],
 };
 
-export default (state: NoteState = DefaultState, actions): NoteState => {
-  let newState, note, id;
+export default (state: Note[] = [], actions): NoteState => {
+  let newState: Note[], note, id;
   switch (actions.type) {
     case 'ADD':
-      id = getMax(state.notes) + 1;
+      id = getMax(state) + 1;
       newState = copy(state);
       note = actions.note;
       note.id = id;
-      newState.notes.push(note);
+      newState.push(note);
       return newState;
     case 'UPDATE':
       note = actions.note;
       newState = copy(state);
-      newState.notes = newState.notes.map(e => {
+      newState = newState.map(e => {
         if (e.id == note.id) {
           return note;
         }
@@ -32,17 +32,17 @@ export default (state: NoteState = DefaultState, actions): NoteState => {
     case 'REMOVE':
       newState = copy(state);
       id = actions.id;
-      newState.notes = newState.notes.filter(e => e.id != id);
+      newState = newState.filter(e => e.id != id);
       return newState;
 
     case 'REMOVE_ARR':
       newState = copy(state);
       const {ids} = actions;
-      newState.notes = newState.notes.filter(e => !ids.includes(e.id));
+      newState = newState.filter(e => !ids.includes(e.id));
       return newState;
 
     case 'IMPORT':
-      return Object.assign({}, state, {notes: actions.notes});
+      return actions.notes;
 
     default:
       return state;

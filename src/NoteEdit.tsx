@@ -33,7 +33,7 @@ export default class NoteEdit extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    const {notes} = store.getState().notes;
+    const notes = store.getState().notes;
     const params = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == params.id);
     this.state = {

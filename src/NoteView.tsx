@@ -19,7 +19,7 @@ export default class NoteView extends Component<any, any> {
   static navigationOptions = {
     title: (e) => {
       const id = e.state.params.id;
-      const item = store.getState().notes.notes.find(e => e.id == id);
+      const item = store.getState().notes.find(e => e.id == id);
       return item && item.title;
     },
     header: (e) => {
