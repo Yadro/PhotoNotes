@@ -86,7 +86,10 @@ export default class NoteList extends Component<any, any> {
       selected
     });
 
-    Vibration.vibrate([0, 90], false);
+    Vibration.vibrate();
+    window.setTimeout(() => {
+      Vibration.cancel();
+    }, 50);
   };
 
   pressHandler = (multi, id) => () => {
