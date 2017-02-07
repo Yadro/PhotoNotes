@@ -114,7 +114,7 @@ export default class NoteEdit extends Component<any, any> {
     const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
-        <View onTouchEnd={() => navigate('PhotoView', {img: image})} style={{flex: 1}}>
+        <View onTouchEnd={() => navigate('MyPhotoView', {img: image})} style={{flex: 1}}>
           <Image source={image} resizeMode="contain" style={size}/>
         </View>
         <Text>note id = {id}</Text>

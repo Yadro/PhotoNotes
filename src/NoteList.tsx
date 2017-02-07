@@ -19,7 +19,7 @@ import store from "./redux/Store";
 import Note from "./Note";
 import {ActionOther, Actions} from "./redux/Actions";
 
-const delay = __DEV__ ? 3000 : 1300;
+const delay = __DEV__ ? 3000 : 1000;
 
 export default class NoteList extends Component<any, any> {
 
@@ -86,7 +86,7 @@ export default class NoteList extends Component<any, any> {
       selected
     });
 
-    Vibration.vibrate([300, 300], false);
+    Vibration.vibrate([0, 90], false);
   };
 
   pressHandler = (multi, id) => () => {
