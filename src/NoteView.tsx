@@ -8,11 +8,13 @@ import {
   ListView,
   ScrollView,
   TouchableNativeFeedback,
+  ToolbarAndroid,
 } from 'react-native';
 import PhotoView from 'react-native-photo-view';
 import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
+var nativeImageSource = require('nativeImageSource');
 
 export default class NoteView extends Component<any, any> {
 
@@ -60,6 +62,18 @@ export default class NoteView extends Component<any, any> {
     const {id, title, content, image} = this.state.note;
     return (
       <ScrollView style={css.container}>
+        <ToolbarAndroid
+          actions={toolbarActions}
+          navIcon={nativeImageSource({
+              android: 'ic_menu_black_24dp',
+              width: 48,
+              height: 48
+            })}
+          onActionSelected={this._onActionSelected}
+          onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
+          style={styles.toolbar}
+          subtitle={this.state.actionText}
+          title="Toolbar" />
         <PhotoView
           source={{uri: image}}
           onLoad={() => console.log("onLoad called")}
@@ -77,6 +91,12 @@ export default class NoteView extends Component<any, any> {
     );
   }
 }
+
+var toolbarActions = [
+  {title: 'Create', show: 'always'},
+  {title: 'Filter'},
+  {title: 'Settings', show: 'always'},
+];
 
 const css = StyleSheet.create({
   container: {

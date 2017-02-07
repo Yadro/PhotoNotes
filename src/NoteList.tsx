@@ -8,6 +8,7 @@ import {
   Button,
   TouchableNativeFeedback,
   Vibration,
+  ToolbarAndroid
 } from 'react-native';
 import {
   FloatingActionButton,
@@ -18,22 +19,24 @@ import {
 import store from "./redux/Store";
 import Note from "./Note";
 import {ActionOther, Actions} from "./redux/Actions";
+const nativeImageSource = require('nativeImageSource');
 
 const delay = __DEV__ ? 3000 : 1000;
+
+const toolbarActions = [
+  {title: 'Delete', icon: nativeImageSource({
+    android: 'ic_delete_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+];
 
 export default class NoteList extends Component<any, any> {
 
   static navigationOptions = {
-    title: 'Welcome',
-    header: (e) => {
-      const multi = store.getState().other.multi;
-      if (multi) {
-        return {
-          left: <Button title={'Cancel'} onPress={() => e.navigate('NoteView', {id: 0})}/>,
-          right: <Button title={'Remove'} onPress={() => e.navigate('NoteView', {id: 0})}/>
-        }
-      }
-    },
+    header: {
+      visible: false,
+    }
   };
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -122,21 +125,48 @@ export default class NoteList extends Component<any, any> {
     );
   }
 
-  renderTools = () => {
-    return (
-      <View style={css.toolBox}>
-        <Button title="cancel" onPress={() => this.disableMultiSelect()}/>
-        <Button title="delete" onPress={() => this.removeItems(this.state.selected)}/>
-      </View>
-    )
-  }
+  onActionSelected = (action) => {
+    if (action == null) {
+      this.disableMultiSelect();
+    } else if (action == 0) {
+      this.removeItems(this.state.selected);
+    }
+  };
+
+  renderToolBar = () => {
+    if (this.state.multi) {
+      return (
+        <ToolbarAndroid
+          elevation={5}
+          actions={toolbarActions}
+          style={css.toolbar}
+          title="Select to remove"
+          onIconClicked={this.onActionSelected}
+          onActionSelected={this.onActionSelected}
+          navIcon={nativeImageSource({
+              android: 'ic_close_black_24dp',
+              width: 24,
+              height: 24
+            })}
+        />
+      )
+    } else {
+      return (
+        <ToolbarAndroid
+          elevation={5}
+          style={css.toolbar}
+          title="Toolbar"
+        />
+      )
+    }
+  };
 
   render() {
     const {multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={{flex: 1}}>
-
+        {this.renderToolBar()}
         <ScrollView>
           <ListView enableEmptySections
             contentContainerStyle={css.container}
@@ -144,16 +174,18 @@ export default class NoteList extends Component<any, any> {
             renderRow={this.renderRow}
           />
         </ScrollView>
-        {multi
-          ? this.renderTools()
-          : <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
-        }
+        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
       </View>
     );
   }
 }
 
+
 const css = StyleSheet.create({
+  toolbar: {
+    backgroundColor: '#fff',
+    height: 56,
+  },
   container: {
     flex: 1,
     flexDirection: 'column',

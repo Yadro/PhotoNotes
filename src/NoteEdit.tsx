@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableHighlight,
   TouchableNativeFeedback,
+  ToolbarAndroid,
   Platform,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -18,11 +19,28 @@ import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
 import PhotoView from "./PhotoView";
+const nativeImageSource = require('nativeImageSource');
+
+const toolbarActions = [
+  {title: 'Picker', icon: nativeImageSource({
+    android: 'ic_add_a_photo_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+  {title: 'Save', icon: nativeImageSource({
+    android: 'ic_check_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+  {title: 'Delete'},
+];
 
 export default class NoteEdit extends Component<any, any> {
 
   static navigationOptions = {
-    title: 'NoteEdit'
+    header: {
+      visible: false,
+    }
   };
   static resetAction = NavigationActions.reset({
     index: 0,
@@ -108,12 +126,44 @@ export default class NoteEdit extends Component<any, any> {
     this.props.navigation.dispatch(NoteEdit.resetAction);
   }
 
+  onActionSelected = (action) => {
+    const {goBack} = this.props.navigation;
+    if (action == null) {
+      goBack();
+    } else if (action == 0) {
+      this.showPicker();
+    } else if (action == 1) {
+      this.onSave();
+    } else if (action == 2) {
+      this.onDelete();
+    }
+  };
+
+  renderToolBar = () => {
+    return (
+      <ToolbarAndroid
+        elevation={5}
+        actions={toolbarActions}
+        style={css.toolbar}
+        title="Edit"
+        onIconClicked={this.onActionSelected}
+        onActionSelected={this.onActionSelected}
+        navIcon={nativeImageSource({
+            android: 'ic_arrow_back_black_24dp',
+            width: 24,
+            height: 24
+          })}
+      />
+    )
+  };
+
   render() {
     const {note, id, size, image} = this.state;
     const {title, content} = note;
     const {navigate, goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
+        {this.renderToolBar()}
         <View onTouchEnd={() => navigate('MyPhotoView', {img: image})} style={{flex: 1}}>
           <Image source={image} resizeMode="contain" style={size}/>
         </View>
@@ -128,17 +178,21 @@ export default class NoteEdit extends Component<any, any> {
                    type="text"
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
-        <View style={css.buttons}>
+        {/*<View style={css.buttons}>
           <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
           <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
           <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
-        </View>
+        </View>*/}
       </ScrollView>
     );
   }
 };
 
 const css = StyleSheet.create({
+  toolbar: {
+    backgroundColor: '#fff',
+    height: 56,
+  },
   container: {
     flex: 1,
   },

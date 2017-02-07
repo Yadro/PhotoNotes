@@ -9,19 +9,36 @@ import {
   ListView,
   ScrollView,
   TouchableNativeFeedback,
+  ToolbarAndroid,
   Platform
 } from 'react-native';
 import {Actions} from "./redux/Actions";
-import ImagePicker, {Response} from "react-native-image-picker";
+import ImagePicker from "react-native-image-picker";
 import Note from "./Note";
 import store from "./redux/Store";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
+const nativeImageSource = require('nativeImageSource');
+
+const toolbarActions = [
+  {title: 'Add photo', icon: nativeImageSource({
+    android: 'ic_add_a_photo_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+  {title: 'Back', icon: nativeImageSource({
+    android: 'ic_check_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+];
 
 export default class NoteCreate extends Component<ScreenNavigationProp, any> {
 
   static navigationOptions = {
-    title: 'Create new note',
+    header: {
+      visible: false,
+    }
   };
   static resetAction = NavigationActions.reset({
     index: 0,
@@ -94,12 +111,42 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
     this.props.navigation.dispatch(NoteCreate.resetAction);
   }
 
+  onActionSelected = (action) => {
+    const {goBack} = this.props.navigation;
+    if (action == null) {
+      goBack();
+    } else if (action == 0) {
+      this.showPicker();
+    }else if (action == 1) {
+      this.onSave();
+    }
+  };
+
+  renderToolBar = () => {
+    return (
+      <ToolbarAndroid
+        elevation={5}
+        actions={toolbarActions}
+        style={css.toolbar}
+        title="Create"
+        onIconClicked={this.onActionSelected}
+        onActionSelected={this.onActionSelected}
+        navIcon={nativeImageSource({
+            android: 'ic_arrow_back_black_24dp',
+            width: 24,
+            height: 24
+          })}
+      />
+    )
+  };
+
   render() {
     const {note, size, image} = this.state;
     const {title, content} = note;
     const {goBack} = this.props.navigation;
     return (
       <ScrollView style={css.container}>
+        {this.renderToolBar()}
         {image.uri
           ? <Image source={image} resizeMode="contain" style={size}/> : null}
         <TextInput value={title}
@@ -112,10 +159,10 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
                    type="text"
                    placeholder="Content"
                    onChangeText={this.onChange.bind(null, 'content')}/>
-        <View style={css.buttons}>
+        {/*<View style={css.buttons}>
           <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
           <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
-        </View>
+        </View>*/}
       </ScrollView>
     );
   }
@@ -123,6 +170,10 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
 
 
 const css = StyleSheet.create({
+  toolbar: {
+    backgroundColor: '#fff',
+    height: 56,
+  },
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
