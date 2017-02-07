@@ -99,7 +99,7 @@ export default class NoteEdit extends Component<any, any> {
   }
 
   onSave() {
-    Actions.add(this.state.note);
+    Actions.update(this.state.note);
     this.props.navigation.dispatch(NoteEdit.resetAction);
   }
 
