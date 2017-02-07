@@ -7,6 +7,11 @@ import {
 import PhotoView from 'react-native-photo-view';
 
 export default class MyPhotoView extends Component<any, any> {
+  static navigationOptions  = {
+    header: {
+      visible: false,
+    },
+  };
   render() {
     const {img} = this.props.navigation.state.params;
     return (
@@ -28,7 +33,7 @@ export default class MyPhotoView extends Component<any, any> {
 const css = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#4e4e4e',
   },
   image: {
     flex: 1,
