@@ -160,6 +160,7 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
           <TextInput value={content}
                      style={css.text}
                      type="text"
+                     multiline
                      placeholder="Content"
                      onChangeText={this.onChange.bind(null, 'content')}/>
           {/*<View style={css.buttons}>

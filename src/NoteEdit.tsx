@@ -177,6 +177,7 @@ export default class NoteEdit extends Component<any, any> {
           <TextInput value={content}
                      style={css.text}
                      type="text"
+                     multiline
                      placeholder="Content"
                      onChangeText={this.onChange.bind(null, 'content')}/>
           {/*<View style={css.buttons}>
