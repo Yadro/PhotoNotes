@@ -38,9 +38,7 @@ const toolbarActions = [
 export default class NoteEdit extends Component<any, any> {
 
   static navigationOptions = {
-    header: {
-      visible: false,
-    }
+    header: {visible: false}
   };
   static resetAction = NavigationActions.reset({
     index: 0,
@@ -58,22 +56,17 @@ export default class NoteEdit extends Component<any, any> {
       note,
       id: params.id,
       size: null,
-      image: {uri: note.image}
     };
-    this.onChange = this.onChange.bind(this);
-    this.getImageSize = this.getImageSize.bind(this);
-    this.onSave = this.onSave.bind(this);
-    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
-    const {image} = this.state;
-    if (image.uri) {
-      this.getImageSize(image.uri);
+    const {image} = this.state.note;
+    if (image) {
+      this.getImageSize(image);
     }
   }
 
-  getImageSize(image: string) {
+  getImageSize = (image: string) => {
     const screenWidth = store.getState().other.size.width;
     Image.getSize(image, (width, height) => {
       const delta = Math.abs((screenWidth - width) / width * 100);
@@ -83,7 +76,7 @@ export default class NoteEdit extends Component<any, any> {
       };
       this.setState({size});
     });
-  }
+  };
 
   showPicker = () => {
     ImagePicker.showImagePicker({storageOptions: true}, (response) => {
@@ -103,28 +96,26 @@ export default class NoteEdit extends Component<any, any> {
           source = {uri: response.uri.replace('file://', '')};
         }
         this.getImageSize(source.uri);
-        this.setState({
-          image: source
-        });
+        this.onChange('image', source.uri);
       }
     });
-  }
+  };
 
-  onChange(field, text) {
+  onChange = (field, data) => {
     const {note} = this.state;
-    note[field] = text;
+    note[field] = data;
     this.setState({note});
-  }
+  };
 
-  onSave() {
+  onSave = () => {
     Actions.update(this.state.note);
     this.props.navigation.dispatch(NoteEdit.resetAction);
-  }
+  };
 
-  onDelete() {
+  onDelete = () => {
     Actions.remove(this.state.id);
     this.props.navigation.dispatch(NoteEdit.resetAction);
-  }
+  };
 
   onActionSelected = (action) => {
     const {goBack} = this.props.navigation;
@@ -158,15 +149,16 @@ export default class NoteEdit extends Component<any, any> {
   };
 
   render() {
-    const {note, id, size, image} = this.state;
-    const {title, content} = note;
-    const {navigate, goBack} = this.props.navigation;
+    const {note, id, size} = this.state;
+    const {title, content, image} = note;
+    const {navigate} = this.props.navigation;
+    const wrpImage = {uri: image};
     return (
       <View style={css.container}>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
-          <View onTouchEnd={() => navigate('MyPhotoView', {img: image})} style={{flex: 1}}>
-            <Image source={image} resizeMode="contain" style={size}/>
+          <View onTouchEnd={() => navigate('MyPhotoView', {img: wrpImage})} style={{flex: 1}}>
+            <Image source={wrpImage} resizeMode="contain" style={size}/>
           </View>
           <Text>note id = {id}</Text>
           <TextInput value={title}
@@ -180,11 +172,6 @@ export default class NoteEdit extends Component<any, any> {
                      multiline
                      placeholder="Content"
                      onChangeText={this.onChange.bind(null, 'content')}/>
-          {/*<View style={css.buttons}>
-            <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
-            <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
-            <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
-          </View>*/}
         </ScrollView>
       </View>
     );

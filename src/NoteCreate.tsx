@@ -26,7 +26,7 @@ const toolbarActions = [
     width: 24,
     height: 24
   }), show: 'always'},
-  {title: 'Back', icon: nativeImageSource({
+  {title: 'Save', icon: nativeImageSource({
     android: 'ic_check_black_24dp',
     width: 24,
     height: 24
