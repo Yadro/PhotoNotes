@@ -86,7 +86,7 @@ export default class NoteEdit extends Component<any, any> {
     });
   }
 
-  showPicker() {
+  showPicker = () => {
     ImagePicker.showImagePicker({storageOptions: true}, (response) => {
       console.log('Response = ', response);
       if (response.didCancel) {
@@ -162,28 +162,30 @@ export default class NoteEdit extends Component<any, any> {
     const {title, content} = note;
     const {navigate, goBack} = this.props.navigation;
     return (
-      <ScrollView style={css.container}>
+      <View style={css.container}>
         {this.renderToolBar()}
-        <View onTouchEnd={() => navigate('MyPhotoView', {img: image})} style={{flex: 1}}>
-          <Image source={image} resizeMode="contain" style={size}/>
-        </View>
-        <Text>note id = {id}</Text>
-        <TextInput value={title}
-                   style={css.text}
-                   type="text"
-                   placeholder="Title"
-                   onChangeText={this.onChange.bind(null, 'title')}/>
-        <TextInput value={content}
-                   style={css.text}
-                   type="text"
-                   placeholder="Content"
-                   onChangeText={this.onChange.bind(null, 'content')}/>
-        {/*<View style={css.buttons}>
-          <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
-          <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
-          <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
-        </View>*/}
-      </ScrollView>
+        <ScrollView style={css.container}>
+          <View onTouchEnd={() => navigate('MyPhotoView', {img: image})} style={{flex: 1}}>
+            <Image source={image} resizeMode="contain" style={size}/>
+          </View>
+          <Text>note id = {id}</Text>
+          <TextInput value={title}
+                     style={css.text}
+                     type="text"
+                     placeholder="Title"
+                     onChangeText={this.onChange.bind(null, 'title')}/>
+          <TextInput value={content}
+                     style={css.text}
+                     type="text"
+                     placeholder="Content"
+                     onChangeText={this.onChange.bind(null, 'content')}/>
+          {/*<View style={css.buttons}>
+            <View style={css.button}><Button title="Delete" onPress={this.onDelete} color="red"/></View>
+            <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
+            <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
+          </View>*/}
+        </ScrollView>
+      </View>
     );
   }
 };

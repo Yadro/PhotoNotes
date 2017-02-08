@@ -145,25 +145,27 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
     const {title, content} = note;
     const {goBack} = this.props.navigation;
     return (
-      <ScrollView style={css.container}>
+      <View style={{flex: 1}}>
         {this.renderToolBar()}
-        {image.uri
-          ? <Image source={image} resizeMode="contain" style={size}/> : null}
-        <TextInput value={title}
-                   style={css.text}
-                   type="text"
-                   placeholder="Title"
-                   onChangeText={this.onChange.bind(null, 'title')}/>
-        <TextInput value={content}
-                   style={css.text}
-                   type="text"
-                   placeholder="Content"
-                   onChangeText={this.onChange.bind(null, 'content')}/>
-        {/*<View style={css.buttons}>
-          <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
-          <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
-        </View>*/}
-      </ScrollView>
+        <ScrollView style={css.container}>
+          {image.uri
+            ? <Image source={image} resizeMode="contain" style={size}/> : null}
+          <TextInput value={title}
+                     style={css.text}
+                     type="text"
+                     placeholder="Title"
+                     onChangeText={this.onChange.bind(null, 'title')}/>
+          <TextInput value={content}
+                     style={css.text}
+                     type="text"
+                     placeholder="Content"
+                     onChangeText={this.onChange.bind(null, 'content')}/>
+          {/*<View style={css.buttons}>
+            <View style={css.button}><Button title="Picker" onPress={this.showPicker}/></View>
+            <View style={css.button}><Button title="Save" onPress={this.onSave}/></View>
+          </View>*/}
+        </ScrollView>
+      </View>
     );
   }
 }
