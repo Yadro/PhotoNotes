@@ -61,7 +61,6 @@ export default class NoteEdit extends Component<any, any> {
       image: {uri: note.image}
     };
     this.onChange = this.onChange.bind(this);
-    this.showPicker = this.showPicker.bind(this);
     this.getImageSize = this.getImageSize.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
@@ -103,6 +102,7 @@ export default class NoteEdit extends Component<any, any> {
         } else {
           source = {uri: response.uri.replace('file://', '')};
         }
+        this.getImageSize(source.uri);
         this.setState({
           image: source
         });

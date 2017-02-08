@@ -73,7 +73,7 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
   }
 
   showPicker() {
-    ImagePicker.showImagePicker({storageOptions: true}, (response: Response) => {
+    ImagePicker.showImagePicker({storageOptions: true}, (response) => {
       console.log('Response = ', response);
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -90,6 +90,8 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
           source = {uri: response.uri.replace('file://', '')};
         }
         this.getImageSize(source.uri);
+
+        // todo use onChange
         this.setState({
           image: source
         });
