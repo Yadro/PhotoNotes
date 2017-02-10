@@ -3,6 +3,7 @@ package com.photonotes;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.threshold;
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfs.RNFSPackage;
@@ -34,7 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
         new ImagePickerPackage(),
         new BottomSheetBehaviorPackage(),
         new PhotoViewPackage(),
-        new VectorIconsPackage()
+        new VectorIconsPackage(),
+        new ThresholdPackage()
       );
     }
   };
