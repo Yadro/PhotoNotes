@@ -57,6 +57,7 @@ android/gradle
 android/build
 android/keystores
 android/app/build
+build
 
 ios
 
