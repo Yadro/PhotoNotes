@@ -19,6 +19,10 @@ import store from "./redux/Store";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
 const nativeImageSource = require('nativeImageSource');
+import Threshold from '../node_modules/react-native-threshold';
+const RNFS = require('react-native-fs');
+
+Threshold.readThresholdSave('/storage/emulated/0/Download/text.jpg', '/storage/emulated/0/Download/text2.jpg');
 
 const toolbarActions = [
   {title: 'Add photo', icon: nativeImageSource({
@@ -84,6 +88,7 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
       }
       else {
         let source = {uri: 'data:image/jpeg;base64,' + response.data};
+
         if (Platform.OS === 'android') {
           source = {uri: response.uri};
         } else {
