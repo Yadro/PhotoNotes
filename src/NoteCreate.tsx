@@ -22,8 +22,6 @@ const nativeImageSource = require('nativeImageSource');
 import Threshold from '../node_modules/react-native-threshold';
 const RNFS = require('react-native-fs');
 
-Threshold.readThresholdSave('/storage/emulated/0/Download/text.jpg', '/storage/emulated/0/Download/text2.jpg');
-
 const toolbarActions = [
   {title: 'Add photo', icon: nativeImageSource({
     android: 'ic_add_a_photo_black_24dp',
@@ -88,21 +86,30 @@ export default class NoteCreate extends Component<ScreenNavigationProp, any> {
       }
       else {
         let source = {uri: 'data:image/jpeg;base64,' + response.data};
-
+        console.log(response);
         if (Platform.OS === 'android') {
           source = {uri: response.uri};
         } else {
           source = {uri: response.uri.replace('file://', '')};
         }
-        this.getImageSize(source.uri);
 
-        // todo use onChange
-        this.setState({
-          image: source
+
+        console.log(response.path);
+        var p = Threshold.readThresholdSave(response.path, response.path + '.png', 100);
+        p.then(e => {
+            console.log(e)
+          this.getImageSize(source.uri);
+
+          // todo use onChange
+          this.setState({
+            image: {uri: e.uri}
+          });
         });
       }
     });
   }
+
+
 
   onChange(field, text) {
     const {note} = this.state;
