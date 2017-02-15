@@ -1,26 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "es2015",
+    "target": "es6",
+    "module": "es6",
     "jsx": "react",
     "outDir": "build",
-    "rootDir": "src",
-    "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "preserveConstEnums": true,
     "allowJs": true,
     "sourceMap": true,
-    "typeRoots" : ["./node_modules/@types"]
+    "rootDirs": ["./src", "android/PhotoModule"]
   },
   "include": [
-    "src/**/*"
+    "src",
+    "node_modules/@types/**/*.ts"
   ],
   "exclude": [
-    "index.android.js",
-    "index.ios.js",
     "build",
-    "__tests__"
+    "node_modules"
   ],
   "compileOnSave": false
 }

@@ -1,5 +1,6 @@
 declare module "react-native-button" {
-  import React, { Component } from "react";
+  import * as React from 'react';
+  import {Component} from 'react';
 
   interface Props {
     style?: React.ViewStyle;
