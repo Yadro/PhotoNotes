@@ -31,6 +31,6 @@ public class MyImageView extends ImageView {
         this.setImageBitmap(bitmap);
         this.setMinimumWidth(100);
         this.setMinimumHeight(100);
-        this.setScaleType(ScaleType.FIT_END);
+        this.setScaleType(ScaleType.FIT_CENTER);
     }
 }
