@@ -22,11 +22,11 @@ const toolbarActions = [
   },
 ];
 
-const goBack = (src) => NavigationActions.reset({
+const goBack = (note) => NavigationActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({
     routeName: 'NoteEdit',
-    params: src
+    params: {note}
   })]
 });
 interface ThresholdP {
@@ -53,7 +53,9 @@ export default class ThresholdComponent extends Component<ThresholdP, ThresholdS
       const {src: filePath, value} = this.state;
       readThresholdSave(filePath, filePath + 'bw.png', value)
         .then(e => {
-          this.navigation.dispatch(goBack(e));
+          const {note} = this.props.navigation.state.params;
+          note.image = e.uri;
+          this.navigation.dispatch(goBack(note));
         });
     }
   };

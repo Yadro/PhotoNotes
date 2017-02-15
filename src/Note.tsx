@@ -4,6 +4,7 @@ export default class Note {
   title;
   content;
   image;
+  originalImage;
 
 
   constructor(title, content, image) {

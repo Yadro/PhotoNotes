@@ -54,20 +54,17 @@ export default class NoteEdit extends Component<any, any> {
     const params = props.navigation.state.params;
     const actions = toolbarActions.slice();
     if (params) {
-      if (params.filepath) {
+      if (params.note) {
         this.state = {
-          note: new Note('', '', params.uri),
-          id: null,
+          note: params.note,
           size: null,
           actions,
         };
-      }
-      if (params.id) {
+      } else if (params.id) {
         const note: Note = notes.find(e => e.id == params.id);
         actions.push({title: 'Delete'});
         this.state = {
           note,
-          id: params.id,
           size: null,
           actions,
           save: true,
@@ -77,7 +74,6 @@ export default class NoteEdit extends Component<any, any> {
     else {
       this.state = {
         note: new Note(),
-        id: null,
         size: null,
         actions,
       };
@@ -115,15 +111,16 @@ export default class NoteEdit extends Component<any, any> {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        let source = {uri: 'data:image/jpeg;base64,' + response.data};
+        let source; // = {uri: 'data:image/jpeg;base64,' + response.data};
         if (Platform.OS === 'android') {
           source = {uri: response.uri};
         } else {
           source = {uri: response.uri.replace('file://', '')};
         }
         this.getImageSize(source.uri);
-        this.onChange('image', source.uri);
-        this.props.navigation.navigate('Threshold', {src: response.path});
+        const {note} = this.state;
+        note.originalImage = source.uri;
+        this.props.navigation.navigate('Threshold', {src: response.path, note});
       }
     });
   };
@@ -141,7 +138,7 @@ export default class NoteEdit extends Component<any, any> {
   };
 
   onDelete = () => {
-    Actions.remove(this.state.id);
+    Actions.remove(this.state.note.id);
     this.props.navigation.dispatch(NoteEdit.resetAction);
   };
 
@@ -177,7 +174,7 @@ export default class NoteEdit extends Component<any, any> {
   };
 
   render() {
-    const {note, id, size} = this.state;
+    const {note, size} = this.state;
     const {title, content, image} = note;
     const {navigate} = this.props.navigation;
     const wrpImage = {uri: image};
@@ -188,7 +185,7 @@ export default class NoteEdit extends Component<any, any> {
           <View onTouchEnd={() => navigate('MyPhotoView', {img: wrpImage})} style={{flex: 1}}>
             <Image source={wrpImage} resizeMode="contain" style={size}/>
           </View>
-          <Text>note id = {id}</Text>
+          <Text>note id = {note.id}</Text>
           <TextInput value={title}
                      style={css.text}
                      type="text"
