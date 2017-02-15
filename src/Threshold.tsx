@@ -9,33 +9,52 @@ import {
 } from 'react-native';
 const nativeImageSource = require('nativeImageSource');
 import {PhotoView, readThresholdSave} from '../android/PhotoModule/index.js';
+import {NavigationActions} from "react-navigation";
 
 
 const toolbarActions = [
   {
     title: 'Add photo', icon: nativeImageSource({
-    android: 'ic_add_a_photo_black_24dp',
+    android: 'ic_check_black_24dp',
     width: 24,
     height: 24
   }), show: 'always'
   },
 ];
+
+const goBack = (src) => NavigationActions.reset({
+  index: 0,
+  actions: [NavigationActions.navigate({
+    routeName: 'NoteEdit',
+    params: src
+  })]
+});
 interface ThresholdP {
 }
 interface ThresholdS {
   value;
 }
 export default class ThresholdComponent extends Component<ThresholdP, ThresholdS> {
+  static navigationOptions = {header: {visible: false}};
+  navigation;
 
   constructor(props) {
     super(props);
-    this.state = {value: 85};
+    this.navigation = props.navigation;
+    const src = props.navigation.state.params && props.navigation.state.params.src;
+    this.state = {
+      value: 85,
+      src
+    };
   }
 
-  onActionSelected = () => {
-    const {goBack} = this.props.navigation;
-    if (action == null) {
-      goBack();
+  onActionSelected = (action) => {
+    if (action == 0) {
+      const {src: filePath, value} = this.state;
+      readThresholdSave(filePath, filePath + 'bw.png', value)
+        .then(e => {
+          this.navigation.dispatch(goBack(e));
+        });
     }
   };
 
@@ -49,13 +68,8 @@ export default class ThresholdComponent extends Component<ThresholdP, ThresholdS
         title="Threshold"
         onIconClicked={this.onActionSelected}
         onActionSelected={this.onActionSelected}
-        navIcon={nativeImageSource({
-            android: 'ic_arrow_back_black_24dp',
-            width: 24,
-            height: 24
-          })}
       />
-      <PhotoView src="/storage/emulated/0/Download/text.jpg" value={value} style={{flex:1}} />
+      <PhotoView src={this.state.src} value={value} style={{flex:1}} />
       <Slider onSlidingComplete={value => this.setState({value})} value={this.state.value} minimumValue={1} maximumValue={100}/>
     </View>
   }

@@ -12,14 +12,14 @@ import NoteView from "./NoteView";
 import NoteCreate from "./NoteCreate";
 import {ActionOther} from "./redux/Actions";
 import NoteList from "./NoteList";
-import MyPhotoView from "./PhotoView";
+import Threshold from "./Threshold";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
   NoteCreate: {screen: NoteCreate},
-  MyPhotoView: {screen: MyPhotoView},
+  Threshold: {screen: Threshold},
 });
 
 export default class AppWithStore extends Component<any, any> {

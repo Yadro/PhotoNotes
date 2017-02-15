@@ -20,6 +20,7 @@ import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
 import PhotoView from "./PhotoView";
+import {ScreenNavigationProp} from "react-navigation";
 const nativeImageSource = require('nativeImageSource');
 
 const toolbarActions = [
@@ -52,16 +53,28 @@ export default class NoteEdit extends Component<any, any> {
     const notes = store.getState().notes;
     const params = props.navigation.state.params;
     const actions = toolbarActions.slice();
-    if (params && params.id) {
-      const note: Note = notes.find(e => e.id == params.id);
-      actions.push({title: 'Delete'});
-      this.state = {
-        note,
-        id: params.id,
-        size: null,
-        actions,
-      };
-    } else {
+    if (params) {
+      if (params.filepath) {
+        this.state = {
+          note: new Note('', '', params.uri),
+          id: null,
+          size: null,
+          actions,
+        };
+      }
+      if (params.id) {
+        const note: Note = notes.find(e => e.id == params.id);
+        actions.push({title: 'Delete'});
+        this.state = {
+          note,
+          id: params.id,
+          size: null,
+          actions,
+          save: true,
+        };
+      }
+    }
+    else {
       this.state = {
         note: new Note(),
         id: null,
@@ -69,6 +82,7 @@ export default class NoteEdit extends Component<any, any> {
         actions,
       };
     }
+
   }
 
   componentDidMount() {
@@ -109,6 +123,7 @@ export default class NoteEdit extends Component<any, any> {
         }
         this.getImageSize(source.uri);
         this.onChange('image', source.uri);
+        this.props.navigation.navigate('Threshold', {src: response.path});
       }
     });
   };
@@ -120,7 +135,8 @@ export default class NoteEdit extends Component<any, any> {
   };
 
   onSave = () => {
-    Actions.update(this.state.note);
+    const {note, save} = this.state;
+    Actions[save ? 'update' : 'add'](note);
     this.props.navigation.dispatch(NoteEdit.resetAction);
   };
 

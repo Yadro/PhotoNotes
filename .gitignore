@@ -63,5 +63,6 @@ ios
 
 # Windows
 *.lnk
+.tmp
 
 !node_modules/react-native-threshold
