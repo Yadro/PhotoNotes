@@ -175,7 +175,7 @@ export default class NoteList extends Component<any, any> {
             renderRow={this.renderRow}
           />
         </ScrollView>
-        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteCreate')}/>
+        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
     );
   }

@@ -33,7 +33,6 @@ const toolbarActions = [
     width: 24,
     height: 24
   }), show: 'always'},
-  {title: 'Delete'},
 ];
 
 export default class NoteEdit extends Component<any, any> {
@@ -52,12 +51,24 @@ export default class NoteEdit extends Component<any, any> {
     super(props);
     const notes = store.getState().notes;
     const params = props.navigation.state.params;
-    const note: Note = notes.find(e => e.id == params.id);
-    this.state = {
-      note,
-      id: params.id,
-      size: null,
-    };
+    const actions = toolbarActions.slice();
+    if (params && params.id) {
+      const note: Note = notes.find(e => e.id == params.id);
+      actions.push({title: 'Delete'});
+      this.state = {
+        note,
+        id: params.id,
+        size: null,
+        actions,
+      };
+    } else {
+      this.state = {
+        note: new Note(),
+        id: null,
+        size: null,
+        actions,
+      };
+    }
   }
 
   componentDidMount() {
@@ -135,7 +146,7 @@ export default class NoteEdit extends Component<any, any> {
     return (
       <ToolbarAndroid
         elevation={5}
-        actions={toolbarActions}
+        actions={this.state.actions}
         style={css.toolbar}
         title="Edit"
         onIconClicked={this.onActionSelected}
