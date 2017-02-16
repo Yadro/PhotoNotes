@@ -78,7 +78,6 @@ export default class NoteEdit extends Component<any, any> {
         actions,
       };
     }
-
   }
 
   componentDidMount() {

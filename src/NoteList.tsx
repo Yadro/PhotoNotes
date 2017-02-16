@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,7 +8,8 @@ import {
   Button,
   TouchableNativeFeedback,
   Vibration,
-  ToolbarAndroid
+  ToolbarAndroid,
+  Image,
 } from 'react-native';
 import {
   FloatingActionButton,
@@ -32,7 +32,13 @@ const toolbarActions = [
   }), show: 'always'},
 ];
 
-export default class NoteList extends Component<any, any> {
+
+interface NoteListS {
+  dataSource;
+  multi;
+  selected;
+}
+export default class NoteList extends Component<any, NoteListS> {
 
   static navigationOptions = {
     header: {
@@ -62,15 +68,6 @@ export default class NoteList extends Component<any, any> {
 
   componentWillUnmount() {
     this.disp();
-  }
-
-  onLongPress() {
-    const options = {
-      options: ['Delete', 'Save', 'Cancel'],
-      cancelButtonIndex: 2,
-      destructiveButtonIndex: 0,
-    };
-    this.props.showActionSheetWithOptions(options, () => {});
   }
 
   disableMultiSelect = () => {
@@ -112,15 +109,20 @@ export default class NoteList extends Component<any, any> {
   }
 
   renderRow = (rowData: Note) => {
-    const {id} = rowData;
+    const {id, image, title} = rowData;
     const {selected, multi} = this.state;
     const isSelected = selected.includes(id);
     return (
       <TouchableNativeFeedback onPress={this.pressHandler(multi, id)}
-                               onLongPress={this.longPressHandler.bind(null, rowData.id)}
+                               onLongPress={this.longPressHandler.bind(null, id)}
                                delayLongPress={delay}>
-        <View style={isSelected ? css.selectedItem : null}>
-          <Text style={css.text}>{rowData.title}</Text>
+        <View style={[css.item, isSelected ? css.selectedItem : null]}>
+          <View style={css.imagePrevWrapper}>
+            {image != null ?
+              <Image source={{uri: image}} style={css.imagePrev}/>
+              : null}
+          </View>
+          <Text style={css.text}>{title}</Text>
         </View>
       </TouchableNativeFeedback>
     );
@@ -199,13 +201,24 @@ const css = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white'
   },
+  item: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   selectedItem: {
     backgroundColor: '#ddd',
   },
-  item: {
-
+  imagePrevWrapper: {
+    width: 50,
+    height: 50
+  },
+  imagePrev: {
+    width: 50,
+    height: 50,
+    margin: 5
   },
   text: {
+    flex: 1,
     padding: 20,
     fontSize: 17,
     color: 'black',

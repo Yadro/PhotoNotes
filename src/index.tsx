@@ -9,7 +9,6 @@ import {
 import store from "./redux/Store";
 import NoteEdit from './NoteEdit';
 import NoteView from "./NoteView";
-import NoteCreate from "./NoteCreate";
 import {ActionOther} from "./redux/Actions";
 import NoteList from "./NoteList";
 import Threshold from "./Threshold";
@@ -18,7 +17,6 @@ const BasicApp = StackNavigator({
   Main: {screen: NoteList},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
-  NoteCreate: {screen: NoteCreate},
   Threshold: {screen: Threshold},
 });
 
@@ -26,7 +24,6 @@ export default class AppWithStore extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    // this.state = store.getState().other;
     console.log('App start');
   }
 

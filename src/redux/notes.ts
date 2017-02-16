@@ -1,12 +1,8 @@
 import Note from "../Note";
 
-export type NoteState = {
-  notes: Note[],
-};
+export type NoteState = Note[];
 
-export const DefaultState: NoteState = {
-  notes: [],
-};
+export const DefaultState: NoteState = [];
 
 export default (state: Note[] = [], actions): NoteState => {
   let newState: Note[], note, id;

@@ -72,7 +72,10 @@ export default class ThresholdComponent extends Component<ThresholdP, ThresholdS
         onActionSelected={this.onActionSelected}
       />
       <PhotoView src={this.state.src} value={value} style={{flex:1}} />
-      <Slider onSlidingComplete={value => this.setState({value})} value={this.state.value} minimumValue={1} maximumValue={100}/>
+      <Text>{value}</Text>
+      <View style={{margin: 5}}>
+        <Slider onSlidingComplete={value => this.setState({value})} value={this.state.value} minimumValue={1} maximumValue={100}/>
+      </View>
     </View>
   }
 }
