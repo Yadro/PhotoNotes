@@ -24,14 +24,30 @@ const nativeImageSource = require('nativeImageSource');
 
 const delay = __DEV__ ? 3000 : 1000;
 
-const toolbarActions = [
+const toolbarActionsItems = [
   {title: 'Delete', icon: nativeImageSource({
     android: 'ic_delete_black_24dp',
     width: 24,
     height: 24
   }), show: 'always'},
 ];
-
+const toolbarActions = [
+  {title: 'Search', icon: nativeImageSource({
+    android: 'ic_search_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+  {title: 'Sorting', icon: nativeImageSource({
+    android: 'ic_sort_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+];
+const backIcon = nativeImageSource({
+  android: 'ic_arrow_back_black_24dp',
+  width: 24,
+  height: 24
+});
 
 interface NoteListS {
   dataSource;
@@ -72,7 +88,7 @@ export default class NoteList extends Component<any, NoteListS> {
 
   disableMultiSelect = () => {
     this.setState({multi: false, selected: []})
-  }
+  };
 
   removeItems(ids) {
     Actions.removes(ids);
@@ -87,13 +103,10 @@ export default class NoteList extends Component<any, NoteListS> {
       selected
     });
 
-    Vibration.vibrate();
-    window.setTimeout(() => {
-      Vibration.cancel();
-    }, 50);
+    Vibration.vibrate([0, 40], false);
   };
 
-  pressHandler = (multi, id) => () => {
+  pressHandler = (multi, id) => (() => {
     const { navigate } = this.props.navigation;
     if (multi) {
       let {selected} = this.state;
@@ -106,7 +119,7 @@ export default class NoteList extends Component<any, NoteListS> {
     } else {
       navigate('NoteEdit', {id: id})
     }
-  }
+  });
 
   renderRow = (rowData: Note) => {
     const {id, image, title} = rowData;
@@ -137,31 +150,17 @@ export default class NoteList extends Component<any, NoteListS> {
   };
 
   renderToolBar = () => {
-    if (this.state.multi) {
-      return (
-        <ToolbarAndroid
-          elevation={5}
-          actions={toolbarActions}
-          style={css.toolbar}
-          title="Select to remove"
-          onIconClicked={this.onActionSelected}
-          onActionSelected={this.onActionSelected}
-          navIcon={nativeImageSource({
-              android: 'ic_close_black_24dp',
-              width: 24,
-              height: 24
-            })}
-        />
-      )
-    } else {
-      return (
-        <ToolbarAndroid
-          elevation={5}
-          style={css.toolbar}
-          title="Toolbar"
-        />
-      )
-    }
+    const multi = this.state.multi;
+    const navIcon = multi ? backIcon : null;
+    return <ToolbarAndroid
+      elevation={5}
+      actions={multi ? toolbarActionsItems : toolbarActions}
+      style={css.toolbar}
+      title={multi ? "Select to remove" : 'Title'}
+      onIconClicked={this.onActionSelected}
+      onActionSelected={this.onActionSelected}
+      navIcon={navIcon}
+    />
   };
 
   render() {

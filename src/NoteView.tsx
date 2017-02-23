@@ -72,7 +72,7 @@ export default class NoteView extends Component<any, any> {
             })}
           onActionSelected={this._onActionSelected}
           onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
-          style={styles.toolbar}
+          style={css.toolbar}
           subtitle={this.state.actionText}
           title="Toolbar" />
         <PhotoView
