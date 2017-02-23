@@ -5,13 +5,14 @@ export type NoteState = Note[];
 export const DefaultState: NoteState = [];
 
 export default (state: Note[] = [], actions): NoteState => {
-  let newState: Note[], note, id;
+  let newState: Note[], note: Note, id;
   switch (actions.type) {
     case 'ADD':
       id = getMax(state) + 1;
       newState = copy(state);
       note = actions.note;
       note.id = id;
+      note.createdAt = Date.now();
       newState.push(note);
       return newState;
     case 'UPDATE':

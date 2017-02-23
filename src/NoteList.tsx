@@ -50,9 +50,10 @@ const backIcon = nativeImageSource({
 });
 
 interface NoteListS {
-  dataSource;
-  multi;
-  selected;
+  dataSource?;
+  multi?;
+  selected?;
+  sorting?: 'name' | 'date';
 }
 export default class NoteList extends Component<any, NoteListS> {
 
@@ -69,7 +70,8 @@ export default class NoteList extends Component<any, NoteListS> {
     this.state = {
       dataSource: this.ds.cloneWithRows(store.getState().notes),
       multi: false,
-      selected: []
+      selected: [],
+      sorting: 'date'
     };
   }
 
@@ -88,6 +90,18 @@ export default class NoteList extends Component<any, NoteListS> {
 
   disableMultiSelect = () => {
     this.setState({multi: false, selected: []})
+  };
+
+  toggleSort = () => {
+    const sorting = this.state.sorting === 'date' ? 'name' : 'date';
+    const {notes} = store.getState();
+    let sorted = sorting === 'name'
+      ? notes.sort((a: Note, b) => a.title > b.title)
+      : notes.sort((a: Note, b) => a.createdAt > b.createdAt);
+    this.setState({
+      sorting,
+      dataSource: this.ds.cloneWithRows(sorted)
+    });
   };
 
   removeItems(ids) {
@@ -139,13 +153,20 @@ export default class NoteList extends Component<any, NoteListS> {
         </View>
       </TouchableNativeFeedback>
     );
-  }
+  };
 
   onActionSelected = (action) => {
-    if (action == null) {
-      this.disableMultiSelect();
-    } else if (action == 0) {
-      this.removeItems(this.state.selected);
+    if (this.state.multi) {
+      if (action == null) {
+        this.disableMultiSelect();
+      } else if (action == 0) {
+        this.removeItems(this.state.selected);
+      }
+    } else {
+      if (action == 0) {
+      } else if (action == 1) {
+        this.toggleSort();
+      }
     }
   };
 
