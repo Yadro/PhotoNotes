@@ -67,6 +67,8 @@ export default class NoteList extends Component<any, NoteListS> {
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+  searchDelay;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -189,10 +191,14 @@ export default class NoteList extends Component<any, NoteListS> {
     const {notes} = store.getState();
     const searchLower = search.toLowerCase();
     const filtered = notes.filter((e: Note) => e.title.toLowerCase().indexOf(searchLower) >= 0);
-    this.setState({
-      search,
-      dataSource: this.ds.cloneWithRows(filtered)
-    });
+    this.setState({search});
+
+    window.clearTimeout(this.searchDelay);
+    this.searchDelay = window.setTimeout(() => {
+      this.setState({
+        dataSource: this.ds.cloneWithRows(filtered)
+      });
+    }, 500);
   };
 
   renderSearchInput = () => {
