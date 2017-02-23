@@ -1,8 +1,8 @@
 
 export default class Note {
-  id;
-  title;
-  content;
+  id: number;
+  title: string;
+  content: string;
   image;
   originalImage;
   createdAt: number;

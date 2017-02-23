@@ -5,7 +5,7 @@ import {
   View,
   ListView,
   ScrollView,
-  Button,
+  TextInput,
   TouchableNativeFeedback,
   Vibration,
   ToolbarAndroid,
@@ -54,6 +54,8 @@ interface NoteListS {
   multi?;
   selected?;
   sorting?: 'name' | 'date';
+  filter: boolean;
+  search: string;
 }
 export default class NoteList extends Component<any, NoteListS> {
 
@@ -70,6 +72,8 @@ export default class NoteList extends Component<any, NoteListS> {
     this.state = {
       dataSource: this.ds.cloneWithRows(store.getState().notes),
       multi: false,
+      filter: false,
+      search: '',
       selected: [],
       sorting: 'date'
     };
@@ -90,6 +94,16 @@ export default class NoteList extends Component<any, NoteListS> {
 
   disableMultiSelect = () => {
     this.setState({multi: false, selected: []})
+  };
+
+  toggleSearch = () => {
+    const {notes} = store.getState();
+    const {filter} = this.state;
+    this.setState({
+      filter: !filter,
+      search: '',
+      dataSource: this.ds.cloneWithRows(notes)
+    });
   };
 
   toggleSort = () => {
@@ -164,10 +178,32 @@ export default class NoteList extends Component<any, NoteListS> {
       }
     } else {
       if (action == 0) {
+        this.toggleSearch();
       } else if (action == 1) {
         this.toggleSort();
       }
     }
+  };
+
+  onChange = (search) => {
+    const {notes} = store.getState();
+    const searchLower = search.toLowerCase();
+    const filtered = notes.filter((e: Note) => e.title.toLowerCase().indexOf(searchLower) >= 0);
+    this.setState({
+      search,
+      dataSource: this.ds.cloneWithRows(filtered)
+    });
+  };
+
+  renderSearchInput = () => {
+    return <View style={css.search}>
+      <TextInput type="text"
+                 placeholder="Title"
+                 value={this.state.search}
+                 onChangeText={this.onChange}
+                 style={css.searchInput}
+      />
+    </View>;
   };
 
   renderToolBar = () => {
@@ -185,18 +221,22 @@ export default class NoteList extends Component<any, NoteListS> {
   };
 
   render() {
-    const {multi} = this.state;
+    const {filter} = this.state;
     const { navigate } = this.props.navigation;
     return (
-      <View style={{flex: 1}}>
+      <View style={css.container}>
         {this.renderToolBar()}
+        {filter ?
+          this.renderSearchInput() :
+          null}
         <ScrollView>
           <ListView enableEmptySections
-            contentContainerStyle={css.container}
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow}
+                    contentContainerStyle={css.listView}
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
           />
         </ScrollView>
+
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
     );
@@ -205,11 +245,14 @@ export default class NoteList extends Component<any, NoteListS> {
 
 
 const css = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   toolbar: {
     backgroundColor: '#fff',
     height: 56,
   },
-  container: {
+  listView: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -243,7 +286,13 @@ const css = StyleSheet.create({
     fontSize: 17,
     color: 'black',
   },
-
+  search: {
+    height: 56,
+    backgroundColor: 'white',
+  },
+  searchInput: {
+    flex: 1
+  },
   button: {
     position: 'absolute',
     width: 56,
