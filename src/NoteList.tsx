@@ -151,6 +151,15 @@ export default class NoteList extends Component<any, NoteListS> {
     }
   });
 
+  renderPreview(text: string) {
+    const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
+    return <View style={css.previewContainer}>
+      <View style={css.previewContainerWrapper}>
+        <Text style={css.preview}>{symbols}</Text>
+      </View>
+    </View>;
+  }
+
   renderRow = (rowData: Note) => {
     const {id, image, title} = rowData;
     const {selected, multi} = this.state;
@@ -162,8 +171,8 @@ export default class NoteList extends Component<any, NoteListS> {
         <View style={[css.item, isSelected ? css.selectedItem : null]}>
           <View style={css.imagePrevWrapper}>
             {image != null ?
-              <Image source={{uri: image}} style={css.imagePrev}/>
-              : null}
+              <Image source={{uri: image}} style={css.imagePrev}/>:
+              this.renderPreview(title)}
           </View>
           <Text style={css.text}>{title}</Text>
         </View>
@@ -299,6 +308,25 @@ const css = StyleSheet.create({
   searchInput: {
     flex: 1
   },
+
+  previewContainer: {
+    margin: 12,
+    borderRadius: 21,
+    width: 42,
+    height: 42,
+    backgroundColor: 'grey'
+  },
+  previewContainerWrapper: {
+    flex: 1,
+    height: 42,
+    alignItems: 'flex-end',
+  },
+  preview: {
+    alignSelf: 'center',
+    fontSize: 15,
+    color: 'white',
+  },
+
   button: {
     position: 'absolute',
     width: 56,
