@@ -201,12 +201,13 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   renderSearchInput = () => {
     return <View style={css.search}>
-      <TextInput type="text"
-                 placeholder="Title"
-                 value={this.state.search}
-                 onChangeText={this.onChange}
-                 style={css.searchInput}
-      />
+      <View style={css.searchBox}>
+        <TextInput placeholder="Search"
+                   value={this.state.search}
+                   onChangeText={this.onChange}
+                   style={css.searchInput}/>
+      </View>
+      <View style={css.titleLine}/>
     </View>;
   };
 
@@ -272,12 +273,23 @@ const css = StyleSheet.create({
     fontSize: 17,
     color: 'black',
   },
+
   search: {
-    height: 56,
-    backgroundColor: 'white',
+    height: 60,
+    backgroundColor: '#f7f7f7',
+  },
+  searchBox: {
+    flex: 1,
+    margin: 8,
   },
   searchInput: {
-    flex: 1
+    flex: 1,
+    fontSize: 15,
+    backgroundColor: '#f7f7f7',
+  },
+  titleLine: {
+    height: 1,
+    backgroundColor: '#ebebeb',
   },
 
   previewContainer: {
