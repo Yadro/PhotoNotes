@@ -230,9 +230,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         <ScrollView>
           <ListView enableEmptySections
                     dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSeparator={this.renderSeparator}
-          />
+                    renderRow={this.renderRow}/>
         </ScrollView>
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
@@ -313,7 +311,6 @@ const css = StyleSheet.create({
   },
   preview: {
     fontSize: 20,
-    fontWeight: '100',
     color: '#fff',
   },
 
