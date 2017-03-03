@@ -36,7 +36,14 @@ const toolbarActions = [
   }), show: 'always'},
 ];
 
-export default class NoteEdit extends Component<any, any> {
+interface NoteEditS {
+  note?: Note;
+  size?;
+  actions?;
+  save?;
+}
+
+export default class NoteEdit extends Component<any, NoteEditS> {
 
   static navigationOptions = {
     header: {visible: false}
@@ -174,14 +181,14 @@ export default class NoteEdit extends Component<any, any> {
 
   render() {
     const {note, size} = this.state;
-    const {title, content, image} = note;
+    const {title, content, image, id} = note;
     const {navigate} = this.props.navigation;
     const wrpImage = {uri: image};
     return (
       <View style={css.container}>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
-          <View onTouchEnd={() => navigate('MyPhotoView', {img: wrpImage})} style={{flex: 1}}>
+          <View onTouchEnd={() => navigate('NoteView', {id})} style={{flex: 1}}>
             <Image source={wrpImage} resizeMode="contain" style={size}/>
           </View>
           <Text>note id = {note.id}</Text>
@@ -209,6 +216,7 @@ const css = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   text: {
     fontSize: 15,

@@ -24,31 +24,6 @@ const nativeImageSource = require('nativeImageSource');
 
 const delay = __DEV__ ? 3000 : 1000;
 
-const toolbarActionsItems = [
-  {title: 'Delete', icon: nativeImageSource({
-    android: 'ic_delete_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-];
-const toolbarActions = [
-  {title: 'Search', icon: nativeImageSource({
-    android: 'ic_search_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-  {title: 'Sorting', icon: nativeImageSource({
-    android: 'ic_sort_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-];
-const backIcon = nativeImageSource({
-  android: 'ic_arrow_back_black_24dp',
-  width: 24,
-  height: 24
-});
-
 interface NoteListS {
   dataSource?;
   multi?;
@@ -223,15 +198,15 @@ export default class NoteList extends Component<any, NoteListS> {
 
   renderToolBar = () => {
     const multi = this.state.multi;
-    const navIcon = multi ? backIcon : null;
+    const navIcon = multi ? backIcon : logo;
     return <ToolbarAndroid
       elevation={5}
-      actions={multi ? toolbarActionsItems : toolbarActions}
+      actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
       style={css.toolbar}
-      title={multi ? "Select to remove" : 'Title'}
+      navIcon={navIcon}
+      title={multi ? "Select to remove" : 'Photo Notes'}
       onIconClicked={this.onActionSelected}
       onActionSelected={this.onActionSelected}
-      navIcon={navIcon}
     />
   };
 
@@ -258,6 +233,49 @@ export default class NoteList extends Component<any, NoteListS> {
   }
 }
 
+const toolbarActionsItems = [
+  {title: 'Delete', icon: nativeImageSource({
+    android: 'ic_delete_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+];
+const toolbarActions = [
+  {title: 'Search', icon: nativeImageSource({
+    android: 'ic_search_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+  {title: 'Sorting', icon: nativeImageSource({
+    android: 'ic_sort_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'},
+];
+const searchIcon = {
+  title: 'Search', icon: nativeImageSource({
+    android: 'ic_search_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'
+};
+const sorting = title => ({
+  title: title, icon: nativeImageSource({
+    android: 'ic_sort_black_24dp',
+    width: 24,
+    height: 24
+  }), show: 'always'
+});
+const backIcon = nativeImageSource({
+  android: 'ic_arrow_back_black_24dp',
+  width: 24,
+  height: 24
+});
+const logo = nativeImageSource({
+  android: 'ic_photo_black_24dp',
+  width: 48,
+  height: 48
+});
 
 const css = StyleSheet.create({
   container: {

@@ -15,15 +15,15 @@ import PhotoView from 'react-native-photo-view';
 import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
-var nativeImageSource = require('nativeImageSource');
+const nativeImageSource = require('nativeImageSource');
 
 export default class NoteView extends Component<any, any> {
 
   static navigationOptions = {
     title: (e) => {
       const id = e.state.params.id;
-      const item = store.getState().notes.find(e => e.id == id);
-      return item && item.title;
+      const item = store.getState().notes.filter(e => e.id == id);
+      return item && item[0] && item[0].title;
     },
     header: (e) => {
       return {
@@ -34,9 +34,7 @@ export default class NoteView extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    const state = store.getState();
-    const {notes} = state.notes;
-    const {size} = state.other;
+    const {notes, other: {size}} = store.getState();
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
     this.state = {
@@ -109,9 +107,6 @@ const css = StyleSheet.create({
     padding: 20,
     fontSize: 17,
     color: 'black',
-  },
-  text: {
     backgroundColor: "transparent",
-    color: "#FFF",
-  },
+  }
 });
