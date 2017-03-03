@@ -13,7 +13,6 @@ import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
 import icons from './Icons'
-import {navigationReset} from "./util";
 const {edit, share, arrow} = icons;
 
 const toolbarActions = [
@@ -37,10 +36,12 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
 
   componentDidMount() {
     const {viewSize, note: {image}} = this.state;
+    const screenWidth = viewSize.width;
     Image.getSize(image, (width, height) => {
+      const delta = Math.abs((screenWidth - width) / width * 100);
       const size = {
-        width: Math.min(viewSize.width, width),
-        height
+        width: screenWidth,
+        height: height - height / 100 * delta,
       };
       this.setState({size});
     }, () => {});
@@ -55,8 +56,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
       () => {},
     ];
     if (action == null) {
-      const {goBack} = this.props.navigation;
-      goBack();
+      this.props.navigation.goBack();
     } else {
       actions[action] && actions[action]();
     }
@@ -77,14 +77,11 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
           <View style={css.textView}>
             <Text style={css.text} selectable>{content}</Text>
           </View>
-          <PhotoView
-            source={img}
-            onLoad={() => console.log("onLoad called")}
-            onTap={() => navigate('PhotoView', {img})}
-            minimumZoomScale={1}
-            maximumZoomScale={4}
-            androidScaleType="center"
-            style={size}/>
+          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
+            <Image source={img}
+                   resizeMode="cover"
+                   style={size}/>
+          </View>
         </ScrollView>
       </View>
     );
