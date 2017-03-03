@@ -54,7 +54,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     }
   };
   private disp;
-  private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
   searchDelay;
 
@@ -101,8 +101,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     const sorting = this.state.sorting === 'date' ? 'name' : 'date';
     const {notes} = store.getState();
     let sorted = sorting === 'name'
-      ? notes.sort((a: Note, b) => a.title > b.title)
-      : notes.sort((a: Note, b) => a.createdAt > b.createdAt);
+      ? notes.sort((a: Note, b) => a.title > b.title ? 1 : a.title == b.title ? 0 : -1)
+      : notes.sort((a: Note, b) => a.createdAt - b.createdAt);
     this.setState({
       sorting,
       dataSource: this.ds.cloneWithRows(sorted)
@@ -140,7 +140,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     }
   };
 
-  renderPreview(text: string) {
+  static renderPreview(text: string) {
     const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
     return <View style={css.previewContainer}>
       <View style={css.previewContainerWrapper}>
@@ -166,7 +166,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
           <View style={css.imagePrevWrapper}>
             {image != null ?
               <Image source={{uri: image}} style={css.imagePrev}/>:
-              this.renderPreview(title)}
+              NoteList.renderPreview(title)}
           </View>
           <Text style={css.text}>{title}</Text>
         </View>
