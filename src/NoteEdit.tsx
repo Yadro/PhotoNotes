@@ -51,18 +51,20 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
 
   constructor(props) {
     super(props);
-    const notes = store.getState().notes;
-    const params = props.navigation.state.params;
+    const {notes} = store.getState();
+    const {params} = props.navigation.state;
     const actions = toolbarActions.slice();
     if (params) {
       if (params.note) {
         this.state = {
-          note: params.note,
+          note: Object.assign({}, params.note),
           size: null,
           actions,
         };
       } else if (params.id) {
-        const note: Note = notes.find(e => e.id == params.id);
+        const note = Object.assign({},
+          notes.find(e => e.id == params.id)
+        );
         actions.push({title: 'Delete', icon: deleteIcon, show: 'always'});
         this.state = {
           note,

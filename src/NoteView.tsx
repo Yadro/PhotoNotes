@@ -55,9 +55,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
   onActionSelected = (action) => {
     const actions = [
       () => {
-        const {state, navigate} = this.props.navigation;
-        console.log(this.props.navigation);
-        const {id} = state.params;
+        const {state: {params: {id}}, navigate} = this.props.navigation;
         navigate('NoteEdit', {id});
       },
       () => {},
