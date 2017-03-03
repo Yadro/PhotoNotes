@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet;ToolbarAndroid} from 'react-native';
+import {StyleSheet, ToolbarAndroid} from 'react-native';
 const nativeImageSource = require('nativeImageSource');
 
 interface ToolbarP {

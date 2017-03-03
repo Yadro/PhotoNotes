@@ -16,8 +16,8 @@ import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import Toolbar from "./Toolbar";
-const nativeImageSource = require('nativeImageSource');
-
+import icons from './Icons'
+const {edit} = icons;
 export default class NoteView extends Component<any, any> {
 
   static navigationOptions = {
@@ -34,8 +34,7 @@ export default class NoteView extends Component<any, any> {
     this.state = {
       note,
       viewSize: size,
-      size: null,
-      image: 'http://www.animalsglobe.ru/wp-content/uploads/2011/09/%D1%81%D0%BE%D0%B2%D0%B0.jpg'
+      size: null
     };
   }
 
@@ -77,9 +76,10 @@ export default class NoteView extends Component<any, any> {
   }
 }
 
-var toolbarActions = [
-  {title: 'Create', show: 'always'},
-  {title: 'Filter'},
+
+
+const toolbarActions = [
+  {title: 'Edit', icon: edit, show: 'always'},
   {title: 'Settings', show: 'always'},
 ];
 
