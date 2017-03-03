@@ -21,9 +21,22 @@ import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
 import {Actions} from "./redux/Actions";
-const nativeImageSource = require('nativeImageSource');
+import icons from './Icons'
+import Toolbar from "./Toolbar";
+const {deleteIcon, search, sort, arrow, photo} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
+
+const toolbarActionsItems = [
+  {title: 'Delete', icon: deleteIcon, show: 'always'},
+];
+const searchIcon = {
+  title: 'Search', icon: search, show: 'always'
+};
+const sorting = title => ({
+  title: title, icon: sort, show: 'always'
+});
+
 
 interface NoteListS {
   dataSource?;
@@ -197,26 +210,18 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     </View>;
   };
 
-  renderToolBar = () => {
-    const multi = this.state.multi;
-    const navIcon = multi ? backIcon : logo;
-    return <ToolbarAndroid
-      elevation={5}
-      actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
-      style={css.toolbar}
-      navIcon={navIcon}
-      title={multi ? "Select to remove" : 'Photo Notes'}
-      onIconClicked={this.onActionSelected}
-      onActionSelected={this.onActionSelected}
-    />
-  };
-
   render() {
-    const {filter} = this.state;
+    const {filter, multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        {this.renderToolBar()}
+        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'}
+                 navIcon={multi ? arrow : photo}
+                 onIconClicked={this.onActionSelected}
+                 onActionSelected={this.onActionSelected}
+                 actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
+                 color="white" backgroundColor="#01B47C"
+                 style={css.toolbar}/>
         {filter && this.renderSearchInput()}
         <ScrollView>
           <ListView enableEmptySections
@@ -231,56 +236,11 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   }
 }
 
-const toolbarActionsItems = [
-  {title: 'Delete', icon: nativeImageSource({
-    android: 'ic_delete_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-];
-const toolbarActions = [
-  {title: 'Search', icon: nativeImageSource({
-    android: 'ic_search_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-  {title: 'Sorting', icon: nativeImageSource({
-    android: 'ic_sort_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-];
-const searchIcon = {
-  title: 'Search', icon: nativeImageSource({
-    android: 'ic_search_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'
-};
-const sorting = title => ({
-  title: title, icon: nativeImageSource({
-    android: 'ic_sort_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'
-});
-const backIcon = nativeImageSource({
-  android: 'ic_arrow_back_black_24dp',
-  width: 24,
-  height: 24
-});
-const logo = nativeImageSource({
-  android: 'ic_photo_black_24dp',
-  width: 48,
-  height: 48
-});
-
 const css = StyleSheet.create({
   container: {
     flex: 1
   },
   toolbar: {
-    backgroundColor: '#fff',
     height: 56,
   },
   listView: {

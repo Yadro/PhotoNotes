@@ -8,7 +8,7 @@ interface Icons {
   'check';
   'close';
   'crop';
-  'delete';
+  'deleteIcon';
   'edit';
   'more';
   'undo';
@@ -28,7 +28,7 @@ const iconSource = {
   'check': 'ic_check_black_24dp',
   'close': 'ic_close_black_24dp',
   'crop': 'ic_crop_black_24dp',
-  'delete': 'ic_delete_black_24dp',
+  'deleteIcon': 'ic_delete_black_24dp',
   'edit': 'ic_mode_edit_black_24dp',
   'more': 'ic_more_vert_black_24dp',
   'undo': 'ic_undo_black_24dp',
