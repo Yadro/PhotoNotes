@@ -59,7 +59,7 @@ declare module 'react-navigation' {
   export interface ScreenNavigationProp {
     navigation: {
       navigate: (routeName, params?, action?) => any;
-      state?: {
+      state: {
         /** the name of the route config in the router */
         routeName;
         /** a unique identifier used to sort routes */
@@ -67,9 +67,9 @@ declare module 'react-navigation' {
         /** an optional object of string options for this screen */
         params;
       };
-      setParams?: (param: any) => void;
-      goBack?: (route: string) => void;
-      dispatch?: (action: Action) => void; // Send an action to the router
+      setParams: (param: any) => void;
+      goBack: (route?: string) => void;
+      dispatch: (action: Action) => void; // Send an action to the router
     }
   }
 }

@@ -13,7 +13,8 @@ import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
 import icons from './Icons'
-const {edit, share} = icons;
+import {navigationReset} from "./util";
+const {edit, share, arrow} = icons;
 
 const toolbarActions = [
   {title: 'Edit', icon: edit, show: 'always'},
@@ -61,7 +62,12 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
       },
       () => {},
     ];
-    actions[action] && actions[action]();
+    if (action == null) {
+      const {goBack} = this.props.navigation;
+      goBack();
+    } else {
+      actions[action] && actions[action]();
+    }
   };
 
   render() {
@@ -70,7 +76,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
-                 onActionSelected={this.onActionSelected}/>
+                 navIcon={arrow} onActionSelected={this.onActionSelected}/>
         <ScrollView style={css.container}>
           <Text style={css.title}>{title}</Text>
           <View style={css.textView}>
