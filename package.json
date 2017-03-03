@@ -11,6 +11,7 @@
   "dependencies": {
     "react": "15.4.2",
     "react-native": "0.42.0",
+    "react-native-action-button": "2.6.2",
     "react-native-fs": "2.1.0-rc.1",
     "react-native-image-picker": "^0.25.1",
     "react-native-nav": "^1.1.4",

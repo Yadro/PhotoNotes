@@ -12,12 +12,13 @@ import {
   Image,
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
+import ActionButton from 'react-native-action-button';
 import store from "./redux/Store";
 import Note from "./Note";
 import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
-const {deleteIcon, search, sort, arrow, photo} = icons;
+const {deleteIcon, search, sort, arrow, photo, addToPhotos} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
@@ -220,7 +221,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}/>
         </ScrollView>
-        {/*<FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>*/}
+        <ActionButton buttonColor="rgba(231,76,60,1)"
+                      onPress={() => {navigate('NoteEdit')}}/>
       </View>
     );
   }
