@@ -13,11 +13,14 @@ import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
 import icons from './Icons'
-const {edit, share, arrow} = icons;
+import NoteEdit from "./NoteEdit";
+import {Actions} from "./redux/Actions";
+const {edit, share, arrow, deleteIcon} = icons;
 
 const toolbarActions = [
   {title: 'Edit', icon: edit, show: 'always'},
   {title: 'Share', icon: share, show: 'always'},
+  {title: 'Delete', icon: deleteIcon, show: 'always'},
 ];
 
 export default class NoteView extends Component<ScreenNavigationProp, any> {
@@ -47,6 +50,11 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     }, () => {});
   }
 
+  onDelete = () => {
+    Actions.remove(this.state.note.id);
+    this.props.navigation.dispatch(NoteEdit.resetAction);
+  };
+
   onActionSelected = (action) => {
     const actions = [
       () => {
@@ -54,6 +62,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
         navigate('NoteEdit', {id});
       },
       () => {},
+      this.onDelete,
     ];
     if (action == null) {
       this.props.navigation.goBack();
