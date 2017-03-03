@@ -12,11 +12,13 @@ import NoteView from "./NoteView";
 import {ActionOther} from "./redux/Actions";
 import NoteList from "./NoteList";
 import Threshold from "./Threshold";
+import PhotoViewComp from "./PhotoView";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
+  PhotoView: {screen: PhotoViewComp},
   Threshold: {screen: Threshold},
 });
 

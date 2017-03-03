@@ -161,14 +161,14 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
 
   render() {
     const {note, size} = this.state;
-    const {title, content, image, id} = note;
+    const {title, content, image} = note;
     const {navigate} = this.props.navigation;
     const wrpImage = {uri: image};
     return (
       <View style={css.container}>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
-          <View onTouchEnd={() => navigate('NoteView', {id})} style={{flex: 1}}>
+          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
             <Image source={wrpImage} resizeMode="contain" style={size}/>
           </View>
           <Text>note id = {note.id}</Text>
@@ -200,17 +200,6 @@ const css = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
-  button: {
-
-  },
-  cancelBtn: {
-    flex: 1,
-    margin: 5,
-  },
-  saveBtn: {
-    flex: 1,
-    margin: 5,
-  }
 });
