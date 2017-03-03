@@ -79,11 +79,10 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
                  navIcon={arrow} onActionSelected={this.onActionSelected}/>
         <ScrollView style={css.container}>
           <Text style={css.title}>{title}</Text>
+          <View style={css.titleLine}/>
           <View style={css.textView}>
             <Text style={css.text} selectable>{content}</Text>
-            <Text style={css.text}>{id}</Text>
           </View>
-
           <PhotoView
             source={{uri: image}}
             onLoad={() => console.log("onLoad called")}
@@ -104,15 +103,16 @@ const css = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
-  toolbar: {
-    backgroundColor: '#01B47C',
-    height: 56,
-  },
   title: {
     fontSize: 20,
     padding: 15,
     color: 'black',
     backgroundColor: '#f7f7f7',
+  },
+  titleLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ebebeb',
   },
   textView: {
     margin: 15,
@@ -120,11 +120,5 @@ const css = StyleSheet.create({
   text: {
     fontSize: 17,
     color: 'black',
-  },
-  titleLine: {
-    flex: 1,
-    height: 1,
-    marginBottom: 10,
-    backgroundColor: '#c9c9c9',
   },
 });
