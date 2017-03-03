@@ -168,19 +168,15 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       <View style={css.container}>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
-          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
-            <Image source={wrpImage} resizeMode="contain" style={size}/>
+          <View style={css.textBox}>
+            <TextInput value={title} style={css.text} placeholder="Title"
+                       onChangeText={this.onChange.bind(null, 'title')}/>
+            <TextInput value={content} style={css.textMultiLine} placeholder="Content" multiline
+                       onChangeText={this.onChange.bind(null, 'content')}/>
           </View>
-          <Text>note id = {note.id}</Text>
-          <TextInput value={title}
-                     style={css.text}
-                     placeholder="Title"
-                     onChangeText={this.onChange.bind(null, 'title')}/>
-          <TextInput value={content}
-                     style={css.text}
-                     multiline
-                     placeholder="Content"
-                     onChangeText={this.onChange.bind(null, 'content')}/>
+          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
+            <Image source={wrpImage} resizeMode="cover" style={size}/>
+          </View>
         </ScrollView>
       </View>
     );
@@ -192,14 +188,15 @@ const css = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  textBox: {
+    margin: 10,
+  },
   text: {
     fontSize: 15,
+    height: 36,
   },
-  buttons: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 5,
-    marginBottom: 20,
+  textMultiLine: {
+    fontSize: 15,
+    height: 100,
   },
 });
