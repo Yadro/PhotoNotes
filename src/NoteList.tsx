@@ -149,6 +149,11 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     </View>;
   }
 
+  renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    console.log(sectionID, rowID);
+    return <View key={`${sectionID}-${rowID}`} style={css.separator}/>
+  }
+
   renderRow = (rowData: Note) => {
     const {id, image, title} = rowData;
     const {selected, multi} = this.state;
@@ -224,9 +229,9 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         {filter && this.renderSearchInput()}
         <ScrollView>
           <ListView enableEmptySections
-                    contentContainerStyle={css.listView}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
+                    renderSeparator={this.renderSeparator}
           />
         </ScrollView>
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
@@ -237,43 +242,44 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
 const css = StyleSheet.create({
   container: {
-    flex: 1
-  },
-  listView: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
     backgroundColor: 'white',
   },
-  toolBox: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    backgroundColor: 'white'
+
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: '#dedede'
   },
   item: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    flex: 1,
+    fontSize: 17,
+    color: 'black',
   },
   selectedItem: {
     backgroundColor: '#ddd',
   },
+
+  /** Image preview */
   imagePrevWrapper: {
-    width: 50,
-    height: 50
+    width: 64,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imagePrev: {
     width: 50,
     height: 50,
     margin: 5
   },
-  text: {
-    flex: 1,
-    padding: 20,
-    fontSize: 17,
-    color: 'black',
-  },
 
+
+  /** Search */
   search: {
     height: 60,
     backgroundColor: '#f7f7f7',
@@ -292,8 +298,8 @@ const css = StyleSheet.create({
     backgroundColor: '#ebebeb',
   },
 
+  /** Circle */
   previewContainer: {
-    margin: 12,
     borderRadius: 21,
     width: 42,
     height: 42,
@@ -302,12 +308,13 @@ const css = StyleSheet.create({
   previewContainerWrapper: {
     flex: 1,
     height: 42,
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   preview: {
-    alignSelf: 'center',
-    fontSize: 15,
-    color: 'white',
+    fontSize: 20,
+    fontWeight: '100',
+    color: '#fff',
   },
 
   button: {

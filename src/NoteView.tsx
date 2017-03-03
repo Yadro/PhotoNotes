@@ -74,20 +74,21 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     const {navigate} = this.props.navigation;
     const {size} = this.state;
     const {title, content, image} = this.state.note;
+    const img = {uri: image};
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
                  navIcon={arrow} onActionSelected={this.onActionSelected}/>
-        <ScrollView style={css.container}>
+        <ScrollView style={{flex: 1}}>
           <Text style={css.title}>{title}</Text>
           <View style={css.titleLine}/>
           <View style={css.textView}>
             <Text style={css.text} selectable>{content}</Text>
           </View>
           <PhotoView
-            source={{uri: image}}
+            source={img}
             onLoad={() => console.log("onLoad called")}
-            onTap={() => navigate('PhotoView', {img: {uri: image}})}
+            onTap={() => navigate('PhotoView', {img})}
             minimumZoomScale={1}
             maximumZoomScale={4}
             androidScaleType="center"
@@ -101,7 +102,6 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
 const css = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: 'white',
   },
   title: {
