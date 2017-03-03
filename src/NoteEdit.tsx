@@ -27,7 +27,6 @@ const {check, addPhoto, share, deleteIcon} = icons;
 const toolbarActions = [
   {title: 'Picker', icon: addPhoto, show: 'always'},
   {title: 'Share', icon: share, show: 'always'},
-  {title: 'Delete', icon: deleteIcon, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -63,7 +62,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         };
       } else if (params.id) {
         const note: Note = notes.find(e => e.id == params.id);
-        actions.push({title: 'Delete'});
+        actions.push({title: 'Delete', icon: deleteIcon, show: 'always'});
         this.state = {
           note,
           size: null,
@@ -156,7 +155,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   renderToolBar = () =>
-    <Toolbar title="Edit" actions={toolbarActions}
+    <Toolbar title="Edit" actions={this.state.actions}
       color="white" backgroundColor="#01B47C"
       navIcon={check} onActionSelected={this.onActionSelected}/>;
 
