@@ -140,7 +140,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     }
   };
 
-  static renderPreview(text: string) {
+  static renderPreview(text: string = '') {
     const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
     return <View style={css.previewContainer}>
       <View style={css.previewContainerWrapper}>
