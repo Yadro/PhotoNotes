@@ -97,7 +97,8 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         height: height - height / 100 * delta,
       };
       this.setState({size});
-    }, () => {});
+    }, () => {
+    });
   };
 
   showPicker = () => {
@@ -148,17 +149,14 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       this.showPicker,
       this.onDelete,
     ];
-    if (action == null) {
-      this.onSave();
-    } else {
-      actions[action] && actions[action]();
-    }
+    actions[action] && actions[action]();
   };
 
   renderToolBar = () =>
     <Toolbar title="Edit" actions={this.state.actions}
-      color="white" backgroundColor="#01B47C"
-      navIcon={check} onActionSelected={this.onActionSelected}/>;
+             color="white" backgroundColor="#01B47C" navIcon={check}
+             onIconClicked={this.onSave}
+             onActionSelected={this.onActionSelected}/>;
 
   render() {
     const {note, size} = this.state;

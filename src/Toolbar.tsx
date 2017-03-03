@@ -8,14 +8,15 @@ interface ToolbarP {
   navIcon?;
   logo?;
   actions?;
-  onActionSelected?,
+  onIconClicked?;
+  onActionSelected?;
   color?: string;
   subtitleColor?: string;
   backgroundColor?: string;
   style?;
 }
 const Toolbar = ({
-  title, subTitle, navIcon, logo, actions, onActionSelected,
+  title, subTitle, navIcon, logo, actions, onIconClicked, onActionSelected,
   color, subtitleColor, backgroundColor, style
 }: ToolbarP) => (
   <ToolbarAndroid
@@ -25,7 +26,7 @@ const Toolbar = ({
     subtitle={subTitle}
 
     actions={actions}
-    onIconClicked={onActionSelected}
+    onIconClicked={onIconClicked ? onIconClicked : onActionSelected}
     onActionSelected={onActionSelected}
 
     titleColor={color || 'black'}
