@@ -35,7 +35,6 @@ interface ThresholdS {
   value;
 }
 export default class ThresholdComponent extends Component<ThresholdP, ThresholdS> {
-  static navigationOptions = {header: {visible: false}};
   navigation;
 
   constructor(props) {

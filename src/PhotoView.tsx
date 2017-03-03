@@ -7,11 +7,7 @@ import {
 import PhotoView from 'react-native-photo-view';
 
 export default class PhotoViewComp extends Component<any, any> {
-  static navigationOptions  = {
-    header: {
-      visible: false,
-    },
-  };
+
   render() {
     const {img} = this.props.navigation.state.params;
     return (

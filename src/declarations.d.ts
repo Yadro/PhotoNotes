@@ -38,7 +38,7 @@ declare module 'react-navigation' {
     /**
      * - Specifies how the header should be rendered:
      */
-    headerMode?;
+    headerMode?: 'float' | 'screen '| 'none';
     /**
      * - Use this prop to override or extend the default style for an individual card in stack.
      */

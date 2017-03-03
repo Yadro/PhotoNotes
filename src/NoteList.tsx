@@ -48,14 +48,8 @@ interface NoteListS {
 }
 export default class NoteList extends Component<ScreenNavigationProp, NoteListS> {
 
-  static navigationOptions = {
-    header: {
-      visible: false,
-    }
-  };
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-
   searchDelay;
 
   constructor(props) {

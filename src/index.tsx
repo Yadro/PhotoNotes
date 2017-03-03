@@ -20,6 +20,8 @@ const BasicApp = StackNavigator({
   NoteView: {screen: NoteView},
   PhotoView: {screen: PhotoViewComp},
   Threshold: {screen: Threshold},
+}, {
+  headerMode: 'none'
 });
 
 export default class AppWithStore extends Component<any, any> {

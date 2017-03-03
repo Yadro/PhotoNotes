@@ -23,12 +23,6 @@ const toolbarActions = [
 
 export default class NoteView extends Component<ScreenNavigationProp, any> {
 
-  static navigationOptions = {
-    header: {
-      visible: false,
-    }
-  };
-
   constructor(props) {
     super(props);
     const {notes, other: {size}} = store.getState();

@@ -38,10 +38,6 @@ interface NoteEditS {
 }
 
 export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
-
-  static navigationOptions = {
-    header: {visible: false}
-  };
   static resetAction = NavigationActions.reset({
     index: 0,
     actions: [
