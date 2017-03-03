@@ -171,7 +171,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           <View style={css.textBox}>
             <TextInput value={title} style={css.text} placeholder="Title"
                        onChangeText={this.onChange.bind(null, 'title')}/>
-            <TextInput value={content} style={css.textMultiLine} placeholder="Content" multiline
+            <TextInput value={content} style={css.textMultiLine} placeholder="Content" multiline numberOfLines={10}
                        onChangeText={this.onChange.bind(null, 'content')}/>
           </View>
           <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
@@ -197,6 +197,6 @@ const css = StyleSheet.create({
   },
   textMultiLine: {
     fontSize: 15,
-    height: 100,
+    textAlignVertical: 'top',
   },
 });
