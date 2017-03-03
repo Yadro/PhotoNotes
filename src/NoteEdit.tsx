@@ -22,6 +22,7 @@ import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
+import AutoExpandingTextInput from "./AutoExpandingTextInput";
 const {check, addPhoto, share, deleteIcon} = icons;
 
 const toolbarActions = [
@@ -171,8 +172,9 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           <View style={css.textBox}>
             <TextInput value={title} style={css.text} placeholder="Title"
                        onChangeText={this.onChange.bind(null, 'title')}/>
-            <TextInput value={content} style={css.textMultiLine} placeholder="Content" multiline numberOfLines={10}
-                       onChangeText={this.onChange.bind(null, 'content')}/>
+            <AutoExpandingTextInput value={content} style={css.textMultiLine}
+                                    placeholder="Content"
+                                    onChangeText={this.onChange.bind(null, 'content')}/>
           </View>
           <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
             <Image source={wrpImage} resizeMode="cover" style={size}/>
