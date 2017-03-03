@@ -3,16 +3,16 @@ import {StyleSheet, ToolbarAndroid} from 'react-native';
 const nativeImageSource = require('nativeImageSource');
 
 interface ToolbarP {
-  title;
-  subTitle?;
+  title: string;
+  subTitle?: string;
   navIcon?;
   logo?;
   actions?;
   onIconClicked?;
   onActionSelected?,
-  color?;
-  subtitleColor?;
-  backgroundColor?;
+  color?: string;
+  subtitleColor?: string;
+  backgroundColor?: string;
   style?;
 }
 const Toolbar = ({
