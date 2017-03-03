@@ -166,7 +166,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
           <View style={css.textBox}>
-            <TextInput value={title} style={css.text} placeholder="Title"
+            <TextInput value={title} style={css.text} placeholder="Title" blurOnSubmit={false}
                        onChangeText={this.onChange.bind(null, 'title')}/>
             <AutoExpandingTextInput value={content} style={css.textMultiLine}
                                     placeholder="Content"
