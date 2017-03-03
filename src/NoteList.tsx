@@ -21,8 +21,8 @@ import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
 import {Actions} from "./redux/Actions";
-import icons from './Icons'
 import Toolbar from "./Toolbar";
+import icons from './Icons'
 const {deleteIcon, search, sort, arrow, photo} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
@@ -215,13 +215,11 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'}
-                 navIcon={multi ? arrow : photo}
-                 onIconClicked={this.onActionSelected}
+        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? arrow : photo}
+                 color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
-                 color="white" backgroundColor="#01B47C"
-                 style={css.toolbar}/>
+        />
         {filter && this.renderSearchInput()}
         <ScrollView>
           <ListView enableEmptySections
@@ -239,9 +237,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 const css = StyleSheet.create({
   container: {
     flex: 1
-  },
-  toolbar: {
-    height: 56,
   },
   listView: {
     flex: 1,

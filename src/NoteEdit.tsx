@@ -19,21 +19,15 @@ import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
-import PhotoView from "./PhotoView";
 import {ScreenNavigationProp} from "react-navigation";
-const nativeImageSource = require('nativeImageSource');
+import Toolbar from "./Toolbar";
+import icons from './Icons'
+const {check, addPhoto, share, deleteIcon} = icons;
 
 const toolbarActions = [
-  {title: 'Picker', icon: nativeImageSource({
-    android: 'ic_add_a_photo_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
-  {title: 'Save', icon: nativeImageSource({
-    android: 'ic_check_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'},
+  {title: 'Picker', icon: addPhoto, show: 'always'},
+  {title: 'Share', icon: share, show: 'always'},
+  {title: 'Delete', icon: deleteIcon, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -43,7 +37,7 @@ interface NoteEditS {
   save?;
 }
 
-export default class NoteEdit extends Component<any, NoteEditS> {
+export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
 
   static navigationOptions = {
     header: {visible: false}
@@ -149,35 +143,22 @@ export default class NoteEdit extends Component<any, NoteEditS> {
   };
 
   onActionSelected = (action) => {
-    const {goBack} = this.props.navigation;
+    const actions = [
+      this.showPicker,
+      this.showPicker,
+      this.onDelete,
+    ];
     if (action == null) {
-      goBack();
-    } else if (action == 0) {
-      this.showPicker();
-    } else if (action == 1) {
       this.onSave();
-    } else if (action == 2) {
-      this.onDelete();
+    } else {
+      actions[action] && actions[action]();
     }
   };
 
-  renderToolBar = () => {
-    return (
-      <ToolbarAndroid
-        elevation={5}
-        actions={this.state.actions}
-        style={css.toolbar}
-        title="Edit"
-        onIconClicked={this.onActionSelected}
-        onActionSelected={this.onActionSelected}
-        navIcon={nativeImageSource({
-            android: 'ic_arrow_back_black_24dp',
-            width: 24,
-            height: 24
-          })}
-      />
-    )
-  };
+  renderToolBar = () =>
+    <Toolbar title="Edit" actions={toolbarActions}
+      color="white" backgroundColor="#01B47C"
+      navIcon={check} onActionSelected={this.onActionSelected}/>;
 
   render() {
     const {note, size} = this.state;
@@ -194,12 +175,10 @@ export default class NoteEdit extends Component<any, NoteEditS> {
           <Text>note id = {note.id}</Text>
           <TextInput value={title}
                      style={css.text}
-                     type="text"
                      placeholder="Title"
                      onChangeText={this.onChange.bind(null, 'title')}/>
           <TextInput value={content}
                      style={css.text}
-                     type="text"
                      multiline
                      placeholder="Content"
                      onChangeText={this.onChange.bind(null, 'content')}/>
@@ -210,10 +189,6 @@ export default class NoteEdit extends Component<any, NoteEditS> {
 };
 
 const css = StyleSheet.create({
-  toolbar: {
-    backgroundColor: '#fff',
-    height: 56,
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
