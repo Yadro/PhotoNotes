@@ -12,7 +12,6 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.photomodule.MyPhotoViewPackage;
 import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnative.photoview.PhotoViewPackage;
 
@@ -33,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
         new MainReactPackage(),
         new RNFSPackage(),
         new ImagePickerPackage(),
-        new BottomSheetBehaviorPackage(),
         new PhotoViewPackage(),
         new VectorIconsPackage(),
         new MyPhotoViewPackage()

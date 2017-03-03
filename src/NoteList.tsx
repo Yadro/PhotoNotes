@@ -11,12 +11,6 @@ import {
   ToolbarAndroid,
   Image,
 } from 'react-native';
-import {
-  FloatingActionButton,
-  NestedScrollView,
-  CoordinatorLayout,
-  BottomSheetBehavior,
-} from 'react-native-bottom-sheet-behavior';
 import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
@@ -226,7 +220,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}/>
         </ScrollView>
-        <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
+        {/*<FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>*/}
       </View>
     );
   }
