@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {View} from 'react-native';
+import {
+  View,
+  StatusBar,
+} from 'react-native';
 import {
   StackNavigator,
   TabNavigator,
@@ -41,6 +44,10 @@ export default class AppWithStore extends Component<any, any> {
 
   render() {
     return <View style={{flex: 1}} onLayout={this.onLayout}>
+      <StatusBar
+        backgroundColor="#019967"
+        barStyle="light-content"
+      />
       <BasicApp/>
     </View>
   }
