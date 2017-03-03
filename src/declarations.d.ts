@@ -58,32 +58,13 @@ declare module 'react-navigation' {
 
   export interface ScreenNavigationProp {
     navigation: {
-      navigate?: {
-        /**
-         * A destination routeName that has been registered somewhere in the app's router
-         */
-        routeName;
-        /**
-         * Params to merge into the destination route
-         */
-        params;
-        /**
-         * (advanced) The sub-action to run in the child router, if the screen is a navigator.
-         */
-        action;
-      };
+      navigate: (routeName, params?, action?) => any;
       state?: {
-        /**
-         * the name of the route config in the router
-         */
+        /** the name of the route config in the router */
         routeName;
-        /**
-         * a unique identifier used to sort routes
-         */
+        /** a unique identifier used to sort routes */
         key;
-        /**
-         * an optional object of string options for this screen
-         */
+        /** an optional object of string options for this screen */
         params;
       };
       setParams?: (param: any) => void;
@@ -95,7 +76,7 @@ declare module 'react-navigation' {
 
 
 declare module 'react-native-bottom-sheet-behavior' {
-  import React, { Component } from "react";
+  import { Component } from "react";
 
   export class FloatingActionButton extends Component<any, any> {}
   export class NestedScrollView extends Component<any, any> {}

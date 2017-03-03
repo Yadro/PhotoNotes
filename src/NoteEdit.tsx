@@ -103,7 +103,7 @@ export default class NoteEdit extends Component<any, NoteEditS> {
         height: height - height / 100 * delta,
       };
       this.setState({size});
-    });
+    }, () => {});
   };
 
   showPicker = () => {

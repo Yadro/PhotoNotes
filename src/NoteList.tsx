@@ -17,9 +17,10 @@ import {
   CoordinatorLayout,
   BottomSheetBehavior,
 } from 'react-native-bottom-sheet-behavior';
+import {ScreenNavigationProp} from "react-navigation";
 import store from "./redux/Store";
 import Note from "./Note";
-import {ActionOther, Actions} from "./redux/Actions";
+import {Actions} from "./redux/Actions";
 const nativeImageSource = require('nativeImageSource');
 
 const delay = __DEV__ ? 3000 : 1000;
@@ -32,7 +33,7 @@ interface NoteListS {
   filter: boolean;
   search: string;
 }
-export default class NoteList extends Component<any, NoteListS> {
+export default class NoteList extends Component<ScreenNavigationProp, NoteListS> {
 
   static navigationOptions = {
     header: {
@@ -111,7 +112,7 @@ export default class NoteList extends Component<any, NoteListS> {
     Vibration.vibrate([0, 40], false);
   };
 
-  pressHandler = (multi, id) => (() => {
+  pressHandler = (multi, id) => () => {
     const { navigate } = this.props.navigation;
     if (multi) {
       let {selected} = this.state;
@@ -122,9 +123,9 @@ export default class NoteList extends Component<any, NoteListS> {
       }
       this.setState({selected});
     } else {
-      navigate('NoteEdit', {id: id})
+      navigate('NoteView', {id: id})
     }
-  });
+  };
 
   renderPreview(text: string) {
     const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
@@ -216,9 +217,7 @@ export default class NoteList extends Component<any, NoteListS> {
     return (
       <View style={css.container}>
         {this.renderToolBar()}
-        {filter ?
-          this.renderSearchInput() :
-          null}
+        {filter && this.renderSearchInput()}
         <ScrollView>
           <ListView enableEmptySections
                     contentContainerStyle={css.listView}
@@ -226,7 +225,6 @@ export default class NoteList extends Component<any, NoteListS> {
                     renderRow={this.renderRow}
           />
         </ScrollView>
-
         <FloatingActionButton ref="fab" style={css.button} onPress={() => navigate('NoteEdit')}/>
       </View>
     );

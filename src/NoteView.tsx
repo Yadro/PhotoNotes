@@ -5,20 +5,22 @@ import {
   Text,
   View,
   Image,
-  Button,
-  ListView,
   ScrollView,
-  TouchableNativeFeedback,
-  ToolbarAndroid,
 } from 'react-native';
-import PhotoView from 'react-native-photo-view';
-import store from "./redux/Store";
-import {Actions} from "./redux/Actions";
-import Note from "./Note";
 import Toolbar from "./Toolbar";
+import PhotoView from 'react-native-photo-view';
+import {ScreenNavigationProp} from "react-navigation";
+import store from "./redux/Store";
+import Note from "./Note";
 import icons from './Icons'
-const {edit} = icons;
-export default class NoteView extends Component<any, any> {
+const {edit, share} = icons;
+
+const toolbarActions = [
+  {title: 'Edit', icon: edit, show: 'always'},
+  {title: 'Share', icon: share, show: 'always'},
+];
+
+export default class NoteView extends Component<ScreenNavigationProp, any> {
 
   static navigationOptions = {
     header: {
@@ -46,15 +48,29 @@ export default class NoteView extends Component<any, any> {
         height
       };
       this.setState({size});
-    });
+    }, () => {});
   }
+
+  onActionSelected = (action) => {
+    const actions = [
+      () => {
+        const {state, navigate} = this.props.navigation;
+        console.log(this.props.navigation);
+        const {id} = state.params;
+        navigate('NoteEdit', {id});
+      },
+      () => {},
+    ];
+    actions[action] && actions[action]();
+  };
 
   render() {
     const {size, viewSize} = this.state;
     const {id, title, content, image} = this.state.note;
     return (
       <View style={css.container}>
-        <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"/>
+        <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
+                 onActionSelected={this.onActionSelected}/>
         <ScrollView style={css.container}>
           <Text style={css.title}>{title}</Text>
           <View style={css.textView}>
@@ -75,13 +91,6 @@ export default class NoteView extends Component<any, any> {
     );
   }
 }
-
-
-
-const toolbarActions = [
-  {title: 'Edit', icon: edit, show: 'always'},
-  {title: 'Settings', show: 'always'},
-];
 
 const css = StyleSheet.create({
   container: {
