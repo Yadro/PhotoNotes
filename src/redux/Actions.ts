@@ -3,12 +3,12 @@ import {exportNotes} from "./StoreImport";
 
 export const Actions = {
   add(note) {
-    store.dispatch({type: 'ADD', note});
+    store.dispatch({type: 'ADD', note, createdAt: Date.now()});
     exportNotes(store.getState().notes);
   },
 
   update(note) {
-    store.dispatch({type: 'UPDATE', note});
+    store.dispatch({type: 'UPDATE', note, updatedAt: Date.now()});
     exportNotes(store.getState().notes);
   },
 

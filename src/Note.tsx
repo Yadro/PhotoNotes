@@ -6,6 +6,7 @@ export default class Note {
   image;
   originalImage;
   createdAt: number;
+  updatedAt: number;
 
 
   constructor(title?, content?, image?) {

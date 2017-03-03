@@ -9,15 +9,17 @@ export default (state: Note[] = [], actions): NoteState => {
   switch (actions.type) {
     case 'ADD':
       id = getMax(state) + 1;
-      newState = copy(state);
       note = actions.note;
       note.id = id;
-      note.createdAt = Date.now();
-      newState.push(note);
-      return newState;
+      note.createdAt = actions.createdAt;
+      return [
+        ...state,
+        note
+      ];
     case 'UPDATE':
       note = actions.note;
-      newState = copy(state);
+      newState = [...state];
+      note.updatedAt = actions.updatedAt;
       newState = newState.map(e => {
         if (e.id == note.id) {
           return note;
