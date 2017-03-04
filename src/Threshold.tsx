@@ -12,16 +12,16 @@ import {ScreenNavigationProp} from "react-navigation";
 import CheckBox from 'react-native-check-box';
 import Toolbar from "./Toolbar";
 import icons from './Icons';
-const {check, crop, redo, undo}  = icons;
+const {checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
 
 const toolbarActions = [
-  {title: 'Add photo', icon: check, show: 'always'},
+  {title: 'Add photo', icon: checkWhite, show: 'always'},
 ];
 const toolsActions = [
-  {title: 'Add photo', icon: crop, show: 'always'},
-  {title: 'Add photo', icon: undo, show: 'always'},
-  {title: 'Add photo', icon: redo, show: 'always'},
+  {title: 'Add photo', icon: cropBlack, show: 'always'},
+  {title: 'Add photo', icon: undoBlack, show: 'always'},
+  {title: 'Add photo', icon: redoBlack, show: 'always'},
 ];
 
 const goBack = (note) => NavigationActions.reset({

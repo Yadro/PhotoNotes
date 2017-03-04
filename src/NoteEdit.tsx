@@ -23,11 +23,11 @@ import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
-const {check, addPhoto, share, deleteIcon} = icons;
+const {checkWhite, addPhotoWhite, shareWhite, deleteIconWhite} = icons;
 
 const toolbarActions = [
-  {title: 'Picker', icon: addPhoto, show: 'always'},
-  {title: 'Share', icon: share, show: 'always'},
+  {title: 'Picker', icon: addPhotoWhite, show: 'always'},
+  {title: 'Share', icon: shareWhite, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -61,7 +61,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         const note = Object.assign({},
           notes.find(e => e.id == params.id)
         );
-        actions.push({title: 'Delete', icon: deleteIcon, show: 'always'});
+        actions.push({title: 'Delete', icon: deleteIconWhite, show: 'always'});
         this.state = {
           note,
           size: null,
@@ -152,7 +152,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
 
   renderToolBar = () =>
     <Toolbar title="Edit" actions={this.state.actions}
-             color="white" backgroundColor="#01B47C" navIcon={check}
+             color="white" backgroundColor="#01B47C" navIcon={checkWhite}
              onIconClicked={this.onSave}
              onActionSelected={this.onActionSelected}/>;
 

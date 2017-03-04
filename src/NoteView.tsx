@@ -15,12 +15,12 @@ import Note from "./Note";
 import icons from './Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
-const {edit, share, arrow, deleteIcon} = icons;
+const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
 const toolbarActions = [
-  {title: 'Edit', icon: edit, show: 'always'},
-  {title: 'Share', icon: share, show: 'always'},
-  {title: 'Delete', icon: deleteIcon, show: 'always'},
+  {title: 'Edit', icon: editWhite, show: 'always'},
+  {title: 'Share', icon: shareWhite, show: 'always'},
+  {title: 'Delete', icon: deleteIconWhite, show: 'always'},
 ];
 
 export default class NoteView extends Component<ScreenNavigationProp, any> {
@@ -79,7 +79,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
-                 navIcon={arrow} onActionSelected={this.onActionSelected}/>
+                 navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1}}>
           <Text style={css.title}>{title}</Text>
           <View style={css.titleLine}/>

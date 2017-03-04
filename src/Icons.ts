@@ -1,52 +1,77 @@
 const nativeImageSource = require('nativeImageSource');
 
 interface Icons {
-  'addPhoto';
-  'addToPhotos';
-  'arrow';
-  'attach';
-  'check';
-  'close';
-  'crop';
-  'deleteIcon';
-  'edit';
-  'more';
-  'undo';
-  'sort';
-  'share';
-  'search';
-  'redo';
-  'camera';
-  'photo';
+  'addPhotoBlack';
+  'addPhotoWhite';
+  'addToPhotosBlack';
+  'addToPhotosWhite';
+  'arrowBlack';
+  'arrowWhite';
+  'attachBlack';
+  'attachWhite';
+  'checkBlack';
+  'checkWhite';
+  'closeBlack';
+  'closeWhite';
+  'cropBlack';
+  'cropWhite';
+  'deleteIconBlack';
+  'deleteIconWhite';
+  'editBlack';
+  'editWhite';
+  'moreBlack';
+  'moreWhite';
+  'undoBlack';
+  'undoWhite';
+  'sortBlack';
+  'sortWhite';
+  'shareBlack';
+  'shareWhite';
+  'searchBlack';
+  'searchWhite';
+  'redoBlack';
+  'redoWhite';
+  'cameraBlack';
+  'cameraWhite';
+  'photoBlack';
+  'photoWhite';
 }
 
+const postfix = '_24dp';
+const colorsPostfix = {
+  'Black': '_black',
+  'White': '_white',
+};
+
 const iconSource = {
-  'addPhoto': 'ic_add_a_photo_black_24dp',
-  'addToPhotos': 'ic_add_to_photos_black_24dp',
-  'arrow': 'ic_arrow_back_black_24dp',
-  'attach': 'ic_attach_file_black_24dp',
-  'check': 'ic_check_black_24dp',
-  'close': 'ic_close_black_24dp',
-  'crop': 'ic_crop_black_24dp',
-  'deleteIcon': 'ic_delete_black_24dp',
-  'edit': 'ic_mode_edit_black_24dp',
-  'more': 'ic_more_vert_black_24dp',
-  'undo': 'ic_undo_black_24dp',
-  'sort': 'ic_sort_black_24dp',
-  'share': 'ic_share_black_24dp',
-  'search': 'ic_search_black_24dp',
-  'redo': 'ic_redo_black_24dp',
-  'camera': 'ic_photo_camera_black_24dp',
-  'photo': 'ic_photo_black_24dp',
+  'addPhoto': 'ic_add_a_photo',
+  'addToPhotos': 'ic_add_to_photos',
+  'arrow': 'ic_arrow_back',
+  'attach': 'ic_attach_file',
+  'check': 'ic_check',
+  'close': 'ic_close',
+  'crop': 'ic_crop',
+  'deleteIcon': 'ic_delete',
+  'edit': 'ic_mode_edit',
+  'more': 'ic_more_vert',
+  'undo': 'ic_undo',
+  'sort': 'ic_sort',
+  'share': 'ic_share',
+  'search': 'ic_search',
+  'redo': 'ic_redo',
+  'camera': 'ic_photo_camera',
+  'photo': 'ic_photo',
 };
 
 const icons = {};
-for (let name in iconSource) {
-  icons[name] = nativeImageSource({
-    android: iconSource[name],
-    width: 24,
-    height: 24
-  });
+for (let color in colorsPostfix) {
+  for (let name in iconSource) {
+    icons[name + color] = nativeImageSource({
+      android: iconSource[name] + colorsPostfix[color] + postfix,
+      width: 24,
+      height: 24
+    });
+  }
 }
 
 export default <Icons>icons;

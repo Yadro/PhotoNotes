@@ -18,18 +18,18 @@ import Note from "./Note";
 import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
-const {deleteIcon, search, sort, arrow, photo, addToPhotos} = icons;
+const {deleteIconWhite, searchWhite, sortWhite, arrowWhite, photoWhite, addToPhotosWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
 const toolbarActionsItems = [
-  {title: 'Delete', icon: deleteIcon, show: 'always'},
+  {title: 'Delete', icon: deleteIconWhite, show: 'always'},
 ];
 const searchIcon = {
-  title: 'Search', icon: search, show: 'always'
+  title: 'Search', icon: searchWhite, show: 'always'
 };
 const sorting = title => ({
-  title: title, icon: sort, show: 'always'
+  title: title, icon: sortWhite, show: 'always'
 });
 
 
@@ -210,7 +210,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? arrow : photo}
+        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? arrowWhite : photoWhite}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
