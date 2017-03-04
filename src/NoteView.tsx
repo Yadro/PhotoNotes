@@ -15,6 +15,7 @@ import Note from "./Note";
 import icons from './Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
+import {Markdown} from "./Markdown";
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
 const toolbarActions = [
@@ -30,6 +31,9 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     const {notes, other: {size}} = store.getState();
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
+
+    // Markdown.parse(note.content)
+
     this.state = {
       note,
       viewSize: size,
@@ -84,7 +88,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
           <Text style={css.title}>{title}</Text>
           <View style={css.titleLine}/>
           <View style={css.textView}>
-            <Text style={css.text} selectable>{content}</Text>
+            <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
           </View>
           <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
             <Image source={img}

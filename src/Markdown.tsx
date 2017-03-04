@@ -22,7 +22,7 @@ export const Markdown = {
     // data = this.execType(data, this.findItalic.bind(this));
     console.log(data);
 
-    // return this.createText(data);
+    return <MarkdownW>{this.createText(data)}</MarkdownW>
   },
 
   execType(data: MdData, fn) {
@@ -73,36 +73,36 @@ export const Markdown = {
     return out;
   },
 
-  createText(data: MdData) {
+  createText(data: MdData, i?) {
+    if (i == null) {
+      i = 0;
+    }
+    i++;
     if (typeof data == "string") {
-      return <SimpleText value={data}/>
+      return <SimpleText key={i} value={data}/>
     } else if (Array.isArray(data)) {
-      const res = [];
-      console.log(data);
-      const out = data.map(this.createText);
-      for (let i = 0; i < out.length; i++) {
-        let data = out[i];
-        if (Array.isArray(data)) {
-          res.push(...data);
-        } else {
-          res.push(data);
-        }
-      }
-      return <Text>{res}</Text>;
+      return <Text key={i}>{data.map(this.createText.bind(this))}</Text>;
     } else if (typeof data == "object") {
+      let value;
+      if (typeof data.text == "string") {
+        value = data.text;
+      } else {
+        value = this.createText.call(this, data.text, i);
+      }
       if (data.type == 'bold') {
-        return <TextBold value={data.text}/>
+        return <TextBold key={i} value={value}/>
       } else if (data.type == 'italic') {
-        return <TextItalic value={data.text}/>
+        return <TextItalic key={i} value={value}/>
       }
     }
   }
 };
 
-const SimpleText = ({value}) => <Text>{value}</Text>;
-const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
-const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
-const TextU = ({value}) => <Text style={css.bold}>{value}</Text>;
+const MarkdownW = ({children}) => children;
+const SimpleText = ({key, value}) => <Text key={key}>{value}</Text>;
+const TextBold = ({key, value}) => <Text key={key} style={css.bold}>{value}</Text>;
+const TextItalic = ({key, value}) => <Text key={key} style={css.italic}>{value}</Text>;
+const TextU = ({key, value}) => <Text key={key} style={css.bold}>{value}</Text>;
 
 const css = StyleSheet.create({
   bold: {
