@@ -145,17 +145,18 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   }
 
   renderRow = (rowData: Note) => {
-    const {id, image, title} = rowData;
+    const {id, image, title, images} = rowData;
     const {selected} = this.state;
     const isSelected = selected.includes(id);
+    const thumbnail = images && images.thumbnail && images.thumbnail['50'] || image;
     return (
       <TouchableNativeFeedback onPress={this.pressHandler(id)}
                                onLongPress={this.longPressHandler.bind(null, id)}
                                delayLongPress={delay}>
         <View style={[css.item, isSelected ? css.selectedItem : null]}>
           <View style={css.imagePrevWrapper}>
-            {image != null ?
-              <Image source={{uri: image}} style={css.imagePrev}/>:
+            {!!thumbnail ?
+              <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
               NoteList.renderPreview(title)}
           </View>
           <Text style={css.text}>{title}</Text>
@@ -218,9 +219,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         />
         {filter && this.renderSearchInput()}
         <ScrollView>
-          <ListView enableEmptySections
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}/>
+          <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
         </ScrollView>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>

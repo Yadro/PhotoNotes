@@ -2,19 +2,14 @@ import * as React from 'react';
 import {Component} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TextInput,
-  Button,
-  ListView,
   ScrollView,
-  TouchableHighlight,
-  TouchableNativeFeedback,
-  ToolbarAndroid,
   Platform,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";
@@ -132,7 +127,20 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         this.getImageSize(source.uri);
         const {note} = this.state;
         note.originalImage = source.uri;
-        this.props.navigation.navigate('Threshold', {src: response.path, note});
+        console.log(source.uri);
+        ImageResizer.createResizedImage(source.uri, 100, 100, 'JPEG', 100)
+          .then((resizedImageUri) => {
+            note.images = {
+              originUri: source.uri,
+              originPath: response.path,
+              thumbnail: {
+                '50': resizedImageUri
+              }
+            };
+            this.props.navigation.navigate('Threshold', {src: response.path, note});
+          }).catch((err) => {
+            console.log(err);
+          });
       }
     });
   };
@@ -146,14 +154,13 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   onSave = () => {
     const {note, save} = this.state;
     Actions[save ? 'update' : 'add'](note);
-    this.props.navigation.goBack();
-    // this.props.navigation.dispatch(NoteEdit.resetAction);
+    // this.props.navigation.goBack();
+    this.props.navigation.dispatch(NoteEdit.resetAction);
   };
 
   onDelete = () => {
     Actions.remove(this.state.note.id);
-    this.props.navigation.goBack();
-    // this.props.navigation.dispatch(NoteEdit.resetAction);
+    this.props.navigation.dispatch(NoteEdit.resetAction);
   };
 
   onActionSelected = (action) => {
@@ -206,7 +213,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const {note, size} = this.state;
     const {title, content, image} = note;
     const {navigate} = this.props.navigation;
-    const wrpImage = {uri: image};
+    const wrpImage = image ? {uri: image} : null;
     return (
       <View style={css.container}>
         {this.renderToolBar()}
@@ -219,9 +226,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                                     placeholder="Content"
                                     onChangeText={this.onChange.bind(null, 'content')}/>
           </View>
-          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
-            <Image source={wrpImage} resizeMode="cover" style={size}/>
-          </View>
+          {wrpImage &&
+            <View onTouchEnd={() => navigate('PhotoView', {img: wrpImage})} style={{flex: 1}}>
+              <Image source={wrpImage} resizeMode="cover" style={size}/>
+            </View>
+          }
         </ScrollView>
         {this.renderTools()}
       </View>
