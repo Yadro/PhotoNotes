@@ -291,7 +291,7 @@ const css = StyleSheet.create({
     borderRadius: 21,
     width: 42,
     height: 42,
-    backgroundColor: 'grey'
+    backgroundColor: '#01B47C'
   },
   previewContainerWrapper: {
     flex: 1,
