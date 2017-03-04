@@ -4,6 +4,10 @@
   export default class PhotoView extends Component<any, any> {}
 }*/
 
+declare module 'react-native-image-resizer' {
+  export function ImageResizer(path, maxWidth, maxHeight, compressFormat, quality, rotation, outputPath);
+}
+
 declare module 'react-native-check-box' {
   import {Component} from 'react';
   export default class Checkbox extends Component<any, any> {}
@@ -15,8 +19,25 @@ declare module 'react-native-action-button' {
 }
 
 declare module 'react-native-image-picker' {
+  interface ImagePickerResponse {
+    error;
+    customButton;
+    didCancel;
+
+    data; // base64
+    uri;
+    fileName;
+    path;
+    type;
+    fileSize;
+    height;
+    width;
+    isVertical;
+    originalRotation;
+    timestamp;
+  }
   export default class ImagePicker {
-    static showImagePicker(option, response);
+    static showImagePicker(option, response: (r: ImagePickerResponse) => any);
   }
 }
 
