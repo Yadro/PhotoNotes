@@ -23,11 +23,24 @@ import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
-const {checkWhite, addPhotoWhite, shareWhite, deleteIconWhite} = icons;
+const {
+  checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
+  boldWhite, italicWhite, underWhite, listBulletWhite,
+  undoWhite, redoWhite
+} = icons;
 
 const toolbarActions = [
   {title: 'Picker', icon: addPhotoWhite, show: 'always'},
   {title: 'Share', icon: shareWhite, show: 'always'},
+];
+
+const tools = [
+  {title: 'Undo', icon: undoWhite, show: 'always'},
+  {title: 'Redo', icon: redoWhite, show: 'always'},
+  {title: 'Bold', icon: boldWhite, show: 'always'},
+  {title: 'Italic', icon: italicWhite, show: 'always'},
+  {title: 'Underline', icon: underWhite, show: 'always'},
+  {title: 'List', icon: listBulletWhite, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -158,6 +171,37 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
              onIconClicked={this.onSave}
              onActionSelected={this.onActionSelected}/>;
 
+  onToolAction = (action) => {
+    console.log(action);
+    const {note} = this.state;
+    const actions = [
+      null,
+      null,
+      () => {
+        note.content += '*';
+        this.setState({note});
+      },
+      () => {
+        note.content += '_';
+        this.setState({note});
+      },
+      () => {
+        note.content += '~~';
+        this.setState({note});
+      },
+      () => {
+        note.content += '\n-';
+        this.setState({note});
+      }
+    ];
+    console.log(actions[action]);
+    actions[action] && actions[action]();
+  };
+
+  renderTools = () =>
+    <Toolbar actions={tools} color="white" backgroundColor="#01B47C"
+             onActionSelected={this.onToolAction}/>;
+
   render() {
     const {note, size} = this.state;
     const {title, content, image} = note;
@@ -179,6 +223,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
             <Image source={wrpImage} resizeMode="cover" style={size}/>
           </View>
         </ScrollView>
+        {this.renderTools()}
       </View>
     );
   }

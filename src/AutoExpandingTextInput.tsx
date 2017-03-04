@@ -19,6 +19,11 @@ export default class AutoExpandingTextInput extends React.Component<any, AutoExp
       height: 0,
     };
   }
+
+  componentWillReceiveProps(props) {
+    this.setState({text: props.value});
+  }
+
   render() {
 
     return (
