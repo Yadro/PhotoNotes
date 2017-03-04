@@ -1,8 +1,8 @@
 
-declare module 'react-native-photo-view' {
+/*declare module 'react-native-photo-view' {
   import {Component} from 'react';
   export default class PhotoView extends Component<any, any> {}
-}
+}*/
 
 declare module 'react-native-check-box' {
   import {Component} from 'react';

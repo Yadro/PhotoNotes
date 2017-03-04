@@ -71,10 +71,10 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
                onActionSelected={this.onActionSelected}/>
       <View style={{flex: 1}}>
         <PhotoView src={this.state.src} value={disabled ? -1 : value} style={{flex:1}}/>
-        <View style={{margin: 5}}>
-          <CheckBox onClick={() => this.setState({disabled: !disabled})} isChecked={disabled}/>
-          <Text>{value}</Text>
-          <Slider onSlidingComplete={value => this.setState({value})}
+        <View style={css.slider}>
+          <CheckBox style={{width: 36}} onClick={() => this.setState({disabled: !disabled})} isChecked={disabled}/>
+          <Text style={{width: 26}}>{Math.floor(value)}</Text>
+          <Slider style={{flex: 1}} onSlidingComplete={value => this.setState({value})}
                   value={this.state.value} minimumValue={1} maximumValue={100}/>
         </View>
       </View>
@@ -84,4 +84,11 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
   }
 }
 
-const css = StyleSheet.create({});
+const css = StyleSheet.create({
+  slider: {
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+});
