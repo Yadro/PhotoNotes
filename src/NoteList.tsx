@@ -61,7 +61,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   }
 
   componentWillMount() {
-    this.disp = store.subscribe((e) => {
+    this.disp = store.subscribe(() => {
       const {notes, other} = store.getState();
       this.setState({
         dataSource: this.ds.cloneWithRows(notes),

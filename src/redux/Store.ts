@@ -5,13 +5,17 @@ import other from './other'
 import {importNotes} from "./StoreImport";
 import {Actions} from "./Actions";
 
+interface MyStore {
+  notes;
+  other;
+}
 
-let store = createStore(
-  combineReducers({
+let store = createStore<MyStore>(
+  combineReducers<MyStore>({
     notes,
     other
   }),
-  {},
+  null,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({/* options */})
 );
 

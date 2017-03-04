@@ -106,8 +106,8 @@ declare module 'react-native-bottom-sheet-behavior' {
   export class BottomSheetBehavior extends Component<any, any> {}
 }
 
-declare interface window {
-  __REDUX_DEVTOOLS_EXTENSION__();
+declare interface Window {
+  __REDUX_DEVTOOLS_EXTENSION__;
 }
 
 declare const __DEV__;
