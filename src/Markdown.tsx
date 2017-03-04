@@ -30,21 +30,19 @@ export const Markdown = {
     } else if (Array.isArray(data)) {
       return data.map(e => this.execType(e, fn));
     } else if (typeof data == "object") {
-      const res = fn(data.text);
-
       return {
         type: data.type,
-        text: res,
+        text: this.execType(data.text, fn),
       }
     }
   },
 
   findBold(text) {
-    return this.find(/\*([\w\s]+)\*/, 'bold', text);
+    return this.find(/\*([^\n]+)\*/, 'bold', text);
   },
 
   findItalic(text) {
-    return this.find(/_([\w\s]+)_/, 'italic', text);
+    return this.find(/_([^\n]+)_/, 'italic', text);
   },
 
   findListItem(text) {
@@ -57,7 +55,7 @@ export const Markdown = {
     while (loop && text.length) {
       let loop2 = true;
       while (loop2 && text.length) {
-        let res2 = /^- ([^\n]+)$/gm.exec(text);
+        let res2 = /- ([^\n]+)\n/.exec(text);
         if (res2) {
           if (res2.index) {
             out.push(text.slice(0, res2.index));
@@ -70,7 +68,7 @@ export const Markdown = {
         }
         loop2 = !!res2;
       }
-      let res = /^  ([^\n]+)$/gm.exec(text);
+      let res = /  ([^\n]+)\n/.exec(text);
       if (res) {
         if (res.index) {
           out.push(text.slice(0, res.index));
@@ -150,8 +148,8 @@ const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
-const List = ({value}) => <Text>{' • '}<Text>{value}</Text></Text>;
-const ListBlock = ({value}) => <Text>{'   '}<Text>{value}</Text></Text>;
+const List = ({value}) => <Text>{'\n • '}<Text>{value}</Text></Text>;
+const ListBlock = ({value}) => <Text>{'\n   '}<Text>{value}</Text></Text>;
 const TextU = ({value}) => <Text style={css.bold}>{value}</Text>;
 
 const css = StyleSheet.create({
