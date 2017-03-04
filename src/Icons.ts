@@ -35,6 +35,15 @@ interface Icons {
   'cameraWhite';
   'photoBlack';
   'photoWhite';
+
+  boldBlack;
+  boldWhite;
+  italicBlack;
+  italicWhite;
+  underBlack;
+  underWhite;
+  listBulletBlack;
+  listBulletWhite;
 }
 
 const postfix = '_24dp';
@@ -61,6 +70,12 @@ const iconSource = {
   'redo': 'ic_redo',
   'camera': 'ic_photo_camera',
   'photo': 'ic_photo',
+
+  // editor
+  'bold': 'ic_format_bold',
+  'italic': 'ic_format_italic',
+  'under': 'ic_format_underlined',
+  'listBullet': 'ic_format_list_bulleted',
 };
 
 const icons = {};
