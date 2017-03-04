@@ -1,4 +1,8 @@
-
+export type OtherState = {
+  update: boolean;
+  size;
+  multi: boolean;
+}
 
 export default (state = {
   update: false, size: null, multi: false

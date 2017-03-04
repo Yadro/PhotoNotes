@@ -1,13 +1,13 @@
 
 import { createStore, combineReducers } from 'redux';
-import notes, {DefaultState} from './notes'
-import other from './other'
+import notes, {NoteState} from './notes'
+import other, {OtherState} from './other'
 import {importNotes} from "./StoreImport";
 import {Actions} from "./Actions";
 
 interface MyStore {
-  notes;
-  other;
+  notes: NoteState;
+  other: OtherState;
 }
 
 let store = createStore<MyStore>(
