@@ -5,7 +5,9 @@
 }*/
 
 declare module 'react-native-image-resizer' {
-  export function ImageResizer(path, maxWidth, maxHeight, compressFormat, quality, rotation, outputPath);
+  export default class {
+    static createResizedImage(path, maxWidth, maxHeight, compressFormat, quality, rotation?, outputPath?);
+  }
 }
 
 declare module 'react-native-check-box' {
