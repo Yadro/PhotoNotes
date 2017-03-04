@@ -53,33 +53,29 @@ export const Markdown = {
     const out = [];
     let loop = true;
     while (loop && text.length) {
-      let loop2 = true;
-      while (loop2 && text.length) {
-        let res2 = /- ([^\n]+)\n/.exec(text);
-        if (res2) {
-          if (res2.index) {
-            out.push(text.slice(0, res2.index));
-          }
-          out.push({
-            type: 'item',
-            text: res2[1],
-          });
-          text = text.slice(res2.index + res2[0].length);
-        }
-        loop2 = !!res2;
-      }
-      let res = /  ([^\n]+)\n/.exec(text);
+      let res = /^\n- ([^\n]+)/.exec(text);
       if (res) {
         if (res.index) {
           out.push(text.slice(0, res.index));
         }
         out.push({
-          type: 'item-block',
+          type: 'item',
           text: res[1],
         });
         text = text.slice(res.index + res[0].length);
       }
-      loop = !!res;
+      let res2 = /^\n  ([^\n]+)/.exec(text);
+      if (res2) {
+        if (res2.index) {
+          out.push(text.slice(0, res2.index));
+        }
+        out.push({
+          type: 'item-block',
+          text: res2[1],
+        });
+        text = text.slice(res2.index + res2[0].length);
+      }
+      loop = !!(res || res2);
     }
     if (!out.length) {
       return text;
@@ -148,8 +144,8 @@ const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
-const List = ({value}) => <Text>{'\n • '}<Text>{value}</Text></Text>;
-const ListBlock = ({value}) => <Text>{'\n   '}<Text>{value}</Text></Text>;
+const List = ({value}) => <Text>{'\n •\t'}<Text>{value}</Text></Text>;
+const ListBlock = ({value}) => <Text>{'\n\t'}<Text>{value}</Text></Text>;
 const TextU = ({value}) => <Text style={css.bold}>{value}</Text>;
 
 const css = StyleSheet.create({
