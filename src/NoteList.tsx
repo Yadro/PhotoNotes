@@ -19,7 +19,7 @@ import Note from "./Note";
 import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
-const {deleteIconWhite, searchWhite, sortWhite, arrowWhite, photoWhite, addToPhotosWhite} = icons;
+const {deleteIconWhite, searchWhite, sortWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
@@ -115,9 +115,9 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     Vibration.vibrate([0, 40], false);
   };
 
-  pressHandler = (multi, id) => () => {
+  pressHandler = (id) => () => {
     const { navigate } = this.props.navigation;
-    if (multi) {
+    if (this.state.multi) {
       let {selected} = this.state;
       if (selected.includes(id)) {
         selected = selected.filter(e => e != id);
@@ -146,10 +146,10 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   renderRow = (rowData: Note) => {
     const {id, image, title} = rowData;
-    const {selected, multi} = this.state;
+    const {selected} = this.state;
     const isSelected = selected.includes(id);
     return (
-      <TouchableNativeFeedback onPress={this.pressHandler(multi, id)}
+      <TouchableNativeFeedback onPress={this.pressHandler(id)}
                                onLongPress={this.longPressHandler.bind(null, id)}
                                delayLongPress={delay}>
         <View style={[css.item, isSelected ? css.selectedItem : null]}>
@@ -211,7 +211,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? arrowWhite : photoWhite}
+        <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? closeWhite : photoWhite}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
