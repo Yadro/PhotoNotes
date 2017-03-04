@@ -132,15 +132,13 @@ export const Markdown = {
       } else {
         value = this.createText.call(this, data.text, i);
       }
-      if (data.type == 'bold') {
-        return <TextBold key={i} value={value}/>
-      } else if (data.type == 'italic') {
-        return <TextItalic key={i} value={value}/>
-      } else if (data.type == 'item') {
-        return <List key={i} value={value}/>
-      } else if (data.type == 'item-block') {
-        return <ListBlock key={i} value={value}/>
-      }
+      const actions = {
+        'bold': (value) => <TextBold key={i} value={value}/>,
+        'italic': (value) => <TextItalic key={i} value={value}/>,
+        'item': (value) => <List key={i} value={value}/>,
+        'item-block': (value) => <ListBlock key={i} value={value}/>,
+      };
+      return actions[data.type](value);
     }
   }
 };
@@ -149,8 +147,8 @@ const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
-const List = ({value}) => <Text>{'\n • ' + value}</Text>;
-const ListBlock = ({value}) => <Text>{'\n    ' + value}</Text>;
+const List = ({value}) => <Text>{'\n • '}<Text>{value}</Text></Text>;
+const ListBlock = ({value}) => <Text>{'\n   '}<Text>{value}</Text></Text>;
 const TextU = ({value}) => <Text style={css.bold}>{value}</Text>;
 
 const css = StyleSheet.create({
