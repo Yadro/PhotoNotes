@@ -4,22 +4,24 @@ import {
   View,
   Text,
   Slider,
-  ToolbarAndroid,
   StyleSheet
 } from 'react-native';
-const nativeImageSource = require('nativeImageSource');
 import {PhotoView, readThresholdSave} from '../android/PhotoModule/index.js';
 import {NavigationActions} from "react-navigation";
+import {ScreenNavigationProp} from "react-navigation";
+import CheckBox from 'react-native-check-box';
+import Toolbar from "./Toolbar";
+import icons from './Icons';
+const {check, crop, redo, undo}  = icons;
 
 
 const toolbarActions = [
-  {
-    title: 'Add photo', icon: nativeImageSource({
-    android: 'ic_check_black_24dp',
-    width: 24,
-    height: 24
-  }), show: 'always'
-  },
+  {title: 'Add photo', icon: check, show: 'always'},
+];
+const toolsActions = [
+  {title: 'Add photo', icon: crop, show: 'always'},
+  {title: 'Add photo', icon: undo, show: 'always'},
+  {title: 'Add photo', icon: redo, show: 'always'},
 ];
 
 const goBack = (note) => NavigationActions.reset({
@@ -33,8 +35,10 @@ interface ThresholdP {
 }
 interface ThresholdS {
   value;
+  src;
+  disabled;
 }
-export default class ThresholdComponent extends Component<ThresholdP, ThresholdS> {
+export default class ThresholdComponent extends Component<ScreenNavigationProp, ThresholdS> {
   navigation;
 
   constructor(props) {
@@ -43,14 +47,15 @@ export default class ThresholdComponent extends Component<ThresholdP, ThresholdS
     const src = props.navigation.state.params && props.navigation.state.params.src;
     this.state = {
       value: 85,
-      src
+      src,
+      disabled: false,
     };
   }
 
   onActionSelected = (action) => {
     if (action == 0) {
-      const {src: filePath, value} = this.state;
-      readThresholdSave(filePath, filePath + 'bw.png', value)
+      const {src: filePath, value, disabled} = this.state;
+      readThresholdSave(filePath, filePath + 'bw.png', disabled ? -1 : value)
         .then(e => {
           const {note} = this.props.navigation.state.params;
           note.image = e.uri;
@@ -60,28 +65,23 @@ export default class ThresholdComponent extends Component<ThresholdP, ThresholdS
   };
 
   render() {
-    const {value} = this.state;
+    const {value, disabled} = this.state;
     return <View style={{flex: 1}}>
-      <ToolbarAndroid
-        elevation={5}
-        actions={toolbarActions}
-        style={css.toolbar}
-        title="Threshold"
-        onIconClicked={this.onActionSelected}
-        onActionSelected={this.onActionSelected}
-      />
-      <PhotoView src={this.state.src} value={value} style={{flex:1}} />
-      <Text>{value}</Text>
-      <View style={{margin: 5}}>
-        <Slider onSlidingComplete={value => this.setState({value})} value={this.state.value} minimumValue={1} maximumValue={100}/>
+      <Toolbar title="Threshold" actions={toolbarActions} color="white" backgroundColor="#01B47C"
+               onActionSelected={this.onActionSelected}/>
+      <View style={{flex: 1}}>
+        <PhotoView src={this.state.src} value={disabled ? -1 : value} style={{flex:1}}/>
+        <View style={{margin: 5}}>
+          <CheckBox onClick={() => this.setState({disabled: !disabled})} isChecked={disabled}/>
+          <Text>{value}</Text>
+          <Slider onSlidingComplete={value => this.setState({value})}
+                  value={this.state.value} minimumValue={1} maximumValue={100}/>
+        </View>
       </View>
+      <Toolbar actions={toolsActions} color="black" backgroundColor="white"
+               onActionSelected={null}/>
     </View>
   }
 }
 
-const css = StyleSheet.create({
-  toolbar: {
-    backgroundColor: '#fff',
-    height: 56,
-  },
-});
+const css = StyleSheet.create({});

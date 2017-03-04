@@ -3,7 +3,7 @@ import {StyleSheet, ToolbarAndroid} from 'react-native';
 const nativeImageSource = require('nativeImageSource');
 
 interface ToolbarP {
-  title: string;
+  title?: string;
   subTitle?: string;
   navIcon?;
   logo?;

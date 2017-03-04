@@ -39,13 +39,16 @@ public class Threshold extends ReactContextBaseJavaModule {
         try {
             File original = this.readFile(filepath);
             Bitmap bitmap = BitmapFactory.decodeFile(original.getAbsolutePath());
-            Bitmap bitmapThreshold = this.threshold(bitmap, threshold);
-            File result = this.saveBitmapAsPng(outpath, bitmapThreshold);
+            File result;
+            if (threshold <= 0) {
+                result = original;
+            } else {
+                Bitmap bitmapThreshold = this.threshold(bitmap, threshold);
+                result = this.saveBitmapAsPng(outpath, bitmapThreshold);
+            }
 
             Uri uri = this.getImageUriOnFilepath(result);
-
-            promise.resolve(this.generateSuccessResponse(uri, outpath));
-
+            promise.resolve(this.generateSuccessResponse(uri, threshold <= 0 ? filepath : outpath));
         } catch (Exception e) {
             promise.reject("error", e.getMessage());
         }

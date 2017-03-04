@@ -68,8 +68,12 @@ public class MyPhotoViewManager extends SimpleViewManager<MyImageView> {
     }*/
 
     private void applyColorFilter(MyImageView view, int value) {
-        view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createGreyMatrix()));
-        view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createThresholdMatrix(value)));
+        if (value <= 0) {
+            view.clearColorFilter();
+        } else {
+            view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createGreyMatrix()));
+            view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createThresholdMatrix(value)));
+        }
     }
 
     private static ColorMatrix createGreyMatrix() {
