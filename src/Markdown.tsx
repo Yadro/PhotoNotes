@@ -38,11 +38,11 @@ export const Markdown = {
   },
 
   findBold(text) {
-    return this.find(/\*([^\n]+)\*/, 'bold', text);
+    return this.find(/\*([^\n*]+)\*/, 'bold', text);
   },
 
   findItalic(text) {
-    return this.find(/_([^\n]+)_/, 'italic', text);
+    return this.find(/_([^\n_]+)_/, 'italic', text);
   },
 
   findListItem(text) {
