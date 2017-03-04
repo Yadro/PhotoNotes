@@ -1,3 +1,25 @@
+
+declare module 'react-native-photo-view' {
+  import {Component} from 'react';
+  export default class PhotoView extends Component<any, any> {}
+}
+
+declare module 'react-native-check-box' {
+  import {Component} from 'react';
+  export default class Checkbox extends Component<any, any> {}
+}
+
+declare module 'react-native-action-button' {
+  import {Component} from 'react';
+  export default class ActionButton extends Component<any, any> {}
+}
+
+declare module 'react-native-image-picker' {
+  export default class ImagePicker {
+    static showImagePicker(option, response);
+  }
+}
+
 declare module "react-native-button" {
   import * as React from 'react';
   import {Component} from 'react';
