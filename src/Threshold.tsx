@@ -6,6 +6,7 @@ import {
   Slider,
   StyleSheet,
   Image,
+  ViewStyle,
 } from 'react-native';
 import {PhotoView, readThresholdSave} from '../android/PhotoModule/index.js';
 import ImageResizer from 'react-native-image-resizer';
@@ -72,7 +73,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
           ImageResizer.createResizedImage(thresholdPath, sizzer.width, sizzer.height, 'JPEG', 100)
             .then((resizedImageUri) => {
             // todo
-              note.images.thumbnail.fullscreen = resizedImageUri;
+            //   note.images.thumbnail.fullscreen = resizedImageUri;
               this.navigation.dispatch(goBack(note));
             }).catch((err) => {
             this.navigation.dispatch(goBack(note));
@@ -110,5 +111,5 @@ const css = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  } as ViewStyle
 });

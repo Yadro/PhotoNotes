@@ -20,7 +20,7 @@ export const Markdown = {
     data = this.execType(data, this.findHeader.bind(this));
     data = this.execType(data, this.findBold.bind(this));
     data = this.execType(data, this.findItalic.bind(this));
-    console.log(data);
+    // console.log(data);
 
     return <MarkdownW>{this.createText(data)}</MarkdownW>
   },

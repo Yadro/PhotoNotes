@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableNativeFeedback,
   Vibration,
-  ToolbarAndroid,
+  ViewStyle,
   Image,
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
@@ -259,7 +259,7 @@ const css = StyleSheet.create({
     height: 64,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  } as ViewStyle,
   imagePrev: {
     width: 50,
     height: 50,
@@ -298,7 +298,7 @@ const css = StyleSheet.create({
     height: 42,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  } as ViewStyle,
   preview: {
     fontSize: 20,
     color: '#fff',
