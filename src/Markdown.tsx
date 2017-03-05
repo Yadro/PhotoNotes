@@ -13,14 +13,38 @@ interface Type {
   data: Type;
 }
 
+function flatArray(input) {
+  return input.reduce(function(prev, cur) {
+    let more = [].concat(cur).some(Array.isArray);
+    return prev.concat(more ? flatArray(cur) : cur);
+  },[]);
+}
+
 export const Markdown = {
 
   parse(text: string) {
-    let data = this.execType(text, this.findLine.bind(this));
+    if (!text || !text.length) return;
+    text = text.replace(/\n/g, '↵\n');
+    let data = this.execType(text, this.findHeader2.bind(this));
+    data = this.execType(data, this.findListItem2.bind(this));
+    data = this.execType(data, this.findListBlock2.bind(this));
     data = this.execType(data, this.findHeader.bind(this));
     data = this.execType(data, this.findBold.bind(this));
     data = this.execType(data, this.findItalic.bind(this));
-    // console.log(data);
+
+    if (Array.isArray(data)) {
+      data = flatArray(data);
+      data = data.map(e => {
+        if (typeof e == "string") {
+          return e.replace(/↵/g, '\n');
+        } else if (typeof e == "object" && typeof e.text == "string") {
+          e.text = e.text.replace(/↵/g, '\n');
+          return e;
+        }
+        return e;
+      });
+    }
+    console.log(data);
 
     return <MarkdownW>{this.createText(data)}</MarkdownW>
   },
@@ -50,47 +74,6 @@ export const Markdown = {
     return this.find(/\n# ([^\n#]+)/, 'header', text);
   },
 
-  findListItem(text) {
-    return this.findLine(text);
-  },
-
-  findLine(text: string) {
-    const out = [];
-    let loop = true;
-    while (loop && text.length) {
-      let res = /^\n- ([^\n]+)/.exec(text);
-      if (res) {
-        if (res.index) {
-          out.push(text.slice(0, res.index));
-        }
-        out.push({
-          type: 'item',
-          text: res[1],
-        });
-        text = text.slice(res.index + res[0].length);
-      }
-      let res2 = /^\n  ([^\n]+)/.exec(text);
-      if (res2) {
-        if (res2.index) {
-          out.push(text.slice(0, res2.index));
-        }
-        out.push({
-          type: 'item-block',
-          text: res2[1],
-        });
-        text = text.slice(res2.index + res2[0].length);
-      }
-      loop = !!(res || res2);
-    }
-    if (!out.length) {
-      return text;
-    }
-    if (text.length) {
-      out.push(text);
-    }
-    return out;
-  },
-
   find(reg, type, text: string) {
     const out = [];
     let loop = true;
@@ -113,16 +96,45 @@ export const Markdown = {
     if (text.length) {
       out.push(text);
     }
+    if (out.length == 1) {
+      return out[0];
+    }
+    return out;
+  },
+
+  findListItem2(text) {
+    return this.findByLine(/^- ([\s\S]+)/, 'item', text);
+  },
+
+  findListBlock2(text) {
+    return this.findByLine(/^  ([\s\S]+)/, 'item-block', text);
+  },
+
+  findHeader2(text) {
+    return this.findByLine(/^# ([\s\S]+)/, 'header', text);
+  },
+
+  findByLine(reg, type, text: string) {
+    const lines = text.split('\n');
+    const out = lines.map(line => {
+      const res = reg.exec(line);
+      if (res) {
+        return {
+          type,
+          text: res[1]
+        }
+      }
+      return line;
+    });
+    if (out.length == 1) {
+      return out[0];
+    }
     return out;
   },
 
   createText(data: MdData, i?) {
-    if (i == null) {
-      i = 0;
-    }
-    i++;
+    i = !i ? 0 : i++;
     if (typeof data == "string") {
-      // console.log(data);
       return <SimpleText key={i} value={data}/>
     } else if (Array.isArray(data)) {
       return <Text key={i}>{data.map(this.createText.bind(this))}</Text>;
@@ -133,7 +145,6 @@ export const Markdown = {
       } else {
         value = this.createText.call(this, data.text, i);
       }
-      // console.log(value);
       const actions = {
         'bold': (value) => <TextBold key={i} value={value}/>,
         'italic': (value) => <TextItalic key={i} value={value}/>,
@@ -151,9 +162,9 @@ const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
 const TextU = ({value}) => <Text>{value}</Text>;
-const List = ({value}) => <Text>{'\n •\t'}<Text>{value}</Text></Text>;
-const ListBlock = ({value}) => <Text>{'\n\t'}<Text>{value}</Text></Text>;
-const ListHeader = ({value}) => <Text>{'\n'}<Text style={css.header}>{value}</Text></Text>;
+const List = ({value}) => <Text>{' •\t'}<Text>{value}</Text></Text>;
+const ListBlock = ({value}) => <Text>{'\t'}<Text>{value}</Text></Text>;
+const ListHeader = ({value}) => <Text style={css.header}>{value}</Text>;
 
 const css = StyleSheet.create({
   bold: {
