@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Component} from 'react';
 import {
   StyleSheet,
   Text,
   View,
+  TextStyle,
 } from 'react-native';
 
 type MdData = string | Type | Type[];
@@ -148,22 +148,22 @@ export const Markdown = {
 
 const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
-const TextBold = ({value}) => <Text style={{fontWeight: 'bold'}}>{value}</Text>;
-const TextItalic = ({value}) => <Text style={{fontStyle: 'italic'}}>{value}</Text>;
+const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
+const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
 const TextU = ({value}) => <Text>{value}</Text>;
 const List = ({value}) => <Text>{'\n •\t'}<Text>{value}</Text></Text>;
 const ListBlock = ({value}) => <Text>{'\n\t'}<Text>{value}</Text></Text>;
-const ListHeader = ({value}) => <Text>{'\n'}<Text style={{fontWeight: 'bold', fontSize: 20}}>{value}</Text></Text>;
+const ListHeader = ({value}) => <Text>{'\n'}<Text style={css.header}>{value}</Text></Text>;
 
 const css = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
-  },
+  } as TextStyle,
   italic: {
     fontStyle: 'italic',
-  },
+  } as TextStyle,
   header: {
     fontWeight: 'bold',
     fontSize: 20,
-  }
+  } as TextStyle
 });
