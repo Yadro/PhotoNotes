@@ -6,10 +6,12 @@ import {
   View,
   Image,
   ScrollView,
+  TextStyle,
 } from 'react-native';
 import Toolbar from "./Toolbar";
 import PhotoView from 'react-native-photo-view';
 import {ScreenNavigationProp} from "react-navigation";
+import moment from 'moment';
 import store from "./redux/Store";
 import Note from "./Note";
 import icons from './Icons'
@@ -31,8 +33,6 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     const {notes, other: {size}} = store.getState();
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
-
-    // Markdown.parse(note.content)
 
     this.state = {
       note,
@@ -78,15 +78,17 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
   render() {
     const {navigate} = this.props.navigation;
     const {size} = this.state;
-    const {title, content, image} = this.state.note;
+    const {title, content, image, createdAt, updatedAt} = this.state.note;
     const img = image && image !== '' ? {uri: image} : false;
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1}}>
-          <Text style={css.title}>{title}</Text>
-          <View style={css.titleLine}/>
+          <View style={css.header}>
+            <Text style={css.title}>{title}</Text>
+            <Text style={css.time}>{moment(createdAt || updatedAt).format('lll')}</Text>
+          </View>
           <View style={css.textView}>
             <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
           </View>
@@ -106,17 +108,28 @@ const css = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+
+  header: {
+    flex: 1,
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderColor: '#ebebeb',
+    borderBottomWidth: 1,
+    backgroundColor: '#f7f7f7',
+  },
   title: {
     fontSize: 20,
-    padding: 15,
     color: 'black',
     backgroundColor: '#f7f7f7',
   },
-  titleLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ebebeb',
-  },
+  time: {
+    color: 'black',
+    textAlign: 'right',
+    fontSize: 10,
+    paddingBottom: 10,
+  } as TextStyle,
+
   textView: {
     margin: 15,
   },
