@@ -67,15 +67,36 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const actions = toolbarActions.slice();
     if (params) {
       if (params.note) {
+        // from threshold
+        const note = params.note;
+        if (note.image) {
+          const {other} = store.getState();
+          getResizedImage(note.image, other.size).then(({image, size}) => {
+            console.log(image, size);
+            this.setState({image, size});
+          }).catch(e => {
+            console.error(e);
+          });
+        }
         this.state = {
           note: Object.assign({}, params.note),
           size: null,
           actions,
         };
       } else if (params.id) {
+        // from list
         const note = Object.assign({},
           notes.find(e => e.id == params.id)
         );
+        if (note.image) {
+          const {other} = store.getState();
+          getResizedImage(note.image, other.size).then(({image, size}) => {
+            console.log(image, size);
+            this.setState({image, size});
+          }).catch(e => {
+            console.error(e);
+          });
+        }
         actions.push({title: 'Delete', icon: deleteIconWhite, show: 'always'});
         this.state = {
           note,
@@ -86,18 +107,12 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       }
     }
     else {
+      // create new
       this.state = {
         note: new Note(),
         size: null,
         actions,
       };
-    }
-  }
-
-  componentDidMount() {
-    const {image} = this.state.note;
-    if (image) {
-      this.getImageSize(image);
     }
   }
 

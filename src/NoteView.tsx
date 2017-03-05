@@ -45,9 +45,9 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
     const note: Note = notes.find(e => e.id == id);
 
     if (note.image) {
-      getResizedImage(note.image, size).then(uri => {
-        console.log(uri);
-        this.setState({image: uri, loaded: true});
+      getResizedImage(note.image, size).then(({image, size}) => {
+        console.log(image, size);
+        this.setState({image, size});
       }).catch(e => {
         console.error(e);
       });
@@ -59,19 +59,6 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
       size: null,
       image: null,
     };
-  }
-
-  componentDidMount() {
-    const {viewSize, note: {image}} = this.state;
-    const screenWidth = viewSize.width;
-    Image.getSize(image, (width, height) => {
-      const delta = Math.abs((screenWidth - width) / width * 100);
-      const size = {
-        width: screenWidth,
-        height: height - height / 100 * delta,
-      };
-      this.setState({size});
-    }, () => {});
   }
 
   onDelete = () => {
@@ -129,7 +116,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
           {img &&
             <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})} style={{flex: 1}}>
               <Image source={img} resizeMode="cover" style={size}/>
-              <Text>{size.width + 'x' + size.height}</Text>
+              {__DEV__ && <Text>{size.width + 'x' + size.height}</Text>}
             </View>
           }
         </ScrollView>
