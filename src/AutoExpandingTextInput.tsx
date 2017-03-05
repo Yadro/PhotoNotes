@@ -29,7 +29,7 @@ export default class AutoExpandingTextInput extends React.Component<any, AutoExp
     return (
       <TextInput
         {...this.props}
-        multiline={true}
+        multiline
         blurOnSubmit={false}
         onChangeText={(text) => {
           this.setState({text});

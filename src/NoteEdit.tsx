@@ -197,7 +197,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         this.setState({note});
       },
       () => {
-        note.content += '\n-';
+        note.content += '\n- ';
         this.setState({note});
       }
     ];
@@ -223,7 +223,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                        blurOnSubmit={false} returnKeyType="next"
                        onChangeText={this.onChange.bind(null, 'title')}/>
             <AutoExpandingTextInput value={content} style={css.textMultiLine}
-                                    placeholder="Content"
+                                    placeholder="Content" autoCapitalize="sentences"
                                     onChangeText={this.onChange.bind(null, 'content')}/>
           </View>
           {wrpImage &&
