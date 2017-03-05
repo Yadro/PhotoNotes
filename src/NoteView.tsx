@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ScrollView,
+  Share,
   TextStyle,
 } from 'react-native';
 import Toolbar from "./Toolbar";
@@ -83,7 +84,13 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
         const {state: {params: {id}}, navigate} = this.props.navigation;
         navigate('NoteEdit', {id});
       },
-      () => {},
+      () => {
+        const {title, content} = this.state.note;
+        Share.share({
+          title,
+          message: `${title}\n${content}`,
+        }, {});
+      },
       this.onDelete,
     ];
     if (action == null) {

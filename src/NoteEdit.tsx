@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   Clipboard,
+  Share,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -157,7 +158,13 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   onActionSelected = (action) => {
     const actions = [
       this.showPicker,
-      this.showPicker,
+      () => {
+        const {title, content} = this.state.note;
+        Share.share({
+          title,
+          message: `${title}\n${content}`,
+        }, {});
+      },
       this.onDelete,
     ];
     actions[action] && actions[action]();
