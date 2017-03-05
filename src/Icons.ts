@@ -84,7 +84,7 @@ const iconSource = {
   'listBullet': 'ic_format_list_bulleted',
   'title': 'ic_title',
   'copy': 'ic_content_copy',
-  'past': 'ic_content_past',
+  'past': 'ic_content_paste',
 };
 
 const icons = {};
