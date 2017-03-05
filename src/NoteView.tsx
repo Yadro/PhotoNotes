@@ -79,7 +79,7 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     const {navigate} = this.props.navigation;
     const {size} = this.state;
     const {title, content, image} = this.state.note;
-    const img = {uri: image};
+    const img = image && image !== '' ? {uri: image} : false;
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
@@ -90,11 +90,11 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
           <View style={css.textView}>
             <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
           </View>
-          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: image}})} style={{flex: 1}}>
-            <Image source={img}
-                   resizeMode="cover"
-                   style={size}/>
-          </View>
+          {img &&
+            <View onTouchEnd={() => navigate('PhotoView', {img})} style={{flex: 1}}>
+              <Image source={img} resizeMode="cover" style={size}/>
+            </View>
+          }
         </ScrollView>
       </View>
     );

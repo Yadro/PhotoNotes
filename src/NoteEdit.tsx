@@ -213,7 +213,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const {note, size} = this.state;
     const {title, content, image} = note;
     const {navigate} = this.props.navigation;
-    const wrpImage = image ? {uri: image} : null;
+    const wrpImage = image && image !== '' ? {uri: image} : false;
     return (
       <View style={css.container}>
         {this.renderToolBar()}
