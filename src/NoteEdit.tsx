@@ -20,7 +20,7 @@ import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
-  boldWhite, italicWhite, underWhite, listBulletWhite,
+  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite,
   undoWhite, redoWhite
 } = icons;
 
@@ -36,6 +36,7 @@ const tools = [
   {title: 'Italic', icon: italicWhite, show: 'always'},
   {title: 'Underline', icon: underWhite, show: 'always'},
   {title: 'List', icon: listBulletWhite, show: 'always'},
+  {title: 'Header', icon: titleWhite, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -187,17 +188,17 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       () => {
         note.content += '*';
         this.setState({note});
-      },
-      () => {
+      }, () => {
         note.content += '_';
         this.setState({note});
-      },
-      () => {
+      }, () => {
         note.content += '~~';
         this.setState({note});
-      },
-      () => {
+      }, () => {
         note.content += '\n- ';
+        this.setState({note});
+      }, () => {
+        note.content += '\n# ';
         this.setState({note});
       }
     ];
