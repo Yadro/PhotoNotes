@@ -30,8 +30,8 @@ const toolbarActions = [
 ];
 
 const tools = [
-  {title: 'Undo', icon: undoWhite, show: 'always'},
-  {title: 'Redo', icon: redoWhite, show: 'always'},
+  /*{title: 'Undo', icon: undoWhite, show: 'always'},
+  {title: 'Redo', icon: redoWhite, show: 'always'},*/
   {title: 'Bold', icon: boldWhite, show: 'always'},
   {title: 'Italic', icon: italicWhite, show: 'always'},
   {title: 'Underline', icon: underWhite, show: 'always'},
@@ -182,8 +182,8 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     console.log(action);
     const {note} = this.state;
     const actions = [
-      null,
-      null,
+      /*null,
+      null,*/
       () => {
         note.content += '*';
         this.setState({note});
