@@ -11,6 +11,7 @@ import {
   Vibration,
   Alert,
   ViewStyle,
+  ToolbarAndroidAction,
   Image,
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
@@ -20,11 +21,12 @@ import Note from "./Note";
 import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
+import PopupMenu from "./PopupMenu";
 const {deleteIconWhite, searchWhite, sortWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
-const toolbarActionsItems = [
+const toolbarActionsItems: ToolbarAndroidAction[] = [
   {title: 'Delete', icon: deleteIconWhite, show: 'always'},
 ];
 const searchIcon = {
