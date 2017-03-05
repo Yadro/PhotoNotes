@@ -4,14 +4,18 @@ import {
   View,
   Text,
   Slider,
-  StyleSheet
+  StyleSheet,
+  Image,
 } from 'react-native';
 import {PhotoView, readThresholdSave} from '../android/PhotoModule/index.js';
+import ImageResizer from 'react-native-image-resizer';
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
 import CheckBox from 'react-native-check-box';
 import Toolbar from "./Toolbar";
 import icons from './Icons';
+import store from "./redux/Store";
+import {getSizeInContainer} from "./util";
 const {checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
 
@@ -54,13 +58,29 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
 
   onActionSelected = (action) => {
     if (action == 0) {
-      const {src: filePath, value, disabled} = this.state;
-      readThresholdSave(filePath, filePath + 'bw.png', disabled ? -1 : value)
-        .then(e => {
-          const {note} = this.props.navigation.state.params;
-          note.image = e.uri;
-          this.navigation.dispatch(goBack(note));
+      const {other: {size}} = store.getState();
+      const {src: originPath, value, disabled} = this.state;
+      const thresholdPath = originPath + 'bw.png';
+
+      readThresholdSave(originPath, thresholdPath, disabled ? -1 : value)
+      .then(e => {
+        const {note} = this.props.navigation.state.params;
+        note.image = e.uri;
+
+        Image.getSize(e.uri, (width, height) => {
+          const sizzer = getSizeInContainer(size, width, height);
+          ImageResizer.createResizedImage(thresholdPath, sizzer.width, sizzer.height, 'JPEG', 100)
+            .then((resizedImageUri) => {
+            // todo
+              note.images.thumbnail.fullscreen = resizedImageUri;
+              this.navigation.dispatch(goBack(note));
+            }).catch((err) => {
+            this.navigation.dispatch(goBack(note));
+          });
+        }, (e) => {
+          console.error(e);
         });
+      });
     }
   };
 

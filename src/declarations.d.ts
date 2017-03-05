@@ -6,7 +6,8 @@
 
 declare module 'react-native-image-resizer' {
   export default class {
-    static createResizedImage(path, maxWidth, maxHeight, compressFormat, quality, rotation?, outputPath?);
+    static createResizedImage(path, maxWidth, maxHeight,
+                              compressFormat, quality, rotation?, outputPath?): Promise<string>;
   }
 }
 

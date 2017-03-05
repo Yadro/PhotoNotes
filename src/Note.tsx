@@ -10,9 +10,7 @@ export default class Note {
   images: {
     originPath: string;
     originUri: string;
-    thumbnail: {
-      '50': string;
-    }
+    thumbnail: any;
   };
 
 
@@ -20,6 +18,10 @@ export default class Note {
     this.title = title;
     this.content = content;
     this.image = image;
-    this.images = images;
+    this.images = {
+      originPath: null,
+      originUri: null,
+      thumbnail: {},
+    };
   }
 }

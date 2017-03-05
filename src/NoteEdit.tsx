@@ -201,7 +201,6 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         this.setState({note});
       }
     ];
-    console.log(actions[action]);
     actions[action] && actions[action]();
   };
 
