@@ -17,6 +17,7 @@ export const Markdown = {
 
   parse(text: string) {
     let data = this.execType(text, this.findLine.bind(this));
+    data = this.execType(data, this.findHeader.bind(this));
     data = this.execType(data, this.findBold.bind(this));
     data = this.execType(data, this.findItalic.bind(this));
     console.log(data);
@@ -43,6 +44,10 @@ export const Markdown = {
 
   findItalic(text) {
     return this.find(/_([^\n_]+)_/, 'italic', text);
+  },
+
+  findHeader(text) {
+    return this.find(/\n# ([^\n#]+)/, 'header', text);
   },
 
   findListItem(text) {
@@ -134,6 +139,7 @@ export const Markdown = {
         'italic': (value) => <TextItalic key={i} value={value}/>,
         'item': (value) => <List key={i} value={value}/>,
         'item-block': (value) => <ListBlock key={i} value={value}/>,
+        'header': (value) => <ListHeader key={i} value={value}/>
       };
       return actions[data.type](value);
     }
@@ -144,9 +150,10 @@ const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
+const TextU = ({value}) => <Text>{value}</Text>;
 const List = ({value}) => <Text>{'\n •\t'}<Text>{value}</Text></Text>;
 const ListBlock = ({value}) => <Text>{'\n\t'}<Text>{value}</Text></Text>;
-const TextU = ({value}) => <Text style={css.bold}>{value}</Text>;
+const ListHeader = ({value}) => <Text>{'\n'}<Text style={css.header}>{value}</Text></Text>;
 
 const css = StyleSheet.create({
   bold: {
@@ -155,4 +162,8 @@ const css = StyleSheet.create({
   italic: {
     fontStyle: 'italic',
   },
+  header: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  }
 });
