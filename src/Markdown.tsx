@@ -28,9 +28,9 @@ export const Markdown = {
     let data = this.execType(text, this.findHeader2.bind(this));
     data = this.execType(data, this.findListItem2.bind(this));
     data = this.execType(data, this.findListBlock2.bind(this));
-    data = this.execType(data, this.findHeader.bind(this));
     data = this.execType(data, this.findBold.bind(this));
     data = this.execType(data, this.findItalic.bind(this));
+    data = this.execType(data, this.findUnderline.bind(this));
 
     if (Array.isArray(data)) {
       data = flatArray(data);
@@ -70,8 +70,8 @@ export const Markdown = {
     return this.find(/_([^\n_]+)_/, 'italic', text);
   },
 
-  findHeader(text) {
-    return this.find(/\n# ([^\n#]+)/, 'header', text);
+  findUnderline(text) {
+    return this.find(/~~([^\n~]+)~~/, 'underline', text);
   },
 
   find(reg, type, text: string) {
@@ -148,6 +148,7 @@ export const Markdown = {
       const actions = {
         'bold': (value) => <TextBold key={i} value={value}/>,
         'italic': (value) => <TextItalic key={i} value={value}/>,
+        'underline': (value) => <TextUnderline key={i} value={value}/>,
         'item': (value) => <List key={i} value={value}/>,
         'item-block': (value) => <ListBlock key={i} value={value}/>,
         'header': (value) => <ListHeader key={i} value={value}/>
@@ -161,7 +162,7 @@ const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
 const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
 const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
-const TextU = ({value}) => <Text>{value}</Text>;
+const TextUnderline = ({value}) => <Text style={css.underline}>{value}</Text>;
 const List = ({value}) => <Text>{' •\t'}<Text>{value}</Text></Text>;
 const ListBlock = ({value}) => <Text>{'\t'}<Text>{value}</Text></Text>;
 const ListHeader = ({value}) => <Text style={css.header}>{value}</Text>;
@@ -172,6 +173,9 @@ const css = StyleSheet.create({
   } as TextStyle,
   italic: {
     fontStyle: 'italic',
+  } as TextStyle,
+  underline: {
+    textDecorationLine: 'underline',
   } as TextStyle,
   header: {
     fontWeight: 'bold',
