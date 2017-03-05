@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableNativeFeedback,
   Vibration,
+  Alert,
   ViewStyle,
   Image,
 } from 'react-native';
@@ -100,8 +101,16 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   removeItems(ids) {
-    Actions.removes(ids);
-    this.disableMultiSelect();
+    Alert.alert('Remove', `Remove ${ids.length} notes?`, [{
+      text: 'cancel',
+      onPress: () => this.disableMultiSelect()
+    }, {
+      text: 'remove',
+      onPress: () => {
+        Actions.removes(ids);
+        this.disableMultiSelect();
+      }
+    }], {cancelable: true});
   }
 
   longPressHandler = (id) => {

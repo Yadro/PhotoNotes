@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   Clipboard,
+  Alert,
   Share,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -151,8 +152,16 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   onDelete = () => {
-    Actions.remove(this.state.note.id);
-    this.props.navigation.dispatch(NoteEdit.resetAction);
+    Alert.alert('Remove', 'Remove note?', [{
+      text: 'cancel',
+      onPress: () => {}
+    }, {
+      text: 'remove',
+      onPress: () => {
+        Actions.remove(this.state.note.id);
+        this.props.navigation.dispatch(NoteEdit.resetAction);
+      }
+    }], {cancelable: true});
   };
 
   onActionSelected = (action) => {

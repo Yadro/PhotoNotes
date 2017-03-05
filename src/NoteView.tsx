@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ScrollView,
+  Alert,
   Share,
   TextStyle,
 } from 'react-native';
@@ -74,8 +75,16 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
   }
 
   onDelete = () => {
-    Actions.remove(this.state.note.id);
-    this.props.navigation.dispatch(NoteEdit.resetAction);
+    Alert.alert('Remove', 'Remove note?', [{
+      text: 'cancel',
+      onPress: () => {}
+    }, {
+      text: 'remove',
+      onPress: () => {
+        Actions.remove(this.state.note.id);
+        this.props.navigation.dispatch(NoteEdit.resetAction);
+      }
+    }], {cancelable: true});
   };
 
   onActionSelected = (action) => {
