@@ -46,6 +46,10 @@ interface Icons {
   listBulletWhite;
   titleBlack;
   titleWhite;
+  pastBlack;
+  pastWhite;
+  copyBlack;
+  copyWhite;
 }
 
 const postfix = '_24dp';
@@ -79,6 +83,8 @@ const iconSource = {
   'under': 'ic_format_underlined',
   'listBullet': 'ic_format_list_bulleted',
   'title': 'ic_title',
+  'copy': 'ic_content_copy',
+  'past': 'ic_content_past',
 };
 
 const icons = {};

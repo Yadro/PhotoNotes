@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Platform,
+  Clipboard,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -21,7 +22,7 @@ import AutoExpandingTextInput from "./AutoExpandingTextInput";
 import {getResizedImage} from "./util";
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
-  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite,
+  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite,
   undoWhite, redoWhite
 } = icons;
 
@@ -33,6 +34,7 @@ const toolbarActions = [
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
   {title: 'Redo', icon: redoWhite, show: 'always'},*/
+  {title: 'Past', icon: pastWhite, show: 'always'},
   {title: 'Bold', icon: boldWhite, show: 'always'},
   {title: 'Italic', icon: italicWhite, show: 'always'},
   {title: 'Underline', icon: underWhite, show: 'always'},
@@ -173,6 +175,12 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const actions = [
       /*null,
       null,*/
+      () => {
+        Clipboard.getString().then(text => {
+          note.content += text;
+          this.setState({note});
+        });
+      },
       () => {
         note.content += '*';
         this.setState({note});
