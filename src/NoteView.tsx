@@ -18,6 +18,7 @@ import icons from './Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
 import {Markdown} from "./Markdown";
+import {getResizedImage} from "./util";
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
 const toolbarActions = [
@@ -26,7 +27,14 @@ const toolbarActions = [
   {title: 'Delete', icon: deleteIconWhite, show: 'always'},
 ];
 
-export default class NoteView extends Component<ScreenNavigationProp, any> {
+interface NoteViewS {
+  note;
+  viewSize;
+  size;
+  image;
+  loaded?;
+}
+export default class NoteView extends Component<ScreenNavigationProp, NoteViewS> {
 
   constructor(props) {
     super(props);
@@ -34,10 +42,20 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
 
+    if (note.image) {
+      getResizedImage(note.image, size).then(uri => {
+        console.log(uri);
+        this.setState({image: uri, loaded: true});
+      }).catch(e => {
+        console.error(e);
+      });
+    }
+
     this.state = {
       note,
       viewSize: size,
-      size: null
+      size: null,
+      image: null,
     };
   }
 
@@ -77,9 +95,9 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
 
   render() {
     const {navigate} = this.props.navigation;
-    const {size} = this.state;
-    const {title, content, image, createdAt, updatedAt} = this.state.note;
-    const img = image && image !== '' ? {uri: image} : false;
+    const {size, image, note} = this.state;
+    const {title, content, createdAt, updatedAt} = note;
+    const img = image ? {uri: image} : false;
     return (
       <View style={css.container}>
         <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
@@ -93,8 +111,9 @@ export default class NoteView extends Component<ScreenNavigationProp, any> {
             <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
           </View>
           {img &&
-            <View onTouchEnd={() => navigate('PhotoView', {img})} style={{flex: 1}}>
+            <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})} style={{flex: 1}}>
               <Image source={img} resizeMode="cover" style={size}/>
+              <Text>{size.width + 'x' + size.height}</Text>
             </View>
           }
         </ScrollView>

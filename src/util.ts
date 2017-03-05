@@ -1,3 +1,7 @@
+import {
+  Image
+} from 'react-native';
+import ImageResizer from "react-native-image-resizer";
 import {NavigationActions} from "react-navigation";
 
 /**
@@ -28,6 +32,14 @@ export function getSizeInContainer(layout, width, height) {
   }
 }
 
-export function getResizedImage(uri, maxWidth, maxHeight) {
+export function getResizedImage(uri, target: {height, width}) {
+  return new Promise((resolve, reject) => {
+    Image.getSize(uri, (width, height) => {
+      const resized = getSizeInContainer({width: target.width, height: target.height}, width, height);
 
+      ImageResizer.createResizedImage(uri, resized.width, resized.height, 'PNG', 100)
+        .then((resizedImageUri) => resolve(resizedImageUri))
+        .catch(e => reject(e))
+    }, e => reject(e));
+  });
 }

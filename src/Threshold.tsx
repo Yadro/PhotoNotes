@@ -67,8 +67,10 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
       .then(e => {
         const {note} = this.props.navigation.state.params;
         note.image = e.uri;
+        this.navigation.dispatch(goBack(note));
+      });
 
-        Image.getSize(e.uri, (width, height) => {
+        /*Image.getSize(e.uri, (width, height) => {
           const sizzer = getSizeInContainer(size, width, height);
           ImageResizer.createResizedImage(thresholdPath, sizzer.width, sizzer.height, 'JPEG', 100)
             .then((resizedImageUri) => {
@@ -80,8 +82,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
           });
         }, (e) => {
           console.error(e);
-        });
-      });
+        });*/
     }
   };
 

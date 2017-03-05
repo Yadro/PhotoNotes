@@ -18,6 +18,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
+import {getResizedImage} from "./util";
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite,
@@ -44,6 +45,7 @@ interface NoteEditS {
   size?;
   actions?;
   save?;
+  image?;
 }
 
 export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
@@ -125,23 +127,9 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         } else {
           source = {uri: response.uri.replace('file://', '')};
         }
-        this.getImageSize(source.uri);
         const {note} = this.state;
         note.originalImage = source.uri;
-        console.log(source.uri);
-        ImageResizer.createResizedImage(source.uri, 100, 100, 'JPEG', 100)
-          .then((resizedImageUri) => {
-            note.images = {
-              originUri: source.uri,
-              originPath: response.path,
-              thumbnail: {
-                '50': resizedImageUri
-              }
-            };
-            this.props.navigation.navigate('Threshold', {src: response.path, note});
-          }).catch((err) => {
-            console.log(err);
-          });
+        this.props.navigation.navigate('Threshold', {src: response.path, note});
       }
     });
   };
