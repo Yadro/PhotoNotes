@@ -148,12 +148,12 @@ export const Markdown = {
 
 const MarkdownW = ({children}) => children;
 const SimpleText = ({value}) => <Text>{value}</Text>;
-const TextBold = ({value}) => <Text style={css.bold}>{value}</Text>;
-const TextItalic = ({value}) => <Text style={css.italic}>{value}</Text>;
+const TextBold = ({value}) => <Text style={{fontWeight: 'bold'}}>{value}</Text>;
+const TextItalic = ({value}) => <Text style={{fontStyle: 'italic'}}>{value}</Text>;
 const TextU = ({value}) => <Text>{value}</Text>;
 const List = ({value}) => <Text>{'\n •\t'}<Text>{value}</Text></Text>;
 const ListBlock = ({value}) => <Text>{'\n\t'}<Text>{value}</Text></Text>;
-const ListHeader = ({value}) => <Text>{'\n'}<Text style={css.header}>{value}</Text></Text>;
+const ListHeader = ({value}) => <Text>{'\n'}<Text style={{fontWeight: 'bold', fontSize: 20}}>{value}</Text></Text>;
 
 const css = StyleSheet.create({
   bold: {
