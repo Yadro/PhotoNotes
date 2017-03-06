@@ -22,34 +22,49 @@ import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import PopupMenu from "./PopupMenu";
-const {deleteIconWhite, searchWhite, sortWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
+const {deleteIconWhite, searchWhite, sortWhite, moreWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
 const toolbarActionsItems: ToolbarAndroidAction[] = [
   {title: 'Delete', icon: deleteIconWhite, show: 'always'},
 ];
-const searchIcon = {
+const toolbarMainItems = [{
   title: 'Search', icon: searchWhite, show: 'always'
-};
+}, {
+  title: 'Menu', icon: moreWhite, show: 'always'
+}];
 const sorting = title => ({
   title: title, icon: sortWhite, show: 'always'
 });
 
-
+type SortMethod ='name' | 'create' | 'edit';
 interface NoteListS {
   dataSource?;
   multi?;
   selected?;
-  sorting?: 'name' | 'date';
+  sorting?: SortMethod;
+  reverse: boolean;
   filter: boolean;
   search: string;
+  menu;
 }
 export default class NoteList extends Component<ScreenNavigationProp, NoteListS> {
 
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
   searchDelay;
+
+  popupMenuItems = [{
+    title: 'Sort by name',
+    onPress: () => this.toggleSort('name')
+  }, {
+    title: 'Sort by create',
+    onPress: () => this.toggleSort('create')
+  }, {
+    title: 'Sort by edit',
+    onPress: () => this.toggleSort('edit')
+  }];
 
   constructor(props) {
     super(props);
@@ -59,13 +74,15 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
       filter: false,
       search: '',
       selected: [],
-      sorting: 'date'
+      sorting: 'edit',
+      reverse: false,
+      menu: false,
     };
   }
 
   componentWillMount() {
     this.disp = store.subscribe(() => {
-      const {notes, other} = store.getState();
+      const {notes} = store.getState();
       this.setState({
         dataSource: this.ds.cloneWithRows(notes),
       });
@@ -90,16 +107,30 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     });
   };
 
-  toggleSort = () => {
-    const sorting = this.state.sorting === 'date' ? 'name' : 'date';
+  toggleSort = (sortBy: SortMethod) => {
+    let reverse = !!this.state.reverse;
+    if (sortBy == this.state.sorting) {
+      reverse = !reverse;
+    }
     const {notes} = store.getState();
-    let sorted = sorting === 'name'
-      ? notes.sort((a: Note, b) => a.title > b.title ? 1 : a.title == b.title ? 0 : -1)
-      : notes.sort((a: Note, b) => a.createdAt - b.createdAt);
-    this.setState({
-      sorting,
-      dataSource: this.ds.cloneWithRows(sorted)
-    });
+    const sort = {
+      'name': (items) => items.sort((a: Note, b) => ((reverse) ? a.title > b.title : a.title < b.title) ? 1 : a.title == b.title ? 0 : -1),
+      'create': (items) => items.sort((a: Note, b) => ((reverse) ? a.createdAt - b.createdAt : b.createdAt + a.createdAt)),
+      'edit': (items) => items.sort((a: Note, b) => ((reverse) ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt)),
+    };
+
+    if (sort[sortBy]) {
+      const sorted = sort[sortBy](notes);
+      this.setState({
+        reverse,
+        sorting: sortBy,
+        dataSource: this.ds.cloneWithRows(sorted)
+      });
+    }
+  };
+
+  toggleMenu = () => {
+    this.setState({menu: !this.state.menu});
   };
 
   removeItems(ids) {
@@ -187,7 +218,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
       if (action == 0) {
         this.toggleSearch();
       } else if (action == 1) {
-        this.toggleSort();
+        this.toggleMenu();
       }
     }
   };
@@ -219,14 +250,14 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   render() {
-    const {filter, multi} = this.state;
+    const {filter, multi, menu} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
         <Toolbar title={multi ? "Select to remove" : 'Photo Notes'} navIcon={multi ? closeWhite : photoWhite}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
-                 actions={multi ? toolbarActionsItems : [searchIcon, sorting('Current sort: ' + this.state.sorting)]}
+                 actions={multi ? toolbarActionsItems : toolbarMainItems}
         />
         {filter && this.renderSearchInput()}
         <ScrollView>
@@ -234,6 +265,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         </ScrollView>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>
+        <PopupMenu items={this.popupMenuItems} open={menu} inHideMenu={() => this.setState({menu: false})}/>
       </View>
     );
   }
