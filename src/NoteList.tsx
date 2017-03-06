@@ -64,6 +64,9 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   }, {
     title: 'Sort by edit',
     onPress: () => this.toggleSort('edit')
+  }, {
+    title: 'About',
+    onPress: () => null
   }];
 
   constructor(props) {
@@ -172,7 +175,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     }
   };
 
-  static renderPreview(text: string = '') {
+  static renderPreviewCircle(text: string = '') {
     const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
     return <View style={css.previewContainer}>
       <View style={css.previewContainerWrapper}>
@@ -199,7 +202,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
           <View style={css.imagePrevWrapper}>
             {!!thumbnail ?
               <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
-              NoteList.renderPreview(title)}
+              NoteList.renderPreviewCircle(title)}
           </View>
           <Text style={css.text}>{title}</Text>
         </View>

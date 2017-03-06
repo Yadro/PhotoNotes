@@ -93,7 +93,8 @@ const css = StyleSheet.create({
     zIndex: 1000,
   } as ViewStyle,
   text: {
-    padding: 15,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
     fontSize: 15,
     color: 'black'
   }
