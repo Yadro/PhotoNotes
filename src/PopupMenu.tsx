@@ -18,7 +18,7 @@ interface PopupMenuP {
   }[]
   icon?;
   open;
-  inHideMenu?;
+  onHideMenu;
 }
 interface PopupMenuS {
   open;
@@ -37,12 +37,12 @@ export default class PopupMenu extends React.Component<PopupMenuP, PopupMenuS> {
   }
 
   onHideMenu = () => {
-    this.props.inHideMenu && this.props.inHideMenu();
+    this.props.onHideMenu && this.props.onHideMenu();
   };
 
   onPressItem = (fn) => {
     fn();
-    this.props.inHideMenu && this.props.inHideMenu();
+    this.props.onHideMenu && this.props.onHideMenu();
   };
 
   render() {
@@ -72,9 +72,6 @@ const PopupMenuItem = ({title, onPress}) =>
   </TouchableNativeFeedback>;
 
 const css = StyleSheet.create({
-  hidden: {
-    // display: 'none',
-  } as ViewStyle,
   wrapper: {
     flex: 1,
     position: 'absolute',

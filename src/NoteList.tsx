@@ -265,7 +265,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         </ScrollView>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>
-        <PopupMenu items={this.popupMenuItems} open={menu} inHideMenu={() => this.setState({menu: false})}/>
+        <PopupMenu items={this.popupMenuItems} open={menu} onHideMenu={() => this.setState({menu: false})}/>
       </View>
     );
   }
