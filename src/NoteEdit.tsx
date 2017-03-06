@@ -22,6 +22,7 @@ import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
 import {getResizedImage} from "./util";
+import {InputSelection} from "./AutoExpandingTextInput";
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite,
@@ -50,6 +51,7 @@ interface NoteEditS {
   actions?;
   save?;
   image?;
+  selection?;
 }
 
 export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
@@ -159,6 +161,15 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     this.setState({note});
   };
 
+  onMultiLineInput = (data) => {
+    const {note} = this.state;
+    note.content = data.value;
+    this.setState({
+      note,
+      selection: data.selection,
+    });
+  };
+
   onSave = () => {
     const {note, save} = this.state;
     Actions[save ? 'update' : 'add'](note);
@@ -201,31 +212,30 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
              onActionSelected={this.onActionSelected}/>;
 
   onToolAction = (action) => {
-    console.log(action);
-    const {note} = this.state;
+    const {note, selection} = this.state;
     const actions = [
       /*null,
       null,*/
       () => {
         Clipboard.getString().then(text => {
-          note.content += text;
+          note.content = past(note.content, selection, {start: '', end: text});
           this.setState({note});
         });
       },
       () => {
-        note.content += '*';
+        note.content = past(note.content, selection, {start: '*', end: '*'});
         this.setState({note});
       }, () => {
-        note.content += '_';
+        note.content = past(note.content, selection, {start: '_', end: '_'});
         this.setState({note});
       }, () => {
-        note.content += '~~';
+        note.content = past(note.content, selection, {start: '~~', end: '~~'});
         this.setState({note});
       }, () => {
-        note.content += '\n- ';
+        note.content = past(note.content, selection, {start: '\n- ', end: ''});
         this.setState({note});
       }, () => {
-        note.content += '\n# ';
+        note.content = past(note.content, selection, {start: '\n# ', end: ''});
         this.setState({note});
       }
     ];
@@ -251,7 +261,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                        onChangeText={this.onChange.bind(null, 'title')}/>
             <AutoExpandingTextInput value={content} style={css.textMultiLine}
                                     placeholder="Content" autoCapitalize="sentences"
-                                    onChangeText={this.onChange.bind(null, 'content')}/>
+                                    onChangeText={this.onMultiLineInput}/>
           </View>
           {wrpImage &&
             <View onTouchEnd={() => navigate('PhotoView', {img: wrpImage})} style={{flex: 1}}>
@@ -264,6 +274,15 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     );
   }
 };
+
+function past(text: string, selection: InputSelection, past: {start: string, end: string}) {
+  if (selection.start == selection.end) {
+    return text.substring(0, selection.start) + past.start + text.substring(selection.start);
+  }
+  return text.substring(0, selection.start) +
+    past.start + text.substring(selection.start, selection.end) +
+    past.end + text.substring(selection.end);
+}
 
 const css = StyleSheet.create({
   container: {

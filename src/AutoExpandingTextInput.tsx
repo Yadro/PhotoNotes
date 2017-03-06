@@ -4,13 +4,20 @@ import {
   TextInput,
 } from 'react-native';
 
+export interface InputSelection {
+  start: number;
+  end: number;
+}
+
 interface AutoExpandingTextInputP {
+  value: string;
+  onChangeText;
 }
 interface AutoExpandingTextInputS {
   text;
   height;
 }
-export default class AutoExpandingTextInput extends React.Component<any, AutoExpandingTextInputS> {
+export default class AutoExpandingTextInput extends React.Component<AutoExpandingTextInputP, AutoExpandingTextInputS> {
 
   constructor(props) {
     super(props);
@@ -21,20 +28,22 @@ export default class AutoExpandingTextInput extends React.Component<any, AutoExp
   }
 
   componentWillReceiveProps(props) {
+    console.log('componentWillReceiveProps');
     this.setState({text: props.value});
   }
 
-  render() {
+  setPosition = ({nativeEvent: {selection}}) => {
+    this.props.onChangeText({value: this.state.text, selection});
+  };
 
+  render() {
     return (
       <TextInput
         {...this.props}
         multiline
         blurOnSubmit={false}
-        onChangeText={(text) => {
-          this.setState({text});
-          this.props.onChangeText(text);
-        }}
+        onSelectionChange={this.setPosition}
+        onChangeText={(text) => {this.setState({text})}}
         onContentSizeChange={(event) => {
           this.setState({height: event.nativeEvent.contentSize.height});
         }}
