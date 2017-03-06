@@ -66,3 +66,4 @@ ios
 .tmp
 
 !node_modules/react-native-threshold
+android/app/google-services.json

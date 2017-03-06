@@ -8,13 +8,13 @@ import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.photomodule.MyPhotoViewPackage;
 import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnative.photoview.PhotoViewPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
         new ImagePickerPackage(),
         new PhotoViewPackage(),
         new VectorIconsPackage(),
+        new GoogleAnalyticsBridgePackage(),
         new MyPhotoViewPackage()
       );
     }

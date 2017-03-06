@@ -16,6 +16,7 @@ import {ActionOther} from "./redux/Actions";
 import NoteList from "./NoteList";
 import Threshold from "./Threshold";
 import PhotoViewComp from "./PhotoView";
+import {tracker} from "./Analytics";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},
@@ -32,6 +33,7 @@ export default class AppWithStore extends Component<any, any> {
   constructor(props) {
     super(props);
     console.log('App start');
+    tracker.trackScreenView('Home');
   }
 
   onLayout(event) {

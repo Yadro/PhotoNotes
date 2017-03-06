@@ -23,6 +23,8 @@ import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
 import {getResizedImage} from "./util";
 import {InputSelection} from "./AutoExpandingTextInput";
+import {tracker} from './Analytics';
+
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite,
@@ -116,6 +118,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         actions,
       };
     }
+    tracker.trackScreenView('NoteEdit');
   }
 
   getImageSize = (image: string) => {
@@ -175,6 +178,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     Actions[save ? 'update' : 'add'](note);
     // this.props.navigation.goBack();
     this.props.navigation.dispatch(NoteEdit.resetAction);
+    tracker.trackEvent('Note', 'New');
   };
 
   onDelete = () => {
@@ -186,6 +190,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       onPress: () => {
         Actions.remove(this.state.note.id);
         this.props.navigation.dispatch(NoteEdit.resetAction);
+        tracker.trackEvent('Note', 'Remove');
       }
     }], {cancelable: true});
   };
@@ -240,6 +245,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       }
     ];
     actions[action] && actions[action]();
+    tracker.trackEvent('Note', 'Use toolbar');
   };
 
   renderTools = () =>
