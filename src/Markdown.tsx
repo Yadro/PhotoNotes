@@ -25,9 +25,9 @@ export const Markdown = {
   parse(text: string) {
     if (!text || !text.length) return;
     text = text.replace(/\n/g, '↵\n');
-    let data = this.execType(text, this.findHeader2.bind(this));
-    data = this.execType(data, this.findListItem2.bind(this));
-    data = this.execType(data, this.findListBlock2.bind(this));
+    let data = this.execType(text, this.findHeader.bind(this));
+    data = this.execType(data, this.findListItem.bind(this));
+    data = this.execType(data, this.findListBlock.bind(this));
     data = this.execType(data, this.findBold.bind(this));
     data = this.execType(data, this.findItalic.bind(this));
     data = this.execType(data, this.findUnderline.bind(this));
@@ -116,15 +116,15 @@ export const Markdown = {
     return out;
   },
 
-  findListItem2(text) {
+  findListItem(text) {
     return this.findByLine(/^- ([\s\S]+)/, 'item', text);
   },
 
-  findListBlock2(text) {
+  findListBlock(text) {
     return this.findByLine(/^  ([\s\S]+)/, 'item-block', text);
   },
 
-  findHeader2(text) {
+  findHeader(text) {
     return this.findByLine(/^# ([\s\S]+)/, 'header', text);
   },
 
