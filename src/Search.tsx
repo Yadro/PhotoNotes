@@ -15,6 +15,7 @@ import Toolbar from "./Toolbar";
 import icons from './Icons'
 import store from "./redux/Store";
 import NoteList from "./NoteList";
+import {ScreenNavigationProp} from "react-navigation";
 const {arrowWhite, searchBlack} = icons;
 
 interface SearchP {
@@ -23,7 +24,7 @@ interface SearchS {
   dataSource;
   search;
 }
-export default class Search extends React.Component<SearchP, SearchS> {
+export default class Search extends React.Component<ScreenNavigationProp, SearchS> {
   private disp;
   private searchDelay;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
@@ -48,6 +49,10 @@ export default class Search extends React.Component<SearchP, SearchS> {
   componentWillUnmount() {
     this.disp();
   }
+
+  pressIcon = () => {
+    this.props.navigation.goBack();
+  };
 
   pressHandler = (id) => () => {
     this.props.navigation.navigate('NoteView', {id: id})
@@ -86,7 +91,8 @@ export default class Search extends React.Component<SearchP, SearchS> {
 
   render() {
     return <View style={css.container}>
-      <Toolbar title="Note filter" navIcon={arrowWhite} color="white" backgroundColor="#01B47C" />
+      <Toolbar title="Note filter" navIcon={arrowWhite} color="white" backgroundColor="#01B47C"
+               onIconClicked={this.pressIcon}/>
       <View style={css.bar} elevation={5}>
         <View style={css.searchBox} elevation={2}>
           <Image source={searchBlack} />

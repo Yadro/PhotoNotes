@@ -17,9 +17,11 @@ import NoteList from "./NoteList";
 import Threshold from "./Threshold";
 import PhotoViewComp from "./PhotoView";
 import {tracker} from "./Analytics";
+import Search from "./Search";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},
+  Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
   PhotoView: {screen: PhotoViewComp},

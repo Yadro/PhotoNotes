@@ -101,13 +101,14 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   toggleSearch = () => {
-    const {notes} = store.getState();
-    const {filter} = this.state;
-    this.setState({
-      filter: !filter,
-      search: '',
-      dataSource: this.ds.cloneWithRows(notes)
-    });
+    this.props.navigation.navigate('Search');
+    /* const {notes} = store.getState();
+     const {filter} = this.state;
+     this.setState({
+       filter: !filter,
+       search: '',
+       dataSource: this.ds.cloneWithRows(notes)
+     });*/
   };
 
   toggleSort = (sortBy: SortMethod) => {
