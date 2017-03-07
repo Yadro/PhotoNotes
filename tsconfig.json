@@ -10,7 +10,6 @@
     "preserveConstEnums": true,
     "allowJs": true,
     "sourceMap": true
-//    "rootDirs": ["./src", "./android/PhotoModule/"]
   },
   "include": [
     "./src"

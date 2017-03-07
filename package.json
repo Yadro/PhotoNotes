@@ -34,11 +34,26 @@
     "babel-jest": "18.0.0",
     "babel-preset-exponent": "1.0.0",
     "babel-preset-react-native": "1.9.1",
-    "jest": "18.1.0",
+    "jest": "19.0.2",
     "react-test-renderer": "15.4.2",
-    "remote-redux-devtools": "0.5.7"
+    "remote-redux-devtools": "0.5.7",
+    "ts-jest": "19.0.0",
+    "typescript": "2.2.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "globals": {
+      "__TS_CONFIG__": "tsconfig.json"
+    },
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   }
 }
