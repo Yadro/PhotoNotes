@@ -24,10 +24,11 @@ import AutoExpandingTextInput from "./AutoExpandingTextInput";
 import {getResizedImage} from "./util";
 import {InputSelection} from "./AutoExpandingTextInput";
 import {tracker} from './Analytics';
+import moment from 'moment';
 
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
-  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite,
+  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
   undoWhite, redoWhite
 } = icons;
 
@@ -38,8 +39,9 @@ const toolbarActions = [
 
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
-  {title: 'Redo', icon: redoWhite, show: 'always'},*/
+   {title: 'Redo', icon: redoWhite, show: 'always'},*/
   {title: 'Past', icon: pastWhite, show: 'always'},
+  {title: 'Timestamp', icon: timeWhite, show: 'always'},
   {title: 'Bold', icon: boldWhite, show: 'always'},
   {title: 'Italic', icon: italicWhite, show: 'always'},
   {title: 'Underline', icon: underWhite, show: 'always'},
@@ -86,6 +88,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           note: Object.assign({}, params.note),
           size: null,
           actions,
+          selection: {start: 0, end: 0},
         };
       } else if (params.id) {
         // from list
@@ -107,6 +110,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           size: null,
           actions,
           save: true,
+          selection: {start: 0, end: 0},
         };
       }
     }
@@ -116,6 +120,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         note: new Note(),
         size: null,
         actions,
+        selection: {start: 0, end: 0},
       };
     }
     tracker.trackScreenView('NoteEdit');
@@ -220,12 +225,16 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const {note, selection} = this.state;
     const actions = [
       /*null,
-      null,*/
+       null,*/
       () => {
         Clipboard.getString().then(text => {
           note.content = past(note.content, selection, {start: '', end: text});
           this.setState({note});
         });
+      },
+      () => {
+        note.content = past(note.content, selection, {start: '', end: moment().format('YYYY.MM.DD hh:mm ')});
+        this.setState({note});
       },
       () => {
         note.content = past(note.content, selection, {start: '*', end: '*'});
@@ -237,10 +246,10 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         note.content = past(note.content, selection, {start: '~~', end: '~~'});
         this.setState({note});
       }, () => {
-        note.content = past(note.content, selection, {start: '\n- ', end: ''});
+        note.content = past(note.content, selection, {start: '', end: '\n- '});
         this.setState({note});
       }, () => {
-        note.content = past(note.content, selection, {start: '\n# ', end: ''});
+        note.content = past(note.content, selection, {start: '', end: '# '});
         this.setState({note});
       }
     ];
@@ -284,7 +293,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
 
 function past(text: string, selection: InputSelection, past: {start: string, end: string}) {
   if (selection.start == selection.end) {
-    return text.substring(0, selection.start) + past.start + text.substring(selection.start);
+    return text.substring(0, selection.start) + past.end + text.substring(selection.start);
   }
   return text.substring(0, selection.start) +
     past.start + text.substring(selection.start, selection.end) +

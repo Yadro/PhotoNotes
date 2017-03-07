@@ -50,6 +50,8 @@ interface Icons {
   pastWhite;
   copyBlack;
   copyWhite;
+  timeWhite;
+  timeBlack;
 }
 
 const postfix = '_24dp';
@@ -85,6 +87,7 @@ const iconSource = {
   'title': 'ic_title',
   'copy': 'ic_content_copy',
   'past': 'ic_content_paste',
+  'time': 'ic_access_time',
 };
 
 const icons = {};
