@@ -267,7 +267,8 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                        onChangeText={this.onChange.bind(null, 'title')}/>
             <AutoExpandingTextInput value={content} style={css.textMultiLine}
                                     placeholder="Content" autoCapitalize="sentences"
-                                    onChangeText={this.onMultiLineInput}/>
+                                    onChangeText={this.onMultiLineInput}
+                                    underlineColorAndroid='transparent'/>
           </View>
           {wrpImage &&
             <View onTouchEnd={() => navigate('PhotoView', {img: wrpImage})} style={{flex: 1}}>
@@ -304,6 +305,5 @@ const css = StyleSheet.create({
   },
   textMultiLine: {
     fontSize: 15,
-    textAlignVertical: 'top',
   },
 });

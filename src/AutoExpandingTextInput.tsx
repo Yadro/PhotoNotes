@@ -2,14 +2,14 @@ import * as React from 'react';
 import {
   StyleSheet,
   TextInput,
+  TextInputProperties,
 } from 'react-native';
 
 export interface InputSelection {
   start: number;
   end: number;
 }
-
-interface AutoExpandingTextInputP {
+interface AutoExpandingTextInputP extends TextInputProperties {
   value: string;
   onChangeText;
 }
