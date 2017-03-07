@@ -17,7 +17,7 @@ import Toolbar from "./Toolbar";
 import icons from './Icons';
 import store from "./redux/Store";
 import {getSizeInContainer} from "./util";
-const {checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
+const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
 
 const toolbarActions = [
@@ -58,6 +58,9 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
   }
 
   onActionSelected = (action) => {
+    if (action == null) {
+      this.navigation.goBack();
+    }
     if (action == 0) {
       const {other: {size}} = store.getState();
       const {src: originPath, value, disabled} = this.state;
@@ -90,7 +93,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
     const {value, disabled} = this.state;
     return <View style={{flex: 1}}>
       <Toolbar title="Threshold" actions={toolbarActions} color="white" backgroundColor="#01B47C"
-               onActionSelected={this.onActionSelected}/>
+               navIcon={closeWhite} onActionSelected={this.onActionSelected}/>
       <View style={{flex: 1}}>
         <PhotoView src={this.state.src} value={disabled ? -1 : value} style={{flex:1}}/>
         <View style={css.slider}>
@@ -100,8 +103,8 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
                   value={this.state.value} minimumValue={1} maximumValue={100}/>
         </View>
       </View>
-      <Toolbar actions={toolsActions} color="black" backgroundColor="white"
-               onActionSelected={null}/>
+      {/*<Toolbar actions={toolsActions} color="black" backgroundColor="white"
+               onActionSelected={null}/>*/}
     </View>
   }
 }
