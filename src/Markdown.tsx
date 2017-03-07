@@ -35,19 +35,28 @@ export const Markdown = {
 
     if (Array.isArray(data)) {
       data = flatArray(data);
-      data = data.map(e => {
-        if (typeof e == "string") {
-          return e.replace(/↵/g, '\n');
-        } else if (typeof e == "object" && typeof e.text == "string") {
-          e.text = e.text.replace(/↵/g, '\n');
-          return e;
-        }
-        return e;
-      });
+      data = this.replaceEnter(data);
     }
     console.log(data);
 
     return <MarkdownW>{this.createText(data)}</MarkdownW>
+  },
+
+  replaceEnter(data) {
+    return data.map(e => {
+      if (typeof e == "string") {
+        return e.replace(/↵/g, '\n');
+      } else if (typeof e == "object" && typeof e.text == "string") {
+        e.text = e.text.replace(/↵/g, '\n');
+        return e;
+      } else if (Array.isArray(e.text)) {
+        return {
+          type: e.type,
+          text: this.replaceEnter.call(this, e.text)
+        };
+      }
+      return e;
+    });
   },
 
   execType(data: MdData, fn) {
