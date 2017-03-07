@@ -6,23 +6,83 @@ import {
   Text,
   TextInput,
   ScrollView,
+  ListView,
+  TouchableNativeFeedback,
   TextStyle,
   ViewStyle,
 } from 'react-native';
 import Toolbar from "./Toolbar";
 import icons from './Icons'
+import store from "./redux/Store";
+import NoteList from "./NoteList";
 const {arrowWhite, searchBlack} = icons;
 
 interface SearchP {
 }
 interface SearchS {
+  dataSource;
+  search;
 }
 export default class Search extends React.Component<SearchP, SearchS> {
+  private disp;
+  private searchDelay;
+  private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      dataSource: this.ds.cloneWithRows(store.getState().notes),
+      search: '',
+    };
   }
+
+  componentWillMount() {
+    this.disp = store.subscribe(() => {
+      const {notes} = store.getState();
+      this.setState({
+        dataSource: this.ds.cloneWithRows(notes),
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.disp();
+  }
+
+  pressHandler = (id) => () => {
+    this.props.navigation.navigate('NoteView', {id: id})
+  };
+
+  onChange = (search) => {
+    const {notes} = store.getState();
+    const searchLower = search.toLowerCase();
+    const filtered = notes.filter((e) => e.title.toLowerCase().indexOf(searchLower) >= 0);
+    this.setState({search});
+
+    window.clearTimeout(this.searchDelay);
+    this.searchDelay = window.setTimeout(() => {
+      this.setState({
+        dataSource: this.ds.cloneWithRows(filtered)
+      });
+    }, 500);
+  };
+
+  renderRow = (rowData) => {
+    const {id, image, title, images} = rowData;
+    const thumbnail = images && images.thumbnail && images.thumbnail['50'] || image;
+    return (
+      <TouchableNativeFeedback onPress={this.pressHandler(id)}>
+        <View style={css.item}>
+          <View style={css.imagePrevWrapper}>
+            {!!thumbnail ?
+              <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
+              NoteList.renderPreviewCircle(title)}
+          </View>
+          <Text style={css.text}>{title}</Text>
+        </View>
+      </TouchableNativeFeedback>
+    );
+  };
 
   render() {
     return <View style={css.container}>
@@ -30,9 +90,13 @@ export default class Search extends React.Component<SearchP, SearchS> {
       <View style={css.bar} elevation={5}>
         <View style={css.searchBox} elevation={2}>
           <Image source={searchBlack} />
-          <TextInput style={css.search} placeholder="Search" underlineColorAndroid="transparent"/>
+          <TextInput style={css.search} placeholder="Search" underlineColorAndroid="transparent"
+                     onChangeText={this.onChange} value={this.state.search}/>
         </View>
       </View>
+      <ScrollView>
+        <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
+      </ScrollView>
     </View>
   }
 }
@@ -43,7 +107,6 @@ const css = StyleSheet.create({
     backgroundColor: 'white',
   },
   bar: {
-    // height: 40,
     backgroundColor: '#01B47C',
   },
   searchBox: {
@@ -64,4 +127,36 @@ const css = StyleSheet.create({
     padding: 0,
     fontSize: 16,
   } as TextStyle,
+
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: '#dedede'
+  },
+  item: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    flex: 1,
+    fontSize: 17,
+    color: 'black',
+  },
+  selectedItem: {
+    backgroundColor: '#ddd',
+  },
+
+  /** Image preview */
+  imagePrevWrapper: {
+    width: 64,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+  } as ViewStyle,
+  imagePrev: {
+    width: 50,
+    height: 50,
+    margin: 5
+  },
 });
