@@ -257,7 +257,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'edditr'} navIcon={multi ? closeWhite : photoWhite}
+        <Toolbar title={multi ? "Select to remove" : 'edditr'} navIcon={multi ? closeWhite : null}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : toolbarMainItems}
