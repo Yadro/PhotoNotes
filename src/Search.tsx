@@ -66,8 +66,8 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
     const filtered = notes.filter((e) => e.title.toLowerCase().indexOf(searchLower) >= 0);
     this.setState({search});
 
-    window.clearTimeout(this.searchDelay);
-    this.searchDelay = window.setTimeout(() => {
+    clearTimeout(this.searchDelay);
+    this.searchDelay = setTimeout(() => {
       this.setState({
         dataSource: this.ds.cloneWithRows(filtered)
       });
