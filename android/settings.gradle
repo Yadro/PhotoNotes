@@ -1,12 +1,12 @@
 rootProject.name = 'PhotoNotes'
 include ':react-native-image-resizer'
 project(':react-native-image-resizer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-resizer/android')
+include ':react-native-image-zoom'
+project(':react-native-image-zoom').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-zoom/android')
 
 include ':app', ':photos'
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':react-native-photo-view'
-project(':react-native-photo-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-photo-view/android')
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 include ':react-native-fs'

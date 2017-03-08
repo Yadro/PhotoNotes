@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
+import com.image.zoom.ReactImageZoom;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -13,7 +14,6 @@ import com.photomodule.MyPhotoViewPackage;
 import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.facebook.soloader.SoLoader;
-import com.reactnative.photoview.PhotoViewPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 
 import java.util.Arrays;
@@ -32,9 +32,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
             new ImageResizerPackage(),
+        new ReactImageZoom(),
         new RNFSPackage(),
         new ImagePickerPackage(),
-        new PhotoViewPackage(),
         new VectorIconsPackage(),
         new GoogleAnalyticsBridgePackage(),
         new MyPhotoViewPackage()

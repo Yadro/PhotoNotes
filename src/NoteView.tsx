@@ -9,6 +9,7 @@ import {
   Alert,
   Share,
   TextStyle,
+  ActivityIndicator,
 } from 'react-native';
 import Toolbar from "./Toolbar";
 import PhotoView from 'react-native-photo-view';
@@ -37,7 +38,7 @@ interface NoteViewS {
   viewSize;
   size;
   image;
-  loaded?;
+  isLoad;
 }
 export default class NoteView extends Component<ScreenNavigationProp, NoteViewS> {
 
@@ -61,6 +62,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
       viewSize: size,
       size: null,
       image: null,
+      isLoad: false,
     };
   }
 
@@ -99,9 +101,13 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
     }
   };
 
+  onImageLoad = () => {
+    this.setState({isLoad: true});
+  };
+
   render() {
     const {navigate} = this.props.navigation;
-    const {size, image, note} = this.state;
+    const {size, image, note, isLoad} = this.state;
     const {title, content, createdAt, updatedAt} = note;
     const img = image ? {uri: image} : false;
     return (
@@ -118,7 +124,9 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
           </View>
           {img &&
             <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})} style={{flex: 1}}>
-              <Image source={img} resizeMode="cover" style={size}/>
+              <Image source={img} resizeMode="cover" style={size}
+                     onLoadEnd={this.onImageLoad}/>
+              {!isLoad && <ActivityIndicator animating size="large"/>}
               {__DEV__ && <Text>{size.width + 'x' + size.height}</Text>}
             </View>
           }
