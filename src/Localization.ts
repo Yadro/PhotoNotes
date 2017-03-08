@@ -11,6 +11,14 @@ export default {
     sortEdit: 'Сортировка по изменению',
     about: 'About',
   },
+  Search: {
+    toolbar: {
+      header: 'Фильтр заметок',
+    },
+    window: {
+      search: 'Найти',
+    }
+  },
   NoteView: {
     toolbar: {
       header: 'Заметка',

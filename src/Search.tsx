@@ -16,6 +16,8 @@ import icons from './Icons'
 import store from "./redux/Store";
 import NoteList from "./NoteList";
 import {ScreenNavigationProp} from "react-navigation";
+import l from './Localization';
+const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
 interface SearchP {
@@ -91,12 +93,12 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
 
   render() {
     return <View style={css.container}>
-      <Toolbar title="Note filter" navIcon={arrowWhite} color="white" backgroundColor="#01B47C"
+      <Toolbar title={toolbar.header} navIcon={arrowWhite} color="white" backgroundColor="#01B47C"
                onIconClicked={this.pressIcon}/>
       <View style={css.bar} elevation={5}>
         <View style={css.searchBox} elevation={2}>
-          <Image source={searchBlack} />
-          <TextInput style={css.search} placeholder="Search" underlineColorAndroid="transparent"
+          <Image source={searchBlack}/>
+          <TextInput style={css.search} placeholder={window.search} underlineColorAndroid="transparent"
                      onChangeText={this.onChange} value={this.state.search}/>
         </View>
       </View>
