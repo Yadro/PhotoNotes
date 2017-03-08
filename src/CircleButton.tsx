@@ -13,14 +13,12 @@ const css = StyleSheet.create({
     flex: 1, justifyContent: 'center', alignItems: 'center'
   }
 });
-export const CircleButton = ({title, size}) => {
-  title = '+';
-  size = 48;
+export const CircleButton = ({title, color, size, backgroundColor, highlight, onPress}) => {
   return (
     <View style={{borderRadius: size / 2, width: size, height: size}}>
-      <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#AAF', true)}>
-        <View style={{backgroundColor: '#F66', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>{title}</Text>
+      <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple(highlight, true)} onPress={onPress}>
+        <View style={{backgroundColor: backgroundColor, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{color, fontSize: size / 4}}>{title}</Text>
         </View>
       </TouchableNativeFeedback>
     </View>

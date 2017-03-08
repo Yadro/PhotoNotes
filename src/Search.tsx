@@ -143,7 +143,7 @@ const css = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
-  },
+  } as ViewStyle,
   text: {
     flex: 1,
     fontSize: 17,

@@ -48,3 +48,11 @@ export function getResizedImage(uri, target: {height, width}) {
     }, e => reject(e));
   });
 }
+
+export function range(from, to) {
+  const arr = [];
+  for (let i = from; i < to; i++) {
+    arr.push(i);
+  }
+  return arr;
+}
