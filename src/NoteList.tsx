@@ -22,17 +22,19 @@ import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import PopupMenu from "./PopupMenu";
+import l from './Localization';
+const {toolbar} = l.NoteList;
 const {deleteIconWhite, searchWhite, sortWhite, moreWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
 const toolbarActionsItems: ToolbarAndroidAction[] = [
-  {title: 'Delete', icon: deleteIconWhite, show: 'always'},
+  {title: toolbar.remove, icon: deleteIconWhite, show: 'always'},
 ];
 const toolbarMainItems = [{
-  title: 'Search', icon: searchWhite, show: 'always'
+  title: toolbar.search, icon: searchWhite, show: 'always'
 }, {
-  title: 'Menu', icon: moreWhite, show: 'always'
+  title: toolbar.menu, icon: moreWhite, show: 'always'
 }];
 const sorting = title => ({
   title: title, icon: sortWhite, show: 'always'

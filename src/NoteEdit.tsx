@@ -25,7 +25,9 @@ import {getResizedImage} from "./util";
 import {InputSelection} from "./AutoExpandingTextInput";
 import {tracker} from './Analytics';
 import moment from 'moment';
-
+import l from './Localization';
+const {remove} = l.Alert;
+const {toolbar, editor, window} = l.NoteEdit;
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
@@ -33,20 +35,20 @@ const {
 } = icons;
 
 const toolbarActions = [
-  {title: 'Picker', icon: addPhotoWhite, show: 'always'},
-  {title: 'Share', icon: shareWhite, show: 'always'},
+  {title: toolbar.picker, icon: addPhotoWhite, show: 'always'},
+  {title: toolbar.share, icon: shareWhite, show: 'always'},
 ];
 
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
    {title: 'Redo', icon: redoWhite, show: 'always'},*/
-  {title: 'Past', icon: pastWhite, show: 'always'},
-  {title: 'Timestamp', icon: timeWhite, show: 'always'},
-  {title: 'Bold', icon: boldWhite, show: 'always'},
-  {title: 'Italic', icon: italicWhite, show: 'always'},
-  {title: 'Underline', icon: underWhite, show: 'always'},
-  {title: 'List', icon: listBulletWhite, show: 'always'},
-  {title: 'Header', icon: titleWhite, show: 'always'},
+  {title: editor.past, icon: pastWhite, show: 'always'},
+  {title: editor.timestamp, icon: timeWhite, show: 'always'},
+  {title: editor.bold, icon: boldWhite, show: 'always'},
+  {title: editor.italic, icon: italicWhite, show: 'always'},
+  {title: editor.underline, icon: underWhite, show: 'always'},
+  {title: editor.list, icon: listBulletWhite, show: 'always'},
+  {title: editor.header, icon: titleWhite, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -104,7 +106,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
             console.error(e);
           });
         }
-        actions.push({title: 'Delete', icon: deleteIconWhite, show: 'always'});
+        actions.push({title: toolbar.remove, icon: deleteIconWhite, show: 'always'});
         this.state = {
           note,
           size: null,
@@ -187,11 +189,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   onDelete = () => {
-    Alert.alert('Remove', 'Remove note?', [{
-      text: 'cancel',
+    Alert.alert(remove.title, remove.subtitle, [{
+      text: remove.buttons.cancel,
       onPress: () => {}
     }, {
-      text: 'remove',
+      text: remove.buttons.remove,
       onPress: () => {
         Actions.remove(this.state.note.id);
         this.props.navigation.dispatch(NoteEdit.resetAction);
@@ -216,7 +218,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   renderToolBar = () =>
-    <Toolbar title="Edit" actions={this.state.actions}
+    <Toolbar title={toolbar.header} actions={this.state.actions}
              color="white" backgroundColor="#01B47C" navIcon={checkWhite}
              onIconClicked={this.onSave}
              onActionSelected={this.onActionSelected}/>;
@@ -271,11 +273,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         {this.renderToolBar()}
         <ScrollView style={css.container}>
           <View style={css.textBox}>
-            <TextInput value={title} style={css.text} placeholder="Title"
+            <TextInput value={title} style={css.text} placeholder={window.title}
                        blurOnSubmit={false} returnKeyType="next"
                        onChangeText={this.onChange.bind(null, 'title')}/>
             <AutoExpandingTextInput value={content} style={css.textMultiLine}
-                                    placeholder="Content" autoCapitalize="sentences"
+                                    placeholder={window.content} autoCapitalize="sentences"
                                     onChangeText={this.onMultiLineInput}
                                     underlineColorAndroid='transparent'/>
           </View>

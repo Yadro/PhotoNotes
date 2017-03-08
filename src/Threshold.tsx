@@ -17,11 +17,13 @@ import Toolbar from "./Toolbar";
 import icons from './Icons';
 import store from "./redux/Store";
 import {getSizeInContainer} from "./util";
+import l from './Localization';
+const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
 
 const toolbarActions = [
-  {title: 'Add photo', icon: checkWhite, show: 'always'},
+  {title: toolbar.ok, icon: checkWhite, show: 'always'},
 ];
 const toolsActions = [
   {title: 'Add photo', icon: cropBlack, show: 'always'},
@@ -67,11 +69,11 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
       const thresholdPath = originPath + 'bw.png';
 
       readThresholdSave(originPath, thresholdPath, disabled ? -1 : value)
-      .then(e => {
-        const {note} = this.props.navigation.state.params;
-        note.image = e.uri;
-        this.navigation.dispatch(goBack(note));
-      });
+        .then(e => {
+          const {note} = this.props.navigation.state.params;
+          note.image = e.uri;
+          this.navigation.dispatch(goBack(note));
+        });
 
         /*Image.getSize(e.uri, (width, height) => {
           const sizzer = getSizeInContainer(size, width, height);
@@ -92,7 +94,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
   render() {
     const {value, disabled} = this.state;
     return <View style={{flex: 1}}>
-      <Toolbar title="Threshold" actions={toolbarActions} color="white" backgroundColor="#01B47C"
+      <Toolbar title={toolbar.header} actions={toolbarActions} color="white" backgroundColor="#01B47C"
                navIcon={closeWhite} onActionSelected={this.onActionSelected}/>
       <View style={{flex: 1}}>
         <PhotoView src={this.state.src} value={disabled ? -1 : value} style={{flex:1}}/>
@@ -104,7 +106,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
         </View>
       </View>
       {/*<Toolbar actions={toolsActions} color="black" backgroundColor="white"
-               onActionSelected={null}/>*/}
+       onActionSelected={null}/>*/}
     </View>
   }
 }

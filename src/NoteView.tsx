@@ -21,12 +21,15 @@ import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
 import {Markdown} from "./Markdown";
 import {getResizedImage} from "./util";
+import l from './Localization';
+const {remove} = l.Alert;
+const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
 const toolbarActions = [
-  {title: 'Edit', icon: editWhite, show: 'always'},
-  {title: 'Share', icon: shareWhite, show: 'always'},
-  {title: 'Delete', icon: deleteIconWhite, show: 'always'},
+  {title: toolbar.edit, icon: editWhite, show: 'always'},
+  {title: toolbar.share, icon: shareWhite, show: 'always'},
+  {title: toolbar.del, icon: deleteIconWhite, show: 'always'},
 ];
 
 interface NoteViewS {
@@ -62,11 +65,11 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
   }
 
   onDelete = () => {
-    Alert.alert('Remove', 'Remove note?', [{
-      text: 'cancel',
+    Alert.alert(remove.title, remove.subtitle, [{
+      text: remove.buttons.cancel,
       onPress: () => {}
     }, {
-      text: 'remove',
+      text: remove.buttons.remove,
       onPress: () => {
         Actions.remove(this.state.note.id);
         this.props.navigation.dispatch(NoteEdit.resetAction);
@@ -103,7 +106,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
     const img = image ? {uri: image} : false;
     return (
       <View style={css.container}>
-        <Toolbar title="Note" actions={toolbarActions} color="white" backgroundColor="#01B47C"
+        <Toolbar title={toolbar.header} actions={toolbarActions} color="white" backgroundColor="#01B47C"
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1}}>
           <View style={css.header}>
