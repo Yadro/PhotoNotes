@@ -3,6 +3,7 @@ import {Component} from 'react';
 import {
   View,
   StatusBar,
+  PixelRatio,
 } from 'react-native';
 import {
   StackNavigator,
@@ -40,16 +41,8 @@ export default class AppWithStore extends Component<any, any> {
     tracker.trackScreenView('Home');
   }
 
-  onLayout(event) {
-    const {size} = store.getState().other;
-    if (!size) {
-      const {x, y, width, height} = event.nativeEvent.layout;
-      ActionOther.setViewSize({width: width + x, height: height + y});
-    }
-  }
-
   render() {
-    return <View style={{flex: 1}} onLayout={this.onLayout}>
+    return <View style={{flex: 1}}>
       <StatusBar
         backgroundColor="#019967"
         barStyle="light-content"

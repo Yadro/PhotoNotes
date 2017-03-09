@@ -1,5 +1,6 @@
 import {
-  Image
+  Image,
+  Dimensions,
 } from 'react-native';
 import ImageResizer from "react-native-image-resizer";
 import {NavigationActions} from "react-navigation";
@@ -16,6 +17,29 @@ export const navigationReset = (routeName, params?) =>
     ]
   });
 
+export function dimensionsToPixel(width, height) {
+  const dimensions = Dimensions.get("window");
+  return {
+    width: width * dimensions.scale,
+    height: height * dimensions.scale,
+  }
+}
+
+export function pixelToDimensions({width, height}) {
+  const dimensions = Dimensions.get("window");
+  return {
+    width: width / dimensions.scale,
+    height: height / dimensions.scale,
+  }
+}
+
+export function getSizePexel() {
+  const dimensions = Dimensions.get("window");
+  return {
+    width: dimensions.width * dimensions.scale,
+    height: dimensions.height * dimensions.scale,
+  }
+}
 
 export function getSizeInContainer(layout, width, height) {
   const {width: screenWidth, height: screenHeight} = layout;

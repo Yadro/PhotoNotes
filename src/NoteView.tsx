@@ -10,9 +10,9 @@ import {
   Share,
   TextStyle,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import Toolbar from "./Toolbar";
-import PhotoView from 'react-native-photo-view';
 import {ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
 import store from "./redux/Store";
@@ -21,7 +21,7 @@ import icons from './Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
 import {Markdown} from "./Markdown";
-import {getResizedImage} from "./util";
+import {getResizedImage, getSizePexel, pixelToDimensions} from "./util";
 import l from './Localization';
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
@@ -35,23 +35,21 @@ const toolbarActions = [
 
 interface NoteViewS {
   note;
-  viewSize;
-  size;
   image;
+  size: {width, height};
   isLoad;
 }
 export default class NoteView extends Component<ScreenNavigationProp, NoteViewS> {
 
   constructor(props) {
     super(props);
-    const {notes, other: {size}} = store.getState();
+    const {notes} = store.getState();
     const {id} = props.navigation.state.params;
     const note: Note = notes.find(e => e.id == id);
 
     if (note.image) {
-      getResizedImage(note.image, size).then(({image, size}) => {
-        console.log(image, size);
-        this.setState({image, size});
+      getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
+        this.setState({image, size: pixelToDimensions(size)});
       }).catch(e => {
         console.error(e);
       });
@@ -59,7 +57,6 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
 
     this.state = {
       note,
-      viewSize: size,
       size: null,
       image: null,
       isLoad: false,
@@ -107,7 +104,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
 
   render() {
     const {navigate} = this.props.navigation;
-    const {size, image, note, isLoad} = this.state;
+    const {image, note, size, isLoad} = this.state;
     const {title, content, createdAt, updatedAt} = note;
     const img = image ? {uri: image} : false;
     return (
@@ -117,19 +114,20 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
         <ScrollView style={{flex: 1}}>
           <View style={css.header}>
             <Text style={css.title}>{title}</Text>
-            <Text style={css.time}>{moment(createdAt || updatedAt).format('lll')}</Text>
+            <Text style={css.time}>{moment(updatedAt || createdAt).format('lll')}</Text>
           </View>
           <View style={css.textView}>
             <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
           </View>
           {img &&
-            <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})} style={{flex: 1}}>
-              <Image source={img} resizeMode="cover" style={size}
+            <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>
+              <Image source={img} resizeMode="contain"
+                     style={{width: size.width, height: size.height}}
                      onLoadEnd={this.onImageLoad}/>
-              {!isLoad && <ActivityIndicator animating size="large"/>}
-              {__DEV__ && <Text>{size.width + 'x' + size.height}</Text>}
             </View>
           }
+          {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
+          <Text>12</Text>
         </ScrollView>
       </View>
     );

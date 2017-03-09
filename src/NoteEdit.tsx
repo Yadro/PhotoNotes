@@ -10,6 +10,7 @@ import {
   Clipboard,
   Alert,
   Share,
+  ActivityIndicator,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -21,7 +22,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
-import {getResizedImage} from "./util";
+import {getResizedImage, pixelToDimensions, getSizePexel} from "./util";
 import {InputSelection} from "./AutoExpandingTextInput";
 import {tracker} from './Analytics';
 import moment from 'moment';
@@ -54,6 +55,7 @@ const tools = [
 interface NoteEditS {
   note?: Note;
   size?;
+  isLoad;
   actions?;
   save?;
   image?;
@@ -76,12 +78,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     if (params) {
       if (params.note) {
         // from threshold
+        // fixme
         const note = params.note;
         if (note.image) {
-          const {other} = store.getState();
-          getResizedImage(note.image, other.size).then(({image, size}) => {
-            console.log(image, size);
-            this.setState({image, size});
+          getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
+            this.setState({image, size: pixelToDimensions(size)});
           }).catch(e => {
             console.error(e);
           });
@@ -98,10 +99,9 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           notes.find(e => e.id == params.id)
         );
         if (note.image) {
-          const {other} = store.getState();
-          getResizedImage(note.image, other.size).then(({image, size}) => {
-            console.log(image, size);
-            this.setState({image, size});
+          // fixme
+          getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
+            this.setState({image, size: pixelToDimensions(size)});
           }).catch(e => {
             console.error(e);
           });
@@ -127,19 +127,6 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     }
     tracker.trackScreenView('NoteEdit');
   }
-
-  getImageSize = (image: string) => {
-    const screenWidth = store.getState().other.size.width;
-    Image.getSize(image, (width, height) => {
-      const delta = Math.abs((screenWidth - width) / width * 100);
-      const size = {
-        width: screenWidth,
-        height: height - height / 100 * delta,
-      };
-      this.setState({size});
-    }, () => {
-    });
-  };
 
   showPicker = () => {
     ImagePicker.showImagePicker({storageOptions: true}, (response) => {
@@ -263,11 +250,15 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     <Toolbar actions={tools} color="white" backgroundColor="#01B47C"
              onActionSelected={this.onToolAction}/>;
 
+  onImageLoad = () => {
+    this.setState({isLoad: true});
+  };
+
   render() {
-    const {note, size} = this.state;
+    const {note, size, isLoad} = this.state;
     const {title, content, image} = note;
     const {navigate} = this.props.navigation;
-    const wrpImage = image && image !== '' ? {uri: image} : false;
+    const img = image && size ? {uri: image} : false;
     return (
       <View style={css.container}>
         {this.renderToolBar()}
@@ -281,11 +272,14 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                                     onChangeText={this.onMultiLineInput}
                                     underlineColorAndroid='transparent'/>
           </View>
-          {wrpImage &&
-            <View onTouchEnd={() => navigate('PhotoView', {img: wrpImage})} style={{flex: 1}}>
-              <Image source={wrpImage} resizeMode="cover" style={size}/>
+          {img &&
+            <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>
+              <Image source={img} resizeMode="contain"
+                     style={{width: size.width, height: size.height}}
+                     onLoadEnd={this.onImageLoad}/>
             </View>
           }
+          {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
         </ScrollView>
         {this.renderTools()}
       </View>
