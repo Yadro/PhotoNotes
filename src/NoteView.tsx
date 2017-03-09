@@ -127,7 +127,6 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
             </View>
           }
           {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
-          <Text>12</Text>
         </ScrollView>
       </View>
     );
