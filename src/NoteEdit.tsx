@@ -75,56 +75,37 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     const {notes} = store.getState();
     const {params} = props.navigation.state;
     const actions = toolbarActions.slice();
+    let note, state;
     if (params) {
       if (params.note) {
         // from threshold
-        // fixme
-        const note = params.note;
-        if (note.image) {
-          getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
-            this.setState({image, size: pixelToDimensions(size)});
-          }).catch(e => {
-            console.error(e);
-          });
-        }
-        this.state = {
-          note: Object.assign({}, params.note),
-          size: null,
-          actions,
-          selection: {start: 0, end: 0},
-        };
+        note = params.note;
       } else if (params.id) {
         // from list
-        const note = Object.assign({},
+        note = Object.assign({},
           notes.find(e => e.id == params.id)
         );
-        if (note.image) {
-          // fixme
-          getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
-            this.setState({image, size: pixelToDimensions(size)});
-          }).catch(e => {
-            console.error(e);
-          });
-        }
         actions.push({title: toolbar.remove, icon: deleteIconWhite, show: 'always'});
-        this.state = {
-          note,
-          size: null,
-          actions,
-          save: true,
-          selection: {start: 0, end: 0},
-        };
+        state = {save: true};
       }
-    }
-    else {
+    } else {
       // create new
-      this.state = {
-        note: new Note(),
-        size: null,
-        actions,
-        selection: {start: 0, end: 0},
-      };
+      note = new Note();
     }
+    if (note.image) {
+      // fixme
+      getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
+        this.setState({image, size: pixelToDimensions(size)});
+      }).catch(e => {
+        console.error(e);
+      });
+    }
+    this.state = Object.assign({}, state, {
+      note,
+      actions,
+      size: null,
+      selection: {start: 0, end: 0},
+    });
     tracker.trackScreenView('NoteEdit');
   }
 
