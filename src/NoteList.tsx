@@ -21,7 +21,7 @@ import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import l from './Localization';
-const {toolbar} = l.NoteList;
+const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
@@ -32,11 +32,11 @@ const toolbarActionsItems: ToolbarAndroidAction[] = [
 const toolbarMainItems = [{
   title: toolbar.search, icon: searchWhite, show: 'always'
 }, {
-  title: 'Sort by name', show: 'never'
+  title: sortName, show: 'never'
 }, {
-  title: 'Sort by create', show: 'never'
+  title: sortCreate, show: 'never'
 }, {
-  title: 'Sort by edit', show: 'never'
+  title: sortEdit, show: 'never'
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
