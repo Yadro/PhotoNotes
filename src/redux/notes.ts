@@ -1,8 +1,38 @@
 import Note from "../Note";
+import * as R from 'ramda';
+const {lens, set, view} = R;
 
 export type NoteState = Note[];
 
 export const DefaultState: NoteState = [];
+
+
+
+const makeGetterById = id => array => array.find(item => item.id === id);
+const makeSetterById = id =>
+  (newItem, array) =>
+    array.map(item => item.id === id ? newItem : item);
+
+const lensById = id => lens(
+  makeGetterById(id),
+  makeSetterById(id)
+);
+
+const lensProp = prop => lens(
+  // getter - получаем свойство
+  obj => obj[prop],
+  // setter - ставим свойство иммутабельно
+  (newVal, obj) => ({...obj, [prop]: newVal})
+);
+
+const over = (someLens, func, data) => {
+  const val = view(someLens, data);
+  const newVal = func(val);
+  return set(someLens, newVal);
+};
+
+const lensUpdatedAt = lensProp('updatedAt');
+const lensName = lensProp('name');
 
 export default (state: Note[] = [], actions): NoteState => {
   let newState: Note[], note: Note, id;

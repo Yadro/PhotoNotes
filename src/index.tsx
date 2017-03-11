@@ -38,7 +38,7 @@ export default class AppWithStore extends Component<any, any> {
   constructor(props) {
     super(props);
     console.log('App start');
-    tracker.trackScreenView('Home');
+    if (!__DEV__) tracker.trackScreenView('Home');
   }
 
   render() {
