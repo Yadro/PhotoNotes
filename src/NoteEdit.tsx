@@ -13,7 +13,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import ImageResizer from 'react-native-image-resizer';
 import store from "./redux/Store";
 import {Actions} from "./redux/Actions";
 import Note from "./Note";

@@ -22,6 +22,8 @@ import Toolbar from "./Toolbar";
 import icons from './Icons'
 import l from './Localization';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
+const {remove, removeMulti} = l.Alert;
+
 const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
@@ -112,11 +114,11 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   removeItems(ids) {
-    Alert.alert('Remove', `Remove ${ids.length} notes?`, [{
-      text: 'cancel',
+    Alert.alert(removeMulti.title, removeMulti.subtitle(ids.length), [{
+      text: removeMulti.buttons.cancel,
       onPress: () => this.disableMultiSelect()
     }, {
-      text: 'remove',
+      text: removeMulti.buttons.remove,
       onPress: () => {
         Actions.removes(ids);
         this.disableMultiSelect();
