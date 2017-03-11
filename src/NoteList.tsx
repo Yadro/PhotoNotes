@@ -34,11 +34,12 @@ const toolbarActionsItems: ToolbarAndroidAction[] = [
 const toolbarMainItems = [{
   title: toolbar.search, icon: searchWhite, show: 'always'
 }, {
-  title: toolbar.menu, icon: moreWhite, show: 'always'
+  title: 'Sort by name', show: 'never'
+}, {
+  title: 'Sort by create', show: 'never'
+}, {
+  title: 'Sort by edit', show: 'never'
 }];
-const sorting = title => ({
-  title: title, icon: sortWhite, show: 'always'
-});
 
 type SortMethod ='name' | 'create' | 'edit';
 interface NoteListS {
@@ -49,27 +50,12 @@ interface NoteListS {
   reverse: boolean;
   filter: boolean;
   search: string;
-  menu;
 }
 export default class NoteList extends Component<ScreenNavigationProp, NoteListS> {
 
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
   searchDelay;
-
-  popupMenuItems = [{
-    title: 'Sort by name',
-    onPress: () => this.toggleSort('name')
-  }, {
-    title: 'Sort by create',
-    onPress: () => this.toggleSort('create')
-  }, {
-    title: 'Sort by edit',
-    onPress: () => this.toggleSort('edit')
-  }, {
-    title: 'About',
-    onPress: () => null
-  }];
 
   constructor(props) {
     super(props);
@@ -81,7 +67,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
       selected: [],
       sorting: 'edit',
       reverse: false,
-      menu: false,
     };
   }
 
@@ -104,13 +89,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   toggleSearch = () => {
     this.props.navigation.navigate('Search');
-    /* const {notes} = store.getState();
-     const {filter} = this.state;
-     this.setState({
-       filter: !filter,
-       search: '',
-       dataSource: this.ds.cloneWithRows(notes)
-     });*/
   };
 
   toggleSort = (sortBy: SortMethod) => {
@@ -133,10 +111,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         dataSource: this.ds.cloneWithRows(sorted)
       });
     }
-  };
-
-  toggleMenu = () => {
-    this.setState({menu: !this.state.menu});
   };
 
   removeItems(ids) {
@@ -224,7 +198,11 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
       if (action == 0) {
         this.toggleSearch();
       } else if (action == 1) {
-        this.toggleMenu();
+        this.toggleSort('name');
+      } else if (action == 2) {
+        this.toggleSort("create");
+      } else if (action == 3) {
+        this.toggleSort("edit");
       }
     }
   };
@@ -256,11 +234,13 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   render() {
-    const {filter, multi, menu} = this.state;
+    const {filter, multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'edditr'} navIcon={multi ? closeWhite : null}
+        <Toolbar title={multi ? "Select to remove" : 'edditr'}
+                 navIcon={multi ? closeWhite : null}
+                 overflowIcon={moreWhite}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : toolbarMainItems}
@@ -271,7 +251,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
         </ScrollView>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>
-        <PopupMenu items={this.popupMenuItems} open={menu} onHideMenu={() => this.setState({menu: false})}/>
       </View>
     );
   }
