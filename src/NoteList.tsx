@@ -6,7 +6,6 @@ import {
   View,
   ListView,
   ScrollView,
-  TextInput,
   TouchableNativeFeedback,
   Vibration,
   Alert,
@@ -21,10 +20,9 @@ import Note from "./Note";
 import {Actions} from "./redux/Actions";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
-import PopupMenu from "./PopupMenu";
 import l from './Localization';
 const {toolbar} = l.NoteList;
-const {deleteIconWhite, searchWhite, sortWhite, moreWhite, arrowWhite, closeWhite, photoWhite, addToPhotosWhite} = icons;
+const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
 
 const delay = __DEV__ ? 3000 : 1000;
 
@@ -207,34 +205,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     }
   };
 
-  onChange = (search) => {
-    const {notes} = store.getState();
-    const searchLower = search.toLowerCase();
-    const filtered = notes.filter((e: Note) => e.title.toLowerCase().indexOf(searchLower) >= 0);
-    this.setState({search});
-
-    window.clearTimeout(this.searchDelay);
-    this.searchDelay = window.setTimeout(() => {
-      this.setState({
-        dataSource: this.ds.cloneWithRows(filtered)
-      });
-    }, 500);
-  };
-
-  renderSearchInput = () => {
-    return <View style={css.search}>
-      <View style={css.searchBox}>
-        <TextInput placeholder="Search"
-                   value={this.state.search}
-                   onChangeText={this.onChange}
-                   style={css.searchInput}/>
-      </View>
-      <View style={css.titleLine}/>
-    </View>;
-  };
-
   render() {
-    const {filter, multi} = this.state;
+    const {multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
       <View style={css.container}>
@@ -245,7 +217,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : toolbarMainItems}
         />
-        {filter && this.renderSearchInput()}
         <ScrollView>
           <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
         </ScrollView>
