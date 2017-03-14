@@ -1,17 +1,23 @@
-const RNFS = require('react-native-fs');
+import Note from "../Note";
+import {transliterate} from "../util/transliterate";
+import {Actions} from "./Actions";
+const fs = require('react-native-fs');
 
-const path = RNFS.DocumentDirectoryPath + '/data.json';
-console.log(path);
+const path = fs.DocumentDirectoryPath + '/data.json';
+const externalPath = fs.ExternalDirectoryPath;
+console.log(externalPath);
 
-
-export function exportNotes(notes) {
+export async function exportNotes(notes: Note[]) {
+  notes.forEach(n => {
+    writeFileNote(n);
+  });
   writeFile(path, JSON.stringify(notes));
 }
 
 export function importNotes(callback) {
-  RNFS.exists(path)
+  fs.exists(path)
     .then(() => {
-      return RNFS.readFile(path, 'utf8');
+      return fs.readFile(path, 'utf8');
     })
     .then((contents) => {
       contents = JSON.parse(contents);
@@ -22,8 +28,45 @@ export function importNotes(callback) {
     });
 }
 
+async function writeFileNote(note: Note) {
+  if (note.saved) {
+    return;
+  }
+  try {
+    let fileName = note.fileName || await createName(note);
+    console.log(fileName);
+    if (!note.fileName) {
+      Actions.setFileName(note.id, fileName);
+    }
+    return fs.writeFile(`${externalPath}/${fileName}.md`, note.title + '\n' + note.content, 'utf8')
+      .then(e => {
+        console.log('Saved file: ' + fileName);
+        Actions.setSaved(note.id)
+      })
+      .catch(e => console.error(e));
+  } catch (e) {
+
+  }
+}
+
+async function createName(note: Note) {
+  let fileName = transliterate(note.title);
+  try {
+    if (!(await fs.exists(externalPath + '/' + fileName))) {
+      return fileName;
+    }
+    fileName = `${fileName}_${note.createdAt}`;
+    if (!(await fs.exists(externalPath + '/' + fileName))) {
+      return fileName;
+    }
+  } catch(e) {
+    console.log(e);
+  }
+  throw new Error(`File ${externalPath}/${fileName} exist`);
+}
+
 function writeFile(path, data) {
-  RNFS.writeFile(path, data, 'utf8')
+  fs.writeFile(path, data, 'utf8')
     .then((success) => {
       console.log('FILE WRITTEN!');
     })

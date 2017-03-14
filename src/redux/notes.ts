@@ -1,12 +1,10 @@
 import Note from "../Note";
-import * as R from 'ramda';
-const {lens, set, view} = R;
+import {setFileName, setSaved} from "../constanse/ActionTypes";
+import {lens, set, view} from 'ramda';
 
 export type NoteState = Note[];
 
 export const DefaultState: NoteState = [];
-
-
 
 const makeGetterById = id => array => array.find(item => item.id === id);
 const makeSetterById = id =>
@@ -53,6 +51,28 @@ export default (state: Note[] = [], actions): NoteState => {
       newState = newState.map(e => {
         if (e.id == note.id) {
           return note;
+        }
+        return e;
+      });
+      return newState;
+
+    case setFileName:
+      newState = [...state];
+      newState = newState.map(e => {
+        if (e.id == actions.id) {
+          e.fileName = actions.fileName;
+          return e;
+        }
+        return e;
+      });
+      return newState;
+
+    case setSaved:
+      newState = [...state];
+      newState = newState.map(e => {
+        if (e.id == actions.id) {
+          e.saved = true;
+          return e;
         }
         return e;
       });
