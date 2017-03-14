@@ -20,15 +20,17 @@ import PhotoViewComp from "./PhotoView";
 import {tracker} from "./Analytics";
 import Search from "./Search";
 import Password from "./Password";
+import Settings from "./Settings";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},
   Search: {screen: Search},
-  Password: {screen: Password},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
   PhotoView: {screen: PhotoViewComp},
   Threshold: {screen: Threshold},
+  Settings: {screen: Settings},
+  Password: {screen: Password},
 }, {
   headerMode: 'none'
 });
