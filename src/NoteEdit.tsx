@@ -149,7 +149,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
 
   onSave = () => {
     const {note, save} = this.state;
-    Actions[save ? 'update' : 'add'](note);
+    if (save) {
+      Actions.update(note);
+    } else {
+      Actions.add(note);
+    }
     // this.props.navigation.goBack();
     this.props.navigation.dispatch(NoteEdit.resetAction);
     if (!__DEV__) tracker.trackEvent('Note', 'New');
