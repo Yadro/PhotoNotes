@@ -32,6 +32,7 @@ const over = (someLens, func, data) => {
 const lensUpdatedAt = lensProp('updatedAt');
 const lensName = lensProp('name');
 
+// todo
 export default (state: Note[] = [], actions): NoteState => {
   let newState: Note[], note: Note, id;
   switch (actions.type) {

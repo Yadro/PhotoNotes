@@ -21,7 +21,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "./Toolbar";
 import icons from './Icons'
 import AutoExpandingTextInput from "./AutoExpandingTextInput";
-import {getResizedImage, pixelToDimensions, getSizePexel} from "./util";
+import {getResizedImage, pixelToDimensions, getSizePexel} from "./util/util";
 import {InputSelection} from "./AutoExpandingTextInput";
 import {tracker} from './Analytics';
 import moment from 'moment';

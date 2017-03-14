@@ -21,7 +21,7 @@ import icons from './Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "./redux/Actions";
 import {Markdown} from "./Markdown";
-import {getResizedImage, getSizePexel, pixelToDimensions} from "./util";
+import {getResizedImage, getSizePexel, pixelToDimensions} from "./util/util";
 import l from './Localization';
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;

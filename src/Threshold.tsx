@@ -16,7 +16,7 @@ import CheckBox from 'react-native-check-box';
 import Toolbar from "./Toolbar";
 import icons from './Icons';
 import store from "./redux/Store";
-import {getSizeInContainer} from "./util";
+import {getSizeInContainer} from "./util/util";
 import l from './Localization';
 const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;

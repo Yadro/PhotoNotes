@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import Toolbar from "./Toolbar";
 import icons from './Icons'
-import {range} from "./util";
+import {range} from "./util/util";
 import {CircleButton} from "./CircleButton";
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
