@@ -18,11 +18,11 @@ import {Actions} from "./redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
-import Toolbar from "./Toolbar";
-import icons from './Icons'
-import AutoExpandingTextInput from "./AutoExpandingTextInput";
+import Toolbar from "./components/Toolbar";
+import icons from './components/Icons'
+import AutoExpandingTextInput from "./components/AutoExpandingTextInput";
 import {getResizedImage, pixelToDimensions, getSizePexel} from "./util/util";
-import {InputSelection} from "./AutoExpandingTextInput";
+import {InputSelection} from "./components/AutoExpandingTextInput";
 import {tracker} from './Analytics';
 import moment from 'moment';
 import l from './Localization';

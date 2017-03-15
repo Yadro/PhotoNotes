@@ -18,8 +18,8 @@ import ActionButton from 'react-native-action-button';
 import store from "./redux/Store";
 import Note from "./Note";
 import {Actions} from "./redux/Actions";
-import Toolbar from "./Toolbar";
-import icons from './Icons'
+import Toolbar from "./components/Toolbar";
+import icons from './components/Icons'
 import l from './Localization';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;

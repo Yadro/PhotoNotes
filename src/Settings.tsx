@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
   StyleSheet, View, Image, Text, TextInput, ScrollView, ListView, TouchableNativeFeedback, TextStyle, ViewStyle,
 } from 'react-native';
-import Toolbar from "./Toolbar";
-import icons from './Icons'
+import Toolbar from "./components/Toolbar";
+import icons from './components/Icons'
 const {arrowWhite} = icons;
 
 const Item = ({title, onPress}) => (

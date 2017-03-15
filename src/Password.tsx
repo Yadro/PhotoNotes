@@ -14,10 +14,10 @@ import {
   TouchableWithoutFeedback,
   LayoutAnimation,
 } from 'react-native';
-import Toolbar from "./Toolbar";
-import icons from './Icons'
+import Toolbar from "./components/Toolbar";
+import icons from './components/Icons'
 import {range} from "./util/util";
-import {CircleButton} from "./CircleButton";
+import {CircleButton} from "./components/CircleButton";
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
 
 if (Platform.OS === 'android') {
