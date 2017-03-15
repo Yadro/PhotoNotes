@@ -11,9 +11,9 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import Toolbar from "./components/Toolbar";
-import icons from './components/Icons'
-import store from "./redux/Store";
+import Toolbar from "../components/Toolbar";
+import icons from '../components/Icons'
+import store from "../redux/Store";
 import NoteList from "./NoteList";
 import {ScreenNavigationProp} from "react-navigation";
 import l from './Localization';

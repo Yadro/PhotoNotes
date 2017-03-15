@@ -1,4 +1,4 @@
-import Note from "../Note";
+import Note from "../screens/Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
 const fs = require('react-native-fs');

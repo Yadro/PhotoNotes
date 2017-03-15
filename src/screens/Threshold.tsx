@@ -8,15 +8,15 @@ import {
   Image,
   ViewStyle,
 } from 'react-native';
-import {PhotoView, readThresholdSave} from '../android/PhotoModule/index.js';
+import {PhotoView, readThresholdSave} from '../../android/PhotoModule/index.js';
 import ImageResizer from 'react-native-image-resizer';
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
 import CheckBox from 'react-native-check-box';
-import Toolbar from "./components/Toolbar";
-import icons from './components/Icons';
-import store from "./redux/Store";
-import {getSizeInContainer} from "./util/util";
+import Toolbar from "../components/Toolbar";
+import icons from '../components/Icons';
+import store from "../redux/Store";
+import {getSizeInContainer} from "../util/util";
 import l from './Localization';
 const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;

@@ -12,16 +12,16 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-import Toolbar from "./components/Toolbar";
+import Toolbar from "../components/Toolbar";
 import {ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
-import store from "./redux/Store";
+import store from "../redux/Store";
 import Note from "./Note";
-import icons from './components/Icons'
+import icons from '../components/Icons'
 import NoteEdit from "./NoteEdit";
-import {Actions} from "./redux/Actions";
-import {Markdown} from "./components/Markdown";
-import {getResizedImage, getSizePexel, pixelToDimensions} from "./util/util";
+import {Actions} from "../redux/Actions";
+import {Markdown} from "../components/Markdown";
+import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from './Localization';
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;

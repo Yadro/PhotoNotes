@@ -11,16 +11,16 @@ import {
   DrawerNavigator,
 } from 'react-navigation';
 import store from "./redux/Store";
-import NoteEdit from './NoteEdit';
-import NoteView from "./NoteView";
+import NoteEdit from './screens/NoteEdit';
+import NoteView from "./screens/NoteView";
 import {ActionOther} from "./redux/Actions";
-import NoteList from "./NoteList";
-import Threshold from "./Threshold";
-import PhotoViewComp from "./PhotoView";
+import NoteList from "./screens/NoteList";
+import Threshold from "./screens/Threshold";
+import PhotoViewComp from "./screens/PhotoView";
 import {tracker} from "./Analytics";
-import Search from "./Search";
-import Password from "./Password";
-import Settings from "./Settings";
+import Search from "./screens/Search";
+import Password from "./screens/Password";
+import Settings from "./screens/Settings";
 
 const BasicApp = StackNavigator({
   Main: {screen: NoteList},

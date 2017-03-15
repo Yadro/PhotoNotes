@@ -13,17 +13,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import store from "./redux/Store";
-import {Actions} from "./redux/Actions";
+import store from "../redux/Store";
+import {Actions} from "../redux/Actions";
 import Note from "./Note";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
-import Toolbar from "./components/Toolbar";
-import icons from './components/Icons'
-import AutoExpandingTextInput from "./components/AutoExpandingTextInput";
-import {getResizedImage, pixelToDimensions, getSizePexel} from "./util/util";
-import {InputSelection} from "./components/AutoExpandingTextInput";
-import {tracker} from './Analytics';
+import Toolbar from "../components/Toolbar";
+import icons from '../components/Icons'
+import AutoExpandingTextInput from "../components/AutoExpandingTextInput";
+import {getResizedImage, pixelToDimensions, getSizePexel} from "../util/util";
+import {InputSelection} from "../components/AutoExpandingTextInput";
+import {tracker} from '../Analytics';
 import moment from 'moment';
 import l from './Localization';
 const {remove} = l.Alert;
