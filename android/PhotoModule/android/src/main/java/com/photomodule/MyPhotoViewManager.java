@@ -1,7 +1,9 @@
 package com.photomodule;
 
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
 import android.support.annotation.Nullable;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -16,6 +18,13 @@ public class MyPhotoViewManager extends SimpleViewManager<MyImageView> {
     public static final String REACT_CLASS = "RCTPhotoView";
     public AbstractDraweeControllerBuilder mDraweeControllerBuilder;
     public Object mCallerContext;
+
+    private static ColorMatrix grey = new ColorMatrix(new float[] {
+        0.2989f, 0.5870f, 0.1140f, 0, 0,
+        0.2989f, 0.5870f, 0.1140f, 0, 0,
+        0.2989f, 0.5870f, 0.1140f, 0, 0,
+        0, 0, 0, 1, 0
+    });
 
     @Override
     public String getName() {
@@ -71,19 +80,9 @@ public class MyPhotoViewManager extends SimpleViewManager<MyImageView> {
         if (value <= 0) {
             view.clearColorFilter();
         } else {
-            view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createGreyMatrix()));
+            view.setColorFilter(new ColorMatrixColorFilter(grey));
             view.setColorFilter(new ColorMatrixColorFilter(MyPhotoViewManager.createThresholdMatrix(value)));
         }
-    }
-
-    private static ColorMatrix createGreyMatrix() {
-        ColorMatrix matrix = new ColorMatrix(new float[] {
-                0.2989f, 0.5870f, 0.1140f, 0, 0,
-                0.2989f, 0.5870f, 0.1140f, 0, 0,
-                0.2989f, 0.5870f, 0.1140f, 0, 0,
-                0, 0, 0, 1, 0
-        });
-        return matrix;
     }
 
     // matrix that changes gray scale picture into black and white at given threshold.
@@ -98,6 +97,5 @@ public class MyPhotoViewManager extends SimpleViewManager<MyImageView> {
                 85.f, 85.f, 85.f, 0.f, -255.f * threshold,
                 0f, 0f, 0f, 1f, 0f
         });
-        return matrix;
     }
 }
