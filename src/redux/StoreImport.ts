@@ -21,6 +21,9 @@ export function importNotes(callback) {
     })
     .then((contents) => {
       contents = JSON.parse(contents);
+      if (Array.isArray(contents)) {
+        contents = contents.map(e => Note.createInstanse(e));
+      }
       callback(contents);
     })
     .catch((err) => {
@@ -38,32 +41,36 @@ async function writeFileNote(note: Note) {
     if (!note.fileName) {
       Actions.setFileName(note.id, fileName);
     }
-    return fs.writeFile(`${externalPath}/${fileName}.md`, note.title + '\n' + note.content, 'utf8')
+    return fs.writeFile(genPath(fileName), note.title + '\n' + note.content, 'utf8')
       .then(e => {
-        console.log('Saved file: ' + fileName);
+        console.log('Saved note: ' + fileName);
         Actions.setSaved(note.id)
       })
       .catch(e => console.error(e));
   } catch (e) {
-
+    console.log('fail to save file note', e);
   }
 }
 
 function createName(note: Note) {
   let fileName = transliterate(note.title.toLowerCase());
-  return fs.exists(externalPath + '/' + fileName)
+  return fs.exists(genPath(fileName))
     .then(exists => {
       if (!exists) {
         return fileName;
       }
       fileName = `${fileName}_${note.createdAt}`;
-      return fs.exists(externalPath + '/' + fileName)
-    }).then(exists => {
-    if (!exists) {
-      return fileName;
-    }
-    throw new Error(`File ${externalPath}/${fileName} exist`);
-  });
+      return fs.exists(genPath(fileName)).then(exists => {
+        if (!exists) {
+          return fileName;
+        }
+        throw new Error(`File ${genPath(fileName)} exist`);
+      });
+    });
+}
+
+function genPath(name) {
+  return externalPath + '/' + name + '.md';
 }
 
 function writeFile(path, data) {
