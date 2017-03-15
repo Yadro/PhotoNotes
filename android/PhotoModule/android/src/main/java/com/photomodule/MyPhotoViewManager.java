@@ -91,7 +91,7 @@ public class MyPhotoViewManager extends SimpleViewManager<MyImageView> {
     // and values bigger than 255 for the ones higher.
     // Because the final result is always trimed to bounds (0..255) it will result in bitmap made of black and white pixels only
     private static ColorMatrix createThresholdMatrix(int threshold) {
-        ColorMatrix matrix = new ColorMatrix(new float[] {
+        return new ColorMatrix(new float[] {
                 85.f, 85.f, 85.f, 0.f, -255.f * threshold,
                 85.f, 85.f, 85.f, 0.f, -255.f * threshold,
                 85.f, 85.f, 85.f, 0.f, -255.f * threshold,
