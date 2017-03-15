@@ -1,17 +1,21 @@
 import Note from "../screens/Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
+import store from "./Store";
 const fs = require('react-native-fs');
 
 const path = fs.DocumentDirectoryPath + '/data.json';
 const externalPath = fs.ExternalDirectoryPath;
 console.log(externalPath);
 
-export async function exportNotes(notes: Note[]) {
-  notes.forEach(n => {
-    writeFileNote(n);
+export function exportNotes(notes: Note[]) {
+  const promises = notes.map(n => {
+    return writeFileNote(n);
   });
-  writeFile(path, JSON.stringify(notes));
+  Promise.all(promises).then(e => {
+    console.log(e);
+    writeFile(path, JSON.stringify(store.getState().notes));
+  });
 }
 
 export function importNotes(callback) {
@@ -31,28 +35,33 @@ export function importNotes(callback) {
     });
 }
 
-async function writeFileNote(note: Note) {
+function writeFileNote(note: Note) {
   if (note.saved) {
-    return;
+    return false;
   }
-  try {
-    let fileName = note.fileName || await createName(note);
-    console.log(fileName);
-    if (!note.fileName) {
-      Actions.setFileName(note.id, fileName);
-    }
-    return fs.writeFile(genPath(fileName), note.title + '\n' + note.content, 'utf8')
-      .then(e => {
-        console.log('Saved note: ' + fileName);
-        Actions.setSaved(note.id)
-      })
-      .catch(e => console.error(e));
-  } catch (e) {
-    console.log('fail to save file note', e);
-  }
+  let fileName;
+  return createName(note, note.fileName)
+    .then(name => {
+      fileName = name;
+      if (!note.fileName) {
+        Actions.setFileName(note.id, fileName);
+      }
+      return fs.writeFile(genPath(fileName), note.title + '\n' + note.content, 'utf8')
+    }).then(e => {
+      console.log('Saved note: ' + fileName);
+      Actions.setSaved(note.id);
+      return true;
+    }).catch(e => {
+      console.log('fail to save file note', e);
+      console.error(e);
+      return note.id;
+    });
 }
 
-function createName(note: Note) {
+function createName(note: Note, name) {
+  if (name) {
+    return name;
+  }
   let fileName = transliterate(note.title.toLowerCase());
   return fs.exists(genPath(fileName))
     .then(exists => {
