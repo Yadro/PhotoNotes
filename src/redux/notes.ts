@@ -1,5 +1,5 @@
 import Note from "../screens/Note";
-import {setFileName, setSaved, addType, updateType} from "../constants/ActionTypes";
+import {setFileName, setSaved, addNote, updateNote} from "../constants/ActionTypes";
 import {set, compose} from 'ramda';
 import {lensProp, lensById} from "../util/lens";
 
@@ -21,7 +21,7 @@ const lensNoteSaved = id => compose(
 export default (state: Note[] = [], actions): NoteState => {
   let note: Note;
   switch (actions.type) {
-    case addType:
+    case addNote:
       note = set(lensId, getMax(state) + 1, actions.note);
       note = set(lensCreatedAt, actions.createdAt, note);
       return [
@@ -29,7 +29,7 @@ export default (state: Note[] = [], actions): NoteState => {
         note
       ];
 
-    case updateType:
+    case updateNote:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
       return set(lensById(actions.note.id), note, state);
 

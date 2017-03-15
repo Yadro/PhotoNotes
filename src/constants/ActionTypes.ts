@@ -1,5 +1,5 @@
 export const setFileName = 'SET_FILE_NAME';
 export const setSaved = 'SET_SAVED';
 
-export const addType = 'ADD';
-export const updateType = 'UPDATE';
+export const addNote = 'ADD';
+export const updateNote = 'UPDATE';
