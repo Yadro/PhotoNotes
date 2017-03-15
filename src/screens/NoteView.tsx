@@ -16,7 +16,7 @@ import Toolbar from "../components/Toolbar";
 import {ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
 import store from "../redux/Store";
-import Note from "./Note";
+import Note from "../redux/Note";
 import icons from '../components/Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "../redux/Actions";

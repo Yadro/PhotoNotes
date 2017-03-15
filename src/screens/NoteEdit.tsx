@@ -15,7 +15,7 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import store from "../redux/Store";
 import {Actions} from "../redux/Actions";
-import Note from "./Note";
+import Note from "../redux/Note";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
 import Toolbar from "../components/Toolbar";

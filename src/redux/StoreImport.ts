@@ -1,4 +1,4 @@
-import Note from "../screens/Note";
+import Note from "./Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
 import store from "./Store";
@@ -13,7 +13,6 @@ export function exportNotes(notes: Note[]) {
     return writeFileNote(n);
   });
   Promise.all(promises).then(e => {
-    console.log(e);
     writeFile(path, JSON.stringify(store.getState().notes));
   });
 }
@@ -48,7 +47,6 @@ function writeFileNote(note: Note) {
       }
       return fs.writeFile(genPath(fileName), note.title + '\n' + note.content, 'utf8')
     }).then(e => {
-      console.log('Saved note: ' + fileName);
       Actions.setSaved(note.id);
       return true;
     }).catch(e => {

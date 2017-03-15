@@ -1,4 +1,4 @@
-import Note from "../screens/Note";
+import Note from "./Note";
 import {setFileName, setSaved, addNote, updateNote} from "../constants/ActionTypes";
 import {set, compose} from 'ramda';
 import {lensProp, lensById} from "../util/lens";

@@ -16,7 +16,7 @@ import {
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
 import store from "../redux/Store";
-import Note from "./Note";
+import Note from "../redux/Note";
 import {Actions} from "../redux/Actions";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
