@@ -1,6 +1,6 @@
 import store from './Store';
 import {exportNotes} from "./StoreImport";
-import {setFileName, setSaved} from '../constanse/ActionTypes';
+import {setFileName, setSaved} from '../constants/ActionTypes';
 
 export const Actions = {
   add(note) {
