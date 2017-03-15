@@ -49,20 +49,21 @@ async function writeFileNote(note: Note) {
   }
 }
 
-async function createName(note: Note) {
-  let fileName = transliterate(note.title);
-  try {
-    if (!(await fs.exists(externalPath + '/' + fileName))) {
+function createName(note: Note) {
+  let fileName = transliterate(note.title.toLowerCase());
+  return fs.exists(externalPath + '/' + fileName)
+    .then(exists => {
+      if (!exists) {
+        return fileName;
+      }
+      fileName = `${fileName}_${note.createdAt}`;
+      return fs.exists(externalPath + '/' + fileName)
+    }).then(exists => {
+    if (!exists) {
       return fileName;
     }
-    fileName = `${fileName}_${note.createdAt}`;
-    if (!(await fs.exists(externalPath + '/' + fileName))) {
-      return fileName;
-    }
-  } catch(e) {
-    console.log(e);
-  }
-  throw new Error(`File ${externalPath}/${fileName} exist`);
+    throw new Error(`File ${externalPath}/${fileName} exist`);
+  });
 }
 
 function writeFile(path, data) {
