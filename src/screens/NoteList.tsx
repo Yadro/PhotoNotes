@@ -55,7 +55,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-  searchDelay;
 
   constructor(props) {
     super(props);
@@ -208,6 +207,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
   };
 
   render() {
+    console.log('render');
+
     const {multi} = this.state;
     const { navigate } = this.props.navigation;
     return (
@@ -219,9 +220,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : toolbarMainItems}
         />
-        <ScrollView>
-          <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
-        </ScrollView>
+        <ListView style={{backgroundColor: 'white'}} enableEmptySections
+                  dataSource={this.state.dataSource} renderRow={this.renderRow}/>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>
       </View>
@@ -232,7 +232,6 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 const css = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
 
   separator: {

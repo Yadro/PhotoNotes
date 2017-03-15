@@ -28,7 +28,6 @@ export default class AutoExpandingTextInput extends React.Component<AutoExpandin
   }
 
   componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps');
     this.setState({text: props.value});
   }
 

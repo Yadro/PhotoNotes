@@ -111,7 +111,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
       <View style={css.container}>
         <Toolbar title={toolbar.header} actions={toolbarActions} color="white" backgroundColor="#01B47C"
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
           <View style={css.header}>
             <Text style={css.title}>{title}</Text>
             <Text style={css.time}>{moment(updatedAt || createdAt).format('lll')}</Text>
@@ -136,7 +136,6 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
 const css = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
 
   header: {
@@ -151,7 +150,6 @@ const css = StyleSheet.create({
   title: {
     fontSize: 20,
     color: 'black',
-    backgroundColor: '#f7f7f7',
   },
   time: {
     color: 'black',
