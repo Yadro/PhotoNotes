@@ -10,7 +10,7 @@ export const lensProp = prop => lens(
 export const over = (someLens, func, data) => {
   const val = view(someLens, data);
   const newVal = func(val);
-  return set(someLens, newVal);
+  return set(someLens, newVal, data);
 };
 
 

@@ -16,6 +16,8 @@ export default class Note {
   fileName = null;
   saved = false;
 
+  tags: string[] = [];
+
 
   constructor(title = '', content = '', image = '', images?) {
     this.title = title;
