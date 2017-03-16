@@ -103,7 +103,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       size: null,
       selection: {start: 0, end: 0},
     });
-    if (__DEV__) tracker.trackScreenView('NoteEdit');
+    if (!__DEV__) tracker.trackScreenView('NoteEdit');
   }
 
   showPicker = () => {
