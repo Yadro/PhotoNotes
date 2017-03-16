@@ -14,9 +14,9 @@ import {
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import store from "../redux/Store";
-import NoteList from "./NoteList";
 import {ScreenNavigationProp} from "react-navigation";
 import l from './Localization';
+import PreviewCircle from '../components/PreviewCircle';
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
@@ -83,7 +83,7 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
           <View style={css.imagePrevWrapper}>
             {!!thumbnail ?
               <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
-              NoteList.renderPreviewCircle(title)}
+              <PreviewCircle text={title}/>}
           </View>
           <Text style={css.text}>{title}</Text>
         </View>

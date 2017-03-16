@@ -22,6 +22,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import l from './Localization';
 import {connect} from "react-redux";
+import PreviewCircle from '../components/PreviewCircle';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 
@@ -148,7 +149,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   pressHandler = (id) => () => {
-    const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
     if (this.state.multi) {
       let {selected} = this.state;
       if (selected.includes(id)) {
@@ -161,15 +162,6 @@ class NoteList extends Component<NoteListP, NoteListS> {
       navigate('NoteView', {id: id})
     }
   };
-
-  static renderPreviewCircle(text: string = '') {
-    const symbols = text.split(/\s+/).map(e => e.charAt(0).toUpperCase()).join('').substr(0, 2);
-    return <View style={css.previewContainer}>
-      <View style={css.previewContainerWrapper}>
-        <Text style={css.preview}>{symbols}</Text>
-      </View>
-    </View>;
-  }
 
   renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     console.log(sectionID, rowID);
@@ -189,7 +181,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
           <View style={css.imagePrevWrapper}>
             {!!thumbnail ?
               <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
-              NoteList.renderPreviewCircle(title)}
+              <PreviewCircle text={title}/>}
           </View>
           <Text style={css.text}>{title}</Text>
         </View>
@@ -223,7 +215,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     console.log('render');
 
     const {multi} = this.state;
-    const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
         <Toolbar title={multi ? "Select to remove" : 'edditr'}
@@ -317,30 +309,4 @@ const css = StyleSheet.create({
     height: 1,
     backgroundColor: '#ebebeb',
   },
-
-  /** Circle */
-  previewContainer: {
-    borderRadius: 21,
-    width: 42,
-    height: 42,
-    backgroundColor: '#01B47C'
-  },
-  previewContainerWrapper: {
-    flex: 1,
-    height: 42,
-    justifyContent: 'center',
-    alignItems: 'center',
-  } as ViewStyle,
-  preview: {
-    fontSize: 20,
-    color: '#fff',
-  },
-
-  button: {
-    position: 'absolute',
-    width: 56,
-    height: 56,
-    right: 20,
-    bottom: 20,
-  }
 });
