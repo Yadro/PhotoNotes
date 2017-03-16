@@ -21,6 +21,7 @@ import {Actions} from "../redux/Actions";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import l from './Localization';
+import {connect} from "react-redux";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 
@@ -42,8 +43,10 @@ const toolbarMainItems = [{
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
-interface NoteListS {
+interface NoteListP extends ScreenNavigationProp {
   notes;
+}
+interface NoteListS {
   dataSource?;
   multi?;
   selected?;
@@ -52,16 +55,16 @@ interface NoteListS {
   filter: boolean;
   search: string;
 }
-export default class NoteList extends Component<ScreenNavigationProp, NoteListS> {
+
+class NoteList extends Component<NoteListP, NoteListS> {
 
   private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
   constructor(props) {
     super(props);
-    const notes = store.getState().notes;
+    const notes = props.notes;
     this.state = {
-      notes,
       dataSource: this.ds.cloneWithRows(notes),
       multi: false,
       filter: false,
@@ -72,25 +75,18 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     };
   }
 
-  componentWillMount() {
-    this.disp = store.subscribe(() => {
-      const {state} = this;
-      const {notes} = store.getState();
+  componentWillReceiveProps(newProps) {
+    const {props} = this;
+    const {notes} = newProps;
 
-      if (notes.length == state.notes.length &&
-        notes.every(note => Note.equalNeedUpdate(note, state.notes.find(e => e.id == note.id)))) {
-        return;
-      }
+    if (notes.length == props.notes.length &&
+      notes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
+      return;
+    }
 
-      this.setState({
-        notes,
-        dataSource: this.ds.cloneWithRows(notes),
-      });
+    this.setState({
+      dataSource: this.ds.cloneWithRows(notes),
     });
-  }
-
-  componentWillUnmount() {
-    this.disp();
   }
 
   disableMultiSelect = () => {
@@ -106,7 +102,7 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     if (sortBy == this.state.sorting) {
       reverse = !reverse;
     }
-    const {notes} = store.getState();
+    const {notes} = this.props;
     const sort = {
       'name': (items) => items.sort((a: Note, b) => ((reverse) ? a.title > b.title : a.title < b.title) ? 1 : a.title == b.title ? 0 : -1),
       'create': (items) => items.sort((a: Note, b) => ((reverse) ? a.createdAt - b.createdAt : b.createdAt + a.createdAt)),
@@ -239,6 +235,8 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
     );
   }
 }
+
+export default connect(state => ({notes: state.notes}))(NoteList);
 
 const css = StyleSheet.create({
   container: {

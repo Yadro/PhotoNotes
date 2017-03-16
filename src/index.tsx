@@ -10,6 +10,7 @@ import {
   TabNavigator,
   DrawerNavigator,
 } from 'react-navigation';
+import {Provider, connect} from 'react-redux'
 import store from "./redux/Store";
 import NoteEdit from './screens/NoteEdit';
 import NoteView from "./screens/NoteView";
@@ -22,7 +23,7 @@ import Search from "./screens/Search";
 import Password from "./screens/Password";
 import Settings from "./screens/Settings";
 
-const BasicApp = StackNavigator({
+const App = StackNavigator({
   Main: {screen: NoteList},
   Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
@@ -44,12 +45,16 @@ export default class AppWithStore extends Component<any, any> {
   }
 
   render() {
-    return <View style={{flex: 1}}>
-      <StatusBar
-        backgroundColor="#019967"
-        barStyle="light-content"
-      />
-      <BasicApp/>
-    </View>
+    return (
+      <Provider store={store}>
+        <View style={{flex: 1}}>
+          <StatusBar
+            backgroundColor="#019967"
+            barStyle="light-content"
+          />
+          <App/>
+        </View>
+      </Provider>
+    )
   }
 }
