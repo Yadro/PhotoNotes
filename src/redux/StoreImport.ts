@@ -58,7 +58,7 @@ function writeFileNote(note: Note) {
 
 function createName(note: Note, name) {
   if (name) {
-    return name;
+    return new Promise(resolve => resolve(name));
   }
   let fileName = transliterate(note.title.toLowerCase());
   return fs.exists(genPath(fileName))
