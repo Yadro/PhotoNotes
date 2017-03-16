@@ -28,7 +28,7 @@ export default class Note {
     }
   }
 
-  static createInstanse(data) {
+  static createInstance(data) {
     const note = new Note(data.title, data.content, data.image, data.images);
     note.id = data.id;
     note.createdAt = data.createdAt;
@@ -36,6 +36,9 @@ export default class Note {
     data.originalImage = data.originalImage;
     note.fileName = data.fileName;
     note.saved = data.saved;
+    if (data.tags) {
+      note.tags = data.tags;
+    }
     return note;
   }
 

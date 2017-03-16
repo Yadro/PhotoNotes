@@ -81,7 +81,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         note = params.note;
       } else if (params.id) {
         // from list
-        note = Note.createInstanse(notes.find(e => e.id == params.id) || {});
+        note = Note.createInstance(notes.find(e => e.id == params.id) || {});
         actions.push({title: toolbar.remove, icon: deleteIconWhite, show: 'always'});
         state = {save: true};
       }

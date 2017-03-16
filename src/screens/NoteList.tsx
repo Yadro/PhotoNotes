@@ -40,11 +40,14 @@ const toolbarMainItems = [{
   title: sortCreate, show: 'never'
 }, {
   title: sortEdit, show: 'never'
+}, {
+  title: 'Корзина', show: 'never'
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
-  notes;
+  notes: Note[];
+  tag: string;
 }
 interface NoteListS {
   dataSource?;
@@ -57,8 +60,6 @@ interface NoteListS {
 }
 
 class NoteList extends Component<NoteListP, NoteListS> {
-
-  private disp;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
   constructor(props) {
@@ -75,17 +76,20 @@ class NoteList extends Component<NoteListP, NoteListS> {
     };
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: NoteListP) {
     const {props} = this;
-    const {notes} = newProps;
+    const {notes, tag} = newProps;
 
-    if (notes.length == props.notes.length &&
-      notes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
+    const checker = check(tag);
+    const filteredNotes = notes.filter(n => checker(n.tags));
+
+    if (filteredNotes.length == props.notes.length &&
+      filteredNotes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
       return;
     }
 
     this.setState({
-      dataSource: this.ds.cloneWithRows(notes),
+      dataSource: this.ds.cloneWithRows(filteredNotes),
     });
   }
 
@@ -209,6 +213,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
         this.toggleSort("create");
       } else if (action == 3) {
         this.toggleSort("edit");
+      } else if (action == 4) {
+        // this.props.navigation.navigate('Trash');
       }
     }
   };
@@ -236,7 +242,24 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 }
 
-export default connect(state => ({notes: state.notes}))(NoteList);
+export default connect(state => ({notes: state.notes, tag: '!trash'}))(NoteList);
+
+
+const check = (tag: string) => {
+  let include;
+  let query;
+  if (tag.charAt(0) == '!') {
+    include = false;
+    query = tag.substr(1);
+  } else {
+    include = true;
+    query = tag;
+  }
+  return (values: string[]) => {
+    const res = values.indexOf(query);
+    return include ? res > -1 : res == -1;
+  };
+};
 
 const css = StyleSheet.create({
   container: {

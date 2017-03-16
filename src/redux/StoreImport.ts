@@ -25,7 +25,7 @@ export function importNotes(callback) {
     .then((contents) => {
       contents = JSON.parse(contents);
       if (Array.isArray(contents)) {
-        contents = contents.map(e => Note.createInstanse(e));
+        contents = contents.map(e => Note.createInstance(e));
       }
       callback(contents);
     })
