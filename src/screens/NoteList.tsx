@@ -22,7 +22,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import l from './Localization';
 import {connect} from "react-redux";
-import PreviewCircle from '../components/PreviewCircle';
+import List from "./List";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 
@@ -163,32 +163,6 @@ class NoteList extends Component<NoteListP, NoteListS> {
     }
   };
 
-  renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    console.log(sectionID, rowID);
-    return <View key={`${sectionID}-${rowID}`} style={css.separator}/>
-  }
-
-  renderRow = (rowData: Note) => {
-    const {id, image, title, images} = rowData;
-    const {selected} = this.state;
-    const isSelected = selected.includes(id);
-    const thumbnail = images && images.thumbnail && images.thumbnail['50'] || image;
-    return (
-      <TouchableNativeFeedback onPress={this.pressHandler(id)}
-                               onLongPress={this.longPressHandler.bind(null, id)}
-                               delayLongPress={delay}>
-        <View style={[css.item, isSelected ? css.selectedItem : null]}>
-          <View style={css.imagePrevWrapper}>
-            {!!thumbnail ?
-              <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
-              <PreviewCircle text={title}/>}
-          </View>
-          <Text style={css.text}>{title}</Text>
-        </View>
-      </TouchableNativeFeedback>
-    );
-  };
-
   onActionSelected = (action) => {
     if (this.state.multi) {
       if (action == null) {
@@ -214,7 +188,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   render() {
     console.log('render');
 
-    const {multi} = this.state;
+    const {multi, dataSource, selected} = this.state;
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
@@ -225,8 +199,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
                  onActionSelected={this.onActionSelected}
                  actions={multi ? toolbarActionsItems : toolbarMainItems}
         />
-        <ListView style={{backgroundColor: 'white'}} enableEmptySections
-                  dataSource={this.state.dataSource} renderRow={this.renderRow}/>
+        <List dataSource={dataSource} selected={selected}
+              pressHandler={this.pressHandler} longPressHandler={this.longPressHandler}/>
         <ActionButton buttonColor="rgba(231,76,60,1)"
                       onPress={() => {navigate('NoteEdit')}}/>
       </View>
@@ -257,39 +231,6 @@ const css = StyleSheet.create({
   container: {
     flex: 1,
   },
-
-  separator: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: '#dedede'
-  },
-  item: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  text: {
-    flex: 1,
-    fontSize: 17,
-    color: 'black',
-  },
-  selectedItem: {
-    backgroundColor: '#ddd',
-  },
-
-  /** Image preview */
-  imagePrevWrapper: {
-    width: 64,
-    height: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
-  } as ViewStyle,
-  imagePrev: {
-    width: 50,
-    height: 50,
-    margin: 5
-  },
-
 
   /** Search */
   search: {
