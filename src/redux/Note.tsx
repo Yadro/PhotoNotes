@@ -36,4 +36,17 @@ export default class Note {
     note.saved = data.saved;
     return note;
   }
+
+  static equalNeedUpdate(a: Note, b: Note) {
+    if (a && b) {
+      return Object.keys(a)
+        .filter(e => ignoreProps.indexOf(e) == -1)
+        .every(key => {
+          return a[key] == b[key];
+        })
+    }
+    return false;
+  }
 }
+
+const ignoreProps = ['fileName', 'saved'];

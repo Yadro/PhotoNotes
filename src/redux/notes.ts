@@ -19,6 +19,7 @@ const lensNoteSaved = id => compose(
 );
 
 export default (state: Note[] = [], actions): NoteState => {
+  console.log(state);
   let note: Note;
   switch (actions.type) {
     case addNote:

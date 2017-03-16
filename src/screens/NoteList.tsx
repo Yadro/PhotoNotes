@@ -43,6 +43,7 @@ const toolbarMainItems = [{
 
 type SortMethod ='name' | 'create' | 'edit';
 interface NoteListS {
+  notes;
   dataSource?;
   multi?;
   selected?;
@@ -58,8 +59,10 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   constructor(props) {
     super(props);
+    const notes = store.getState().notes;
     this.state = {
-      dataSource: this.ds.cloneWithRows(store.getState().notes),
+      notes,
+      dataSource: this.ds.cloneWithRows(notes),
       multi: false,
       filter: false,
       search: '',
@@ -71,8 +74,16 @@ export default class NoteList extends Component<ScreenNavigationProp, NoteListS>
 
   componentWillMount() {
     this.disp = store.subscribe(() => {
+      const {state} = this;
       const {notes} = store.getState();
+
+      if (notes.length == state.notes.length &&
+        notes.every(note => Note.equalNeedUpdate(note, state.notes.find(e => e.id == note.id)))) {
+        return;
+      }
+
       this.setState({
+        notes,
         dataSource: this.ds.cloneWithRows(notes),
       });
     });
