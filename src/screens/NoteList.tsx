@@ -107,7 +107,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (sortBy == this.state.sorting) {
       reverse = !reverse;
     }
-    const {notes} = this.props;
+    const {notes, tag} = this.props;
     const sort = {
       'name': (items) => items.sort((a: Note, b) => ((reverse) ? a.title > b.title : a.title < b.title) ? 1 : a.title == b.title ? 0 : -1),
       'create': (items) => items.sort((a: Note, b) => ((reverse) ? a.createdAt - b.createdAt : b.createdAt + a.createdAt)),
@@ -116,10 +116,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
     if (sort[sortBy]) {
       const sorted = sort[sortBy](notes);
+      const checker = check(tag);
+      const filteredNotes = sorted.filter(n => checker(n.tags));
       this.setState({
         reverse,
         sorting: sortBy,
-        dataSource: this.ds.cloneWithRows(sorted)
+        dataSource: this.ds.cloneWithRows(filteredNotes)
       });
     }
   };
