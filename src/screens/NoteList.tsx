@@ -28,8 +28,6 @@ const {remove, removeMulti} = l.Alert;
 
 const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
 
-const delay = __DEV__ ? 3000 : 1000;
-
 const toolbarActionsItems: ToolbarAndroidAction[] = [
   {title: toolbar.remove, icon: deleteIconWhite, show: 'always'},
 ];
@@ -182,7 +180,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       } else if (action == 3) {
         this.toggleSort("edit");
       } else if (action == 4) {
-        // this.props.navigation.navigate('Trash');
+        this.props.navigation.navigate('Trash');
       }
     }
   };

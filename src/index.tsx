@@ -22,9 +22,11 @@ import {tracker} from "./Analytics";
 import Search from "./screens/Search";
 import Password from "./screens/Password";
 import Settings from "./screens/Settings";
+import Trash from './screens/Trash';
 
 const App = StackNavigator({
   Main: {screen: NoteList},
+  Trash: {screen: Trash},
   Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
