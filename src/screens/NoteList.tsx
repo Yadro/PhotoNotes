@@ -2,16 +2,11 @@ import * as React from 'react';
 import {Component} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   ListView,
-  ScrollView,
-  TouchableNativeFeedback,
   Vibration,
   Alert,
-  ViewStyle,
   ToolbarAndroidAction,
-  Image,
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
@@ -23,6 +18,7 @@ import icons from '../components/Icons'
 import l from './Localization';
 import {connect} from "react-redux";
 import List from "./List";
+import {check} from "../util/tagUtil";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 
@@ -210,22 +206,6 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
 export default connect(state => ({notes: state.notes, tag: '!trash'}))(NoteList);
 
-
-const check = (tag: string) => {
-  let include;
-  let query;
-  if (tag.charAt(0) == '!') {
-    include = false;
-    query = tag.substr(1);
-  } else {
-    include = true;
-    query = tag;
-  }
-  return (values: string[]) => {
-    const res = values.indexOf(query);
-    return include ? res > -1 : res == -1;
-  };
-};
 
 const css = StyleSheet.create({
   container: {

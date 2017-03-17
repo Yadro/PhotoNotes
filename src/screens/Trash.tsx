@@ -18,6 +18,7 @@ import l from './Localization';
 import Note from "../redux/Note";
 import store from "../redux/Store";
 import {removeAnywayArr, removeAnyway} from "../constants/ActionTypes";
+import {check} from "../util/tagUtil";
 const {removeMulti} = l.Alert;
 const {arrowWhite, deleteIconWhite} = icons;
 
@@ -136,19 +137,3 @@ class Trash extends React.Component<TrashP, TrashS> {
 }
 
 export default connect(state => ({notes: state.notes, tag: 'trash'}))(Trash);
-
-const check = (tag: string) => {
-  let include;
-  let query;
-  if (tag.charAt(0) == '!') {
-    include = false;
-    query = tag.substr(1);
-  } else {
-    include = true;
-    query = tag;
-  }
-  return (values: string[]) => {
-    const res = values.indexOf(query);
-    return include ? res > -1 : res == -1;
-  };
-};
