@@ -34,12 +34,15 @@ interface TrashS {
 }
 class Trash extends React.Component<TrashP, TrashS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+  check;
 
   constructor(props) {
     super(props);
+    const {tag, notes} = props;
+    this.check = check(tag);
     this.state = {
       notes: props.notes,
-      dataSource: this.ds.cloneWithRows(props.notes),
+      dataSource: this.ds.cloneWithRows(notes.filter(n => this.check(n.tags))),
       multi: false,
       selected: [],
     };
@@ -47,16 +50,13 @@ class Trash extends React.Component<TrashP, TrashS> {
 
   componentWillReceiveProps(newProps) {
     const {props} = this;
-    const {notes, tag} = newProps;
-
-    const checker = check(tag);
-    const filteredNotes = notes.filter(n => checker(n.tags));
+    const {notes} = newProps;
+    const filteredNotes = notes.filter(n => this.check(n.tags));
 
     if (filteredNotes.length == props.notes.length &&
       filteredNotes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
       return;
     }
-
     this.setState({
       notes: filteredNotes,
       dataSource: this.ds.cloneWithRows(filteredNotes),
