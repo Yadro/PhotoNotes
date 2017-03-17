@@ -38,6 +38,8 @@ const toolbarMainItems = [{
   title: sortEdit, show: 'never'
 }, {
   title: 'Корзина', show: 'never'
+}, {
+  title: 'Настройки', show: 'never'
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
@@ -179,6 +181,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
         this.toggleSort("edit");
       } else if (action == 4) {
         this.props.navigation.navigate('Trash');
+      } else if (action == 5) {
+        this.props.navigation.navigate('Settings');
       }
     }
   };

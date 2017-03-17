@@ -6,10 +6,11 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 const {arrowWhite} = icons;
 
-const Item = ({title, onPress}) => (
+const Item = ({title, subtitle, onPress}) => (
   <TouchableNativeFeedback onPress={onPress}>
     <View style={css.item}>
-      <Text>{title}</Text>
+      <Text style={css.itemText}>{title}</Text>
+      {subtitle && <Text>{subtitle}</Text>}
     </View>
   </TouchableNativeFeedback>
 );
@@ -21,6 +22,10 @@ interface SettingsS {
 export default class Settings extends React.Component<SettingsP, SettingsS> {
 
   items = [{
+    title: 'Выбрать папку для сохранения',
+    subtitle: '/storage/emulated/0/Android/data/com.photonotes/files',
+    onPress: () => {},
+  },{
     title: 'Импорт',
     onPress: () => {},
   }, {
@@ -39,7 +44,7 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
         <Toolbar title={'Настройки'}
                  color="white" backgroundColor="#01B47C" navIcon={arrowWhite}/>
         <ScrollView >
-          {this.items.map((e, i) => <Item key={i} title={e.title} onPress={e.onPress}/>)}
+          {this.items.map((e, i) => <Item key={i} title={e.title} subtitle={e.subtitle} onPress={e.onPress}/>)}
         </ScrollView>
       </View>
     )
@@ -54,4 +59,8 @@ const css = StyleSheet.create({
   item: {
     padding: 10,
   },
+  itemText: {
+    fontSize: 15,
+    color: 'black',
+  }
 });
