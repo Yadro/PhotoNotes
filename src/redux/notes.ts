@@ -3,7 +3,7 @@ import {
   setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
   remove, removeArr, doImport, restore
 } from "../constants/ActionTypes";
-import {set, compose} from 'ramda';
+import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 
 export type NoteState = Note[];
@@ -32,10 +32,7 @@ export default (state: Note[] = [], actions): NoteState => {
     case addNote:
       note = set(lensId, getMax(state) + 1, actions.note);
       note = set(lensCreatedAt, actions.createdAt, note);
-      return [
-        ...state,
-        note
-      ];
+      return append(note, state);
 
     case updateNote:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
@@ -51,17 +48,12 @@ export default (state: Note[] = [], actions): NoteState => {
       return over(lensNoteTags(actions.id), tags => tags.filter(tag => tag != 'trash'), state);
 
     case remove:
-      return state.map(note => {
-        if (note.id == actions.id) {
-          return over(lensProp('tags'), (tags) => [...tags, 'trash'], note);
-        }
-        return note;
-      });
+      return over(lensNoteTags(actions.id), tags => append('trash', tags), state);
 
     case removeArr:
       return state.map(note => {
         if (actions.ids.includes(note.id)) {
-          return over(lensProp('tags'), (tags) => [...tags, 'trash'], note);
+          return over(lensTags, tags => append('trash', tags), note);
         }
         return note;
       });
