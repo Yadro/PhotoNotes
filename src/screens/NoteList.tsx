@@ -56,12 +56,14 @@ interface NoteListS {
 
 class NoteList extends Component<NoteListP, NoteListS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+  check;
 
   constructor(props) {
     super(props);
     const notes = props.notes;
+    this.check = check(props.tag);
     this.state = {
-      dataSource: this.ds.cloneWithRows(notes),
+      dataSource: this.ds.cloneWithRows(notes.filter(n => this.check(n.tags))),
       multi: false,
       filter: false,
       search: '',
@@ -73,10 +75,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   componentWillReceiveProps(newProps: NoteListP) {
     const {props} = this;
-    const {notes, tag} = newProps;
-
-    const checker = check(tag);
-    const filteredNotes = notes.filter(n => checker(n.tags));
+    const {notes} = newProps;
+    const filteredNotes = notes.filter(n => this.check(n.tags));
 
     if (filteredNotes.length == props.notes.length &&
       filteredNotes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
