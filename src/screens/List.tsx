@@ -2,7 +2,7 @@ import * as React from 'react';
 import {View, ListView, TouchableNativeFeedback, Image, Text, StyleSheet, ViewStyle} from 'react-native';
 import Note from "../redux/Note";
 import PreviewCircle from '../components/PreviewCircle';
-const delay = __DEV__ ? 3000 : 1000;
+const delay = __DEV__ ? 1000 : 1000;
 
 interface ListP {
   selected;

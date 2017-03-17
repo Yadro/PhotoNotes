@@ -1,7 +1,7 @@
 import Note from "./Note";
 import {
   setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
-  remove, removeArr, doImport
+  remove, removeArr, doImport, restore
 } from "../constants/ActionTypes";
 import {set, compose} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
@@ -11,6 +11,7 @@ export type NoteState = Note[];
 const lensCreatedAt = lensProp('createdAt');
 const lensUpdatedAt = lensProp('updatedAt');
 const lensId = lensProp('id');
+const lensTags = lensProp('tags');
 
 const lensNoteFilename = id => compose(
   lensById(id),
@@ -22,7 +23,7 @@ const lensNoteSaved = id => compose(
 );
 const lensNoteTags = id => compose(
   lensById(id),
-  lensProp('tags')
+  lensTags
 );
 
 export default (state: Note[] = [], actions): NoteState => {
@@ -45,6 +46,9 @@ export default (state: Note[] = [], actions): NoteState => {
 
     case setSaved:
       return set(lensNoteSaved(actions.id), true, state);
+
+    case restore:
+      return over(lensNoteTags(actions.id), tags => tags.filter(tag => tag != 'trash'), state);
 
     case remove:
       return state.map(note => {

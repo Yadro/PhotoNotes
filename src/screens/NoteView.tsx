@@ -25,26 +25,62 @@ import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from './Localization';
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
-const {editWhite, shareWhite, arrowWhite, deleteIconWhite} = icons;
+const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
 
 const toolbarActions = [
   {title: toolbar.edit, icon: editWhite, show: 'always'},
   {title: toolbar.share, icon: shareWhite, show: 'always'},
   {title: toolbar.del, icon: deleteIconWhite, show: 'always'},
 ];
+const trashActions = [
+  {title: 'Восстановить', icon: undoWhite, show: 'always'},
+  {title: toolbar.del, icon: deleteIconWhite, show: 'always'},
+];
 
+type TypeFromView = 'trash' | 'list';
+interface NoteViewP extends ScreenNavigationProp {
+  type?: TypeFromView;
+}
 interface NoteViewS {
   note;
   image;
   size: {width, height};
   isLoad;
+  type: TypeFromView;
 }
-export default class NoteView extends Component<ScreenNavigationProp, NoteViewS> {
+export default class NoteView extends Component<NoteViewP, NoteViewS> {
+  toolbarActions;
+  callbackActions;
 
   constructor(props) {
     super(props);
     const {notes} = store.getState();
-    const {id} = props.navigation.state.params;
+    const {id, type} = props.navigation.state.params;
+    const fromTrash = type == 'trash';
+    if (fromTrash) {
+      this.toolbarActions = toolbarActions;
+      this.callbackActions = [() => {
+        Actions.restore(this.state.note.id);
+        this.props.navigation.dispatch(NoteEdit.resetAction);
+      }];
+    } else {
+      this.toolbarActions = trashActions;
+      this.callbackActions = [
+        () => {
+          const {state: {params: {id}}, navigate} = this.props.navigation;
+          navigate('NoteEdit', {id});
+        },
+        () => {
+          const {title, content} = this.state.note;
+          Share.share({
+            title,
+            message: `${title}\n${content}`,
+          }, {});
+        },
+      ];
+    }
+    this.callbackActions.push(this.onDelete);
+
     const note: Note = notes.find(e => e.id == id);
 
     if (note.image) {
@@ -60,6 +96,7 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
       size: null,
       image: null,
       isLoad: false,
+      type,
     };
   }
 
@@ -77,24 +114,10 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
   };
 
   onActionSelected = (action) => {
-    const actions = [
-      () => {
-        const {state: {params: {id}}, navigate} = this.props.navigation;
-        navigate('NoteEdit', {id});
-      },
-      () => {
-        const {title, content} = this.state.note;
-        Share.share({
-          title,
-          message: `${title}\n${content}`,
-        }, {});
-      },
-      this.onDelete,
-    ];
     if (action == null) {
       this.props.navigation.goBack();
     } else {
-      actions[action] && actions[action]();
+      this.callbackActions[action] && this.callbackActions[action]();
     }
   };
 
@@ -103,13 +126,15 @@ export default class NoteView extends Component<ScreenNavigationProp, NoteViewS>
   };
 
   render() {
+    const {type} = this.state;
+    const fromTrash = type == 'trash';
     const {navigate} = this.props.navigation;
     const {image, note, size, isLoad} = this.state;
     const {title, content, createdAt, updatedAt} = note;
     const img = image ? {uri: image} : false;
     return (
       <View style={css.container}>
-        <Toolbar title={toolbar.header} actions={toolbarActions} color="white" backgroundColor="#01B47C"
+        <Toolbar title={toolbar.header} actions={fromTrash ? trashActions : toolbarActions} color="white" backgroundColor="#01B47C"
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
           <View style={css.header}>

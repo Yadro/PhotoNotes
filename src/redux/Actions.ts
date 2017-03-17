@@ -1,6 +1,9 @@
 import store from './Store';
 import {exportNotes} from "./StoreImport";
-import {setFileName, setSaved, remove, removeArr, removeAnyway, removeAnywayArr} from '../constants/ActionTypes';
+import {
+  setFileName, setSaved, remove, removeArr, removeAnyway, removeAnywayArr,
+  restore
+} from '../constants/ActionTypes';
 
 export const Actions = {
   add(note) {
@@ -11,6 +14,11 @@ export const Actions = {
   update(note) {
     note.saved = false;
     store.dispatch({type: 'UPDATE', note, updatedAt: Date.now()});
+    exportNotes(store.getState().notes);
+  },
+
+  restore(id) {
+    store.dispatch({type: restore, id});
     exportNotes(store.getState().notes);
   },
 

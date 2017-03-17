@@ -6,7 +6,7 @@ export default {
       menu: 'Меню',
       remove: 'Удалить',
     },
-    sortName: 'Сортировка по названию',
+    sortName: 'Сортировка по алфавиту',
     sortCreate: 'Сортировка дате создания',
     sortEdit: 'Сортировка по изменению',
     about: 'About',

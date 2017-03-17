@@ -6,6 +6,8 @@ export const updateNote = 'UPDATE';
 
 export const doImport = 'IMPORT';
 
+export const restore = 'RESTORE';
+
 export const remove = 'REMOVE';
 export const removeArr = 'REMOVE_ARR';
 export const removeAnyway = 'REMOVE_ANYWAY';

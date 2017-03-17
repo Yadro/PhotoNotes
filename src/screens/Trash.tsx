@@ -20,7 +20,7 @@ import store from "../redux/Store";
 import {removeAnywayArr, removeAnyway} from "../constants/ActionTypes";
 import {check} from "../util/tagUtil";
 const {removeMulti} = l.Alert;
-const {arrowWhite, deleteIconWhite} = icons;
+const {arrowWhite, closeWhite, deleteIconWhite} = icons;
 
 interface TrashP extends ScreenNavigationProp  {
   notes;
@@ -102,7 +102,7 @@ class Trash extends React.Component<TrashP, TrashS> {
       }
       this.setState({selected});
     } else {
-      navigate('NoteView', {id: id})
+      navigate('NoteView', {id: id, type: 'trash'});
     }
   };
 
@@ -123,10 +123,10 @@ class Trash extends React.Component<TrashP, TrashS> {
   };
 
   render() {
-    const {dataSource, selected} = this.state;
+    const {dataSource, selected, multi} = this.state;
     return <View style={{flex: 1}}>
-      <Toolbar title={'Корзина'}
-               navIcon={arrowWhite}
+      <Toolbar title={multi ? 'Выбрать' : 'Корзина'}
+               navIcon={multi ? closeWhite : arrowWhite}
                onActionSelected={this.onActionSelected}
                actions={[{title: 'Удалить', icon: deleteIconWhite, show: 'always'}]}
                color="white" backgroundColor="#01B47C"/>
