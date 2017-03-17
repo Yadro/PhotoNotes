@@ -23,6 +23,7 @@ import {Actions} from "../redux/Actions";
 import {Markdown} from "../components/Markdown";
 import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from './Localization';
+import {tracker} from "../Analytics";
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
@@ -98,6 +99,7 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
       isLoad: false,
       type,
     };
+    if (!__DEV__) tracker.trackScreenView('NoteView');
   }
 
   onDelete = () => {

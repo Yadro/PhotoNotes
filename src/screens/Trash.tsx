@@ -19,6 +19,7 @@ import Note from "../redux/Note";
 import store from "../redux/Store";
 import {removeAnywayArr, removeAnyway} from "../constants/ActionTypes";
 import {check} from "../util/tagUtil";
+import {tracker} from "../Analytics";
 const {removeMulti} = l.Alert;
 const {arrowWhite, closeWhite, deleteIconWhite} = icons;
 
@@ -46,6 +47,7 @@ class Trash extends React.Component<TrashP, TrashS> {
       multi: false,
       selected: [],
     };
+    if (!__DEV__) tracker.trackScreenView('Trash');
   }
 
   componentWillReceiveProps(newProps) {

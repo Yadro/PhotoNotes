@@ -18,6 +18,7 @@ import icons from '../components/Icons';
 import store from "../redux/Store";
 import {getSizeInContainer} from "../util/util";
 import l from './Localization';
+import {tracker} from "../Analytics";
 const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
@@ -57,6 +58,7 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
       src,
       disabled: false,
     };
+    if (!__DEV__) tracker.trackScreenView('Threshold');
   }
 
   onActionSelected = (action) => {

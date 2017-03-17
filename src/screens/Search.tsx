@@ -17,6 +17,7 @@ import store from "../redux/Store";
 import {ScreenNavigationProp} from "react-navigation";
 import l from './Localization';
 import PreviewCircle from '../components/PreviewCircle';
+import {tracker} from "../Analytics";
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
@@ -37,6 +38,7 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
       dataSource: this.ds.cloneWithRows(store.getState().notes),
       search: '',
     };
+    if (!__DEV__) tracker.trackScreenView('Search');
   }
 
   componentWillMount() {

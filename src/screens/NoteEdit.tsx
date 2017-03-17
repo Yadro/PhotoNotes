@@ -154,7 +154,6 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     }
     // this.props.navigation.goBack();
     this.props.navigation.dispatch(NoteEdit.resetAction);
-    if (!__DEV__) tracker.trackEvent('Note', 'New');
   };
 
   onDelete = () => {
@@ -166,7 +165,6 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       onPress: () => {
         Actions.remove(this.state.note.id);
         this.props.navigation.dispatch(NoteEdit.resetAction);
-        if (!__DEV__) tracker.trackEvent('Note', 'Remove');
       }
     }], {cancelable: true});
   };

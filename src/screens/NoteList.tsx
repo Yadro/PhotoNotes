@@ -19,6 +19,7 @@ import l from './Localization';
 import {connect} from "react-redux";
 import List from "./List";
 import {check} from "../util/tagUtil";
+import {tracker} from "../Analytics";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 
@@ -71,6 +72,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       sorting: 'edit',
       reverse: false,
     };
+    if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
