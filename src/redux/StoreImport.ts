@@ -25,13 +25,46 @@ export function importNotes(callback) {
     .then((contents) => {
       contents = JSON.parse(contents);
       if (Array.isArray(contents)) {
-        contents = contents.map(e => Note.createInstance(e));
+        const promises = contents.map(e => {
+          const note = Note.createInstance(e);
+          if (note.fileName) {
+            const path = genPath(note.fileName);
+            return fs.exists(path)
+              .then(exists => {
+                if (!exists) throw new Error(`File '${path}' not found`);
+                return fs.readFile(path, 'utf8');
+              })
+              .then(content => {
+                const data = parseNoteContent(content);
+                note.title = data.title;
+                note.content = data.content;
+                return note;
+              })
+              .catch(e => {
+                note.tags.push('trash');
+                return note;
+              });
+          }
+          return new Promise(resolve => resolve(note));
+        });
+        Promise.all(promises).then(data => {
+          callback(data);
+        })
+      } else {
+        callback(contents);
       }
-      callback(contents);
     })
     .catch((err) => {
       console.log(err.message, err.code);
     });
+}
+
+function parseNoteContent(text: string) {
+  const delim = text.search('\n');
+  return {
+    title: text.substr(0, delim),
+    content: text.substr(delim + 1),
+  };
 }
 
 function writeFileNote(note: Note) {

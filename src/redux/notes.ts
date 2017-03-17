@@ -1,5 +1,8 @@
 import Note from "./Note";
-import {setFileName, setSaved, addNote, updateNote} from "../constants/ActionTypes";
+import {
+  setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
+  remove, removeArr, doImport
+} from "../constants/ActionTypes";
 import {set, compose} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 
@@ -23,7 +26,6 @@ const lensNoteTags = id => compose(
 );
 
 export default (state: Note[] = [], actions): NoteState => {
-  console.log(state);
   let note: Note;
   switch (actions.type) {
     case addNote:
@@ -44,7 +46,7 @@ export default (state: Note[] = [], actions): NoteState => {
     case setSaved:
       return set(lensNoteSaved(actions.id), true, state);
 
-    case 'REMOVE':
+    case remove:
       return state.map(note => {
         if (note.id == actions.id) {
           return over(lensProp('tags'), (tags) => [...tags, 'trash'], note);
@@ -52,7 +54,7 @@ export default (state: Note[] = [], actions): NoteState => {
         return note;
       });
 
-    case 'REMOVE_ARR':
+    case removeArr:
       return state.map(note => {
         if (actions.ids.includes(note.id)) {
           return over(lensProp('tags'), (tags) => [...tags, 'trash'], note);
@@ -60,7 +62,13 @@ export default (state: Note[] = [], actions): NoteState => {
         return note;
       });
 
-    case 'IMPORT':
+    case removeAnyway:
+      return state.filter(e => e.id != actions.id);
+
+    case removeAnywayArr:
+      return state.filter(e => !actions.ids.includes(e.id));
+
+    case doImport:
       return actions.notes;
 
     default:

@@ -16,6 +16,8 @@ import icons from '../components/Icons'
 import {Actions} from "../redux/Actions";
 import l from './Localization';
 import Note from "../redux/Note";
+import store from "../redux/Store";
+import {removeAnywayArr, removeAnyway} from "../constants/ActionTypes";
 const {removeMulti} = l.Alert;
 const {arrowWhite, deleteIconWhite} = icons;
 
@@ -27,6 +29,7 @@ interface TrashS {
   selected;
   multi;
   dataSource;
+  notes;
 }
 class Trash extends React.Component<TrashP, TrashS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
@@ -34,6 +37,7 @@ class Trash extends React.Component<TrashP, TrashS> {
   constructor(props) {
     super(props);
     this.state = {
+      notes: props.notes,
       dataSource: this.ds.cloneWithRows(props.notes),
       multi: false,
       selected: [],
@@ -53,6 +57,7 @@ class Trash extends React.Component<TrashP, TrashS> {
     }
 
     this.setState({
+      notes: filteredNotes,
       dataSource: this.ds.cloneWithRows(filteredNotes),
     });
   }
@@ -68,7 +73,7 @@ class Trash extends React.Component<TrashP, TrashS> {
     }, {
       text: removeMulti.buttons.remove,
       onPress: () => {
-        Actions.removes(ids);
+        Actions.removesAnyway(ids);
         this.disableMultiSelect();
       }
     }], {cancelable: true});
@@ -111,7 +116,7 @@ class Trash extends React.Component<TrashP, TrashS> {
       if (action == null) {
         this.props.navigation.goBack();
       } else if (action == 0) {
-        this.removeItems(this.props.notes.map(e => e.id));
+        this.removeItems(this.state.notes.map(e => e.id));
       }
     }
   };
