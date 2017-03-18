@@ -169,9 +169,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
         this.toggleSearch();
       } else if (action == 1) {
         this.showSortAlert();
-      } else if (action == 4) {
+      } else if (action == 2) {
         this.props.navigation.navigate('Trash');
-      } else if (action == 5) {
+      } else if (action == 3) {
         this.props.navigation.navigate('Settings');
       }
     }
