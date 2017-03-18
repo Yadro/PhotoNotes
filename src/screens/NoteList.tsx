@@ -98,11 +98,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     this.props.navigation.navigate('Search');
   };
 
-  toggleSort = (sortBy: SortMethod) => {
-    let reverse = !!this.state.reverse;
-    if (sortBy == this.state.sorting) {
-      reverse = !reverse;
-    }
+  toggleSort = (sortBy: SortMethod, reverse) => {
     const {notes, tag} = this.props;
     const sort = {
       'name': (items) => items.sort((a: Note, b) => ((reverse) ? a.title > b.title : a.title < b.title) ? 1 : a.title == b.title ? 0 : -1),
@@ -182,11 +178,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   showSortAlert = () => {
-    PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: false},
+    const {reverse} = this.state;
+    PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: reverse},
       ['По алфавиту', 'По дате создания', 'По дате изменения'], (e) => {
         const sort = ['name', 'create', 'edit'];
         if (sort.indexOf(e.which)) {
-          this.toggleSort(sort[e.which] as SortMethod);
+          this.toggleSort(sort[e.which] as SortMethod, e.checkbox);
         }
       });
   };
