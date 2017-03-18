@@ -55,6 +55,12 @@ interface NoteListS {
   search: string;
 }
 
+const sort = {
+  'name': (items, reverse) => items.sort((a: Note, b) => ((reverse) ? a.title < b.title : a.title > b.title) ? 1 : a.title == b.title ? 0 : -1),
+  'create': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.createdAt - b.createdAt : b.createdAt - a.createdAt),
+  'edit': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt),
+};
+
 class NoteList extends Component<NoteListP, NoteListS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
   check;
@@ -63,30 +69,35 @@ class NoteList extends Component<NoteListP, NoteListS> {
     super(props);
     const notes = props.notes;
     this.check = check(props.tag);
+    const sorting = 'create';
+    const reverse = false;
+    const filtered = notes.filter(n => this.check(n.tags));
+    const sorted = sort[sorting](filtered, reverse);
     this.state = {
-      dataSource: this.ds.cloneWithRows(notes.filter(n => this.check(n.tags))),
+      dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
       filter: false,
       search: '',
       selected: [],
-      sorting: 'edit',
-      reverse: false,
+      sorting,
+      reverse,
     };
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
+    const {sorting, reverse} = this.state;
     const {props} = this;
     const {notes} = newProps;
-    const filteredNotes = notes.filter(n => this.check(n.tags));
+    const filtered = notes.filter(n => this.check(n.tags));
 
-    if (filteredNotes.length == props.notes.length &&
-      filteredNotes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
+    if (filtered.length == props.notes.length &&
+      filtered.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
       return;
     }
 
     this.setState({
-      dataSource: this.ds.cloneWithRows(filteredNotes),
+      dataSource: this.ds.cloneWithRows(sort[sorting](filtered, reverse)),
     });
   }
 
@@ -99,21 +110,14 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   toggleSort = (sortBy: SortMethod, reverse) => {
-    const {notes, tag} = this.props;
-    const sort = {
-      'name': (items) => items.sort((a: Note, b) => ((reverse) ? a.title < b.title : a.title > b.title) ? 1 : a.title == b.title ? 0 : -1),
-      'create': (items) => items.sort((a: Note, b) => ((reverse) ? a.createdAt - b.createdAt : b.createdAt - a.createdAt)),
-      'edit': (items) => items.sort((a: Note, b) => ((reverse) ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt)),
-    };
-
+    const {notes} = this.props;
     if (sort[sortBy]) {
-      const sorted = sort[sortBy](notes);
-      const checker = check(tag);
-      const filteredNotes = sorted.filter(n => checker(n.tags));
+      const filtered = notes.filter(n => this.check(n.tags));
+      const sorted = sort[sortBy](filtered, reverse);
       this.setState({
         reverse,
         sorting: sortBy,
-        dataSource: this.ds.cloneWithRows(filteredNotes)
+        dataSource: this.ds.cloneWithRows(sorted)
       });
     }
   };
