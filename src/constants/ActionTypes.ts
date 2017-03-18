@@ -15,3 +15,5 @@ export const removeAnywayArr = 'REMOVE_ANYWAY_ARR';
 
 export const toggleMulti = 'TOGGLE_MULTI';
 export const selectItem = 'SELECT_ITEM';
+
+export const setSaveFolder = 'SET_SAVE_FOLDER';

@@ -3,18 +3,13 @@ import {Component} from 'react';
 import {
   View,
   StatusBar,
-  PixelRatio,
+  AsyncStorage,
 } from 'react-native';
-import {
-  StackNavigator,
-  TabNavigator,
-  DrawerNavigator,
-} from 'react-navigation';
+import {StackNavigator} from 'react-navigation';
 import {Provider, connect} from 'react-redux'
 import store from "./redux/Store";
 import NoteEdit from './screens/NoteEdit';
 import NoteView from "./screens/NoteView";
-import {ActionOther} from "./redux/Actions";
 import NoteList from "./screens/NoteList";
 import Threshold from "./screens/Threshold";
 import PhotoViewComp from "./screens/PhotoView";
@@ -23,6 +18,9 @@ import Search from "./screens/Search";
 import Password from "./screens/Password";
 import Settings from "./screens/Settings";
 import Trash from './screens/Trash';
+import {setSaveFolder} from "./constants/ActionTypes";
+import {Actions} from "./redux/Actions";
+import {importNotes} from "./redux/StoreImport";
 
 const App = StackNavigator({
   Main: {screen: NoteList},
@@ -36,6 +34,12 @@ const App = StackNavigator({
   Password: {screen: Password},
 }, {
   headerMode: 'none'
+});
+
+importNotes(notes => {
+  if (typeof notes == "object" && notes.length) {
+    Actions.importNotes(notes);
+  }
 });
 
 export default class AppWithStore extends Component<any, any> {

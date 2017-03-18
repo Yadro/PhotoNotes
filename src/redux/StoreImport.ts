@@ -1,7 +1,9 @@
+import {AsyncStorage} from 'react-native'
 import Note from "./Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
 import store from "./Store";
+import {setSaveFolder} from "../constants/ActionTypes";
 const fs = require('react-native-fs');
 
 const path = fs.DocumentDirectoryPath + '/data.json';
@@ -18,11 +20,10 @@ export function exportNotes(notes: Note[]) {
 }
 
 export function importNotes(callback) {
-  fs.exists(path)
-    .then(() => {
-      return fs.readFile(path, 'utf8');
-    })
-    .then((contents) => {
+  getPathToSave()
+    .then(path => fs.exists(path))
+    .then(() => fs.readFile(path, 'utf8'))
+    .then(contents => {
       contents = JSON.parse(contents);
       if (Array.isArray(contents)) {
         const promises = contents.map(e => {
@@ -45,7 +46,7 @@ export function importNotes(callback) {
                 return note;
               });
           }
-          return new Promise(resolve => resolve(note));
+          return Promise.resolve(note);
         });
         Promise.all(promises).then(data => {
           callback(data);
@@ -56,6 +57,24 @@ export function importNotes(callback) {
     })
     .catch((err) => {
       console.log(err.message, err.code);
+    })
+}
+
+function getPathToSave() {
+  const {other} = store.getState();
+  if (other.folder) {
+    return Promise.resolve(other.folder);
+  }
+  return AsyncStorage.getItem('@Store:folder')
+    .then(value => {
+      if (!value) throw new Error('value = null');
+      console.log(value);
+      store.dispatch({type: setSaveFolder, folder: value});
+      return value;
+    })
+    .catch(e => {
+      store.dispatch({type: setSaveFolder, folder: externalPath});
+      return externalPath;
     });
 }
 

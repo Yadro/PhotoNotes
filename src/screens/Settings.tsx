@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {
   StyleSheet, View, Image, Text, TextInput, ScrollView, ListView, TouchableNativeFeedback, TextStyle, ViewStyle,
+  NativeModules
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 const {arrowWhite} = icons;
+const {PopupMenu} = NativeModules;
 
 const Item = ({title, subtitle, onPress}) => (
   <TouchableNativeFeedback onPress={onPress}>
@@ -24,7 +26,12 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
   items = [{
     title: 'Выбрать папку для сохранения',
     subtitle: '/storage/emulated/0/Android/data/com.photonotes/files',
-    onPress: () => {},
+    onPress: () => {
+      PopupMenu.showInput('Выбор папки', 'Введите путь к папке, для сохранения заметок', ['ok'],
+        'путь к папке', '/storage/emulated/0/Android/data/com.photonotes/files', (e) => {
+        console.log(e);
+      });
+    },
   },{
     title: 'Импорт',
     onPress: () => {},
