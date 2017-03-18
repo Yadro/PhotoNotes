@@ -7,6 +7,7 @@ import {
   Vibration,
   Alert,
   ToolbarAndroidAction,
+  NativeModules,
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
@@ -22,6 +23,7 @@ import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
+const {PopupMenu} = NativeModules;
 
 const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
 
@@ -31,11 +33,7 @@ const toolbarActionsItems: ToolbarAndroidAction[] = [
 const toolbarMainItems = [{
   title: toolbar.search, icon: searchWhite, show: 'always'
 }, {
-  title: sortName, show: 'never'
-}, {
-  title: sortCreate, show: 'never'
-}, {
-  title: sortEdit, show: 'never'
+  title: 'Сортировка...', show: 'never'
 }, {
   title: 'Корзина', show: 'never'
 }, {
@@ -174,17 +172,23 @@ class NoteList extends Component<NoteListP, NoteListS> {
       if (action == 0) {
         this.toggleSearch();
       } else if (action == 1) {
-        this.toggleSort('name');
-      } else if (action == 2) {
-        this.toggleSort("create");
-      } else if (action == 3) {
-        this.toggleSort("edit");
+        this.showSortAlert();
       } else if (action == 4) {
         this.props.navigation.navigate('Trash');
       } else if (action == 5) {
         this.props.navigation.navigate('Settings');
       }
     }
+  };
+
+  showSortAlert = () => {
+    PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: false},
+      ['По алфавиту', 'По дате создания', 'По дате изменения'], (e) => {
+        const sort = ['name', 'create', 'edit'];
+        if (sort.indexOf(e.which)) {
+          this.toggleSort(sort[e.which] as SortMethod);
+        }
+      });
   };
 
   render() {
