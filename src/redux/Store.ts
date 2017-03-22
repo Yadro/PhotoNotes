@@ -1,19 +1,26 @@
-import { createStore, combineReducers } from 'redux';
-import notes, {NoteState} from './notes'
-import other, {OtherState} from './other'
+import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+import thunk from 'redux-thunk';
+import notes, {NoteState} from './notes';
+import other, {OtherState} from './other';
+import filter from './filter';
 
 interface MyStore {
   notes: NoteState;
   other: OtherState;
 }
 
-let store = createStore<MyStore>(
-  combineReducers<MyStore>({
-    notes,
-    other
-  }),
-  {},
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({/* options */})
+const reducers = combineReducers<MyStore>({
+  notes,
+  other,
+  filter,
+});
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore<MyStore>(
+  reducers,
+  composeEnhancers(
+    applyMiddleware(thunk),
+  )
 );
 
 export default store;

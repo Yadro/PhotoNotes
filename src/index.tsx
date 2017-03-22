@@ -4,8 +4,9 @@ import {
   View,
   StatusBar,
   AsyncStorage,
+  Text,
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
+import {StackNavigator, DrawerNavigator, DrawerView} from 'react-navigation';
 import {Provider, connect} from 'react-redux'
 import store from "./redux/Store";
 import NoteEdit from './screens/NoteEdit';
@@ -18,9 +19,9 @@ import Search from "./screens/Search";
 import Password from "./screens/Password";
 import Settings from "./screens/Settings";
 import Trash from './screens/Trash';
-import {setSaveFolder} from "./constants/ActionTypes";
 import {Actions} from "./redux/Actions";
 import {importNotes} from "./redux/StoreImport";
+import FilterTags from "./screens/FilterTags";
 
 const App = StackNavigator({
   Main: {screen: NoteList},
@@ -34,6 +35,23 @@ const App = StackNavigator({
   Password: {screen: Password},
 }, {
   headerMode: 'none'
+});
+
+const AppDrawer = DrawerNavigator({
+  App: {screen: App},
+  Trash: {screen: Trash},
+  Settings: {screen: Settings},
+}, {
+  contentComponent: (props) => {
+    const tags = ['one', 'two'];
+    return <View style={{flex: 1}}>
+      <DrawerView.Items {...props}/>
+      <FilterTags/>
+    </View>
+  },
+  contentOptions: {
+    activeTintColor: '#01B47C',
+  },
 });
 
 importNotes(notes => {
@@ -58,7 +76,7 @@ export default class AppWithStore extends Component<any, any> {
             backgroundColor="#019967"
             barStyle="light-content"
           />
-          <App/>
+          <AppDrawer/>
         </View>
       </Provider>
     )

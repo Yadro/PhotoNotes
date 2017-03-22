@@ -3,7 +3,7 @@ import Note from "./Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
 import store from "./Store";
-import {setSaveFolder} from "../constants/ActionTypes";
+import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 const fs = require('react-native-fs');
 
 const path = fs.DocumentDirectoryPath + '/data.json';
@@ -69,11 +69,11 @@ function getPathToSave() {
     .then(value => {
       if (!value) throw new Error('value = null');
       console.log(value);
-      store.dispatch({type: setSaveFolder, folder: value});
+      store.dispatch({type: SET_SAVE_FOLDER, folder: value});
       return value;
     })
     .catch(e => {
-      store.dispatch({type: setSaveFolder, folder: externalPath});
+      store.dispatch({type: SET_SAVE_FOLDER, folder: externalPath});
       return externalPath;
     });
 }

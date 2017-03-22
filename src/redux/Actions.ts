@@ -1,8 +1,9 @@
+import ReduxThunk from 'redux-thunk';
 import store from './Store';
 import {exportNotes} from "./StoreImport";
 import {
   setFileName, setSaved, remove, removeArr, removeAnyway, removeAnywayArr,
-  restore
+  restore, SET_SAVE_FOLDER
 } from '../constants/ActionTypes';
 import {tracker} from "../Analytics";
 
@@ -70,5 +71,8 @@ export const ActionOther = {
   },
   setMultiChoose(multi) {
     store.dispatch({type: 'SET_MULTI_CHOOSE', multi});
+  },
+  setSaveFolder(multi) {
+    store.dispatch({type: SET_SAVE_FOLDER, multi});
   }
 };

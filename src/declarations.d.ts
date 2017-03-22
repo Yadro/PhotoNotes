@@ -93,7 +93,7 @@ declare module 'react-navigation' {
 
   export function StackNavigator(RouteConfigs: any, StackNavigatorConfig?: StackNavigatorConfig);
   export function TabNavigator();
-  export function DrawerNavigator();
+  export function DrawerNavigator(RouteConfigs, DrawerNavigatorConfig);
 
   type Action = any;
   export class NavigationActions {

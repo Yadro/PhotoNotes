@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
-import {setSaveFolder} from "../constants/ActionTypes";
+import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 import store from "../redux/Store";
 const {arrowWhite} = icons;
 const {PopupMenu} = NativeModules;
@@ -32,7 +32,7 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
       PopupMenu.showInput('Выбор папки', 'Введите путь к папке, для сохранения заметок', ['ok'],
         'путь к папке', '/storage/emulated/0/Android/data/com.photonotes/files', (e) => {
         console.log(e);
-        store.dispatch({type: setSaveFolder, folder: e.input});
+        store.dispatch({type: SET_SAVE_FOLDER, folder: e.input});
       });
     },
   },{

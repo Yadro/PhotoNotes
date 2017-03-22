@@ -16,4 +16,8 @@ export const removeAnywayArr = 'REMOVE_ANYWAY_ARR';
 export const toggleMulti = 'TOGGLE_MULTI';
 export const selectItem = 'SELECT_ITEM';
 
-export const setSaveFolder = 'SET_SAVE_FOLDER';
+export const SET_SAVE_FOLDER = 'SET_SAVE_FOLDER';
+
+export const ADD_FILTER = 'ADD_FILTER';
+export const REMOVE_FILTER = 'REMOVE_FILTER';
+export const UPDATE_FILTER = 'UPDATE_FILTER';

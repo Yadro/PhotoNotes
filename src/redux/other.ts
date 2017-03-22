@@ -1,4 +1,4 @@
-import {setSaveFolder} from "../constants/ActionTypes";
+import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 
@@ -17,7 +17,7 @@ export default (state = {update: false, size: null, multi: false}, actions) => {
     case 'SET_MULTI_CHOOSE':
       return set(lensProp('multi'), actions.multi, state);
 
-    case setSaveFolder:
+    case SET_SAVE_FOLDER:
       return set(lensProp('folder'), actions.folder, state);
 
   }
