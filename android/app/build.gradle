@@ -135,7 +135,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-popup')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-zoom')
     compile project(':react-native-google-analytics-bridge')
@@ -145,8 +144,9 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.gms:play-services-analytics:9.0.0'
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
+    //compile project(':react-native-popup')
     // From node_modules
 }
 

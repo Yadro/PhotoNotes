@@ -2,7 +2,7 @@ package com.photonotes;
 
 import android.app.Application;
 
-import com.popupmenu.PopupMenuPackage;
+//import com.popupmenu.PopupMenuPackage;
 import com.facebook.react.ReactApplication;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.image.zoom.ReactImageZoom;
@@ -35,8 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
         new RNFSPackage(),
         new ImagePickerPackage(),
         new GoogleAnalyticsBridgePackage(),
-        new MyPhotoViewPackage(),
-        new PopupMenuPackage()
+        new MyPhotoViewPackage()
+//        new PopupMenuPackage()
       );
     }
   };
