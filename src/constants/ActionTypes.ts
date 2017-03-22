@@ -18,6 +18,7 @@ export const selectItem = 'SELECT_ITEM';
 
 export const SET_SAVE_FOLDER = 'SET_SAVE_FOLDER';
 
+export const SET_CURRENT_FILTER = 'SET_CURRENT_FILTER';
 export const ADD_FILTER = 'ADD_FILTER';
 export const REMOVE_FILTER = 'REMOVE_FILTER';
 export const UPDATE_FILTER = 'UPDATE_FILTER';

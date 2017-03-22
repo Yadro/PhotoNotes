@@ -22,9 +22,11 @@ import Trash from './screens/Trash';
 import {Actions} from "./redux/Actions";
 import {importNotes} from "./redux/StoreImport";
 import FilterTags from "./screens/FilterTags";
+import EditFilter from './screens/EditFilter';
 
 const App = StackNavigator({
   Main: {screen: NoteList},
+  EditFilter: {screen: EditFilter},
   Trash: {screen: Trash},
   Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
