@@ -19,7 +19,6 @@ export function exportNotes(notes: Note[]) {
   });
 }
 
-// todo refactoring
 export function importNotes() {
   const tp = AsyncStorage.getItem(STORE_KEYS.tags).then(e => {
     if (e == null) return;
@@ -30,33 +29,31 @@ export function importNotes() {
     .then(() => fs.readFile(path, 'utf8'))
     .then(contents => {
       contents = JSON.parse(contents);
-      if (Array.isArray(contents)) {
-        const promises = contents.map(e => {
-          const note = Note.createInstance(e);
-          if (note.fileName) {
-            const path = genPath(note.fileName);
-            return fs.exists(path)
-              .then(exists => {
-                if (!exists) throw new Error(`File '${path}' not found`);
-                return fs.readFile(path, 'utf8');
-              })
-              .then(content => {
-                const data = parseNoteContent(content);
-                note.title = data.title;
-                note.content = data.content;
-                return note;
-              })
-              .catch(e => {
-                note.tags.push('trash');
-                return note;
-              });
-          }
-          return Promise.resolve(note);
-        });
-        return Promise.all(promises);
-      } else {
+      if (!Array.isArray(contents)) {
         return Promise.resolve(contents);
       }
+      return Promise.all(contents.map(e => {
+        const note = Note.createInstance(e);
+        if (!note.fileName) {
+          return Promise.resolve(note);
+        }
+        const path = genPath(note.fileName);
+        return fs.exists(path)
+          .then(exists => {
+            if (!exists) throw new Error(`File '${path}' not found`);
+            return fs.readFile(path, 'utf8');
+          })
+          .then(content => {
+            const data = parseNoteContent(content);
+            note.title = data.title;
+            note.content = data.content;
+            return note;
+          })
+          .catch(e => {
+            note.tags.push('trash');
+            return note;
+          });
+      }));
     })
     .catch((err) => {
       console.log(err.message, err.code);
