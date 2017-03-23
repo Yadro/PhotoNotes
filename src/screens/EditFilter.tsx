@@ -7,7 +7,7 @@ import {CheckboxItem} from "../components/CheckboxItem";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import store from "../redux/Store";
-import {ADD_FILTER} from "../constants/ActionTypes";
+import {ADD_FILTER, UPDATE_FILTER} from "../constants/ActionTypes";
 import {ScreenNavigationProp} from "react-navigation";
 const {checkWhite} = icons;
 
@@ -15,6 +15,7 @@ interface EditFilterP extends ScreenNavigationProp {
   filter: FilterState;
 }
 interface EditFilterS {
+  id;
   title;
   newItem;
   type;
@@ -27,12 +28,17 @@ const actions = [{
   icon: checkWhite,
   show: 'always',
   onPress: function() {
-    const {title, type, data} = this.state;
-    store.dispatch({type: ADD_FILTER, filter: {
+    const {title, type, data, id} = this.state;
+    const filter = {
       title,
       type,
       tags: data.filter(e => e.value).map(e => e.title),
-    }});
+    };
+    if (id > -1) {
+      store.dispatch({type: UPDATE_FILTER, id, filter});
+    } else {
+      store.dispatch({type: ADD_FILTER, filter});
+    }
     this.props.navigation.goBack();
   }
 }];
@@ -61,6 +67,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
       value: filter.tags && filter.tags.indexOf(e) > -1 || false,
     }));
     this.state = {
+      id,
       title: filter.title || '',
       type: filter.type || 'white',
       data: items,

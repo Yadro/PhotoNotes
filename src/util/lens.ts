@@ -23,3 +23,11 @@ export const lensById = id => lens(
   makeGetterById(id),
   makeSetterById(id)
 );
+
+export const lensByIndex = idx => lens(
+  array => array[idx],
+  (newItem, array) => {
+    array[idx] = newItem;
+    return array;
+  }
+);
