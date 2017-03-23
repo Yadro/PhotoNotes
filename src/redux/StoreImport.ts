@@ -19,8 +19,13 @@ export function exportNotes(notes: Note[]) {
   });
 }
 
-export function importNotes(callback) {
-  getPathToSave()
+// todo refactoring
+export function importNotes() {
+  const tp = AsyncStorage.getItem('@Store:tags').then(e => {
+    if (e == null) return;
+    return JSON.parse(e);
+  });
+  const np = getPathToSave()
     .then(path => fs.exists(path))
     .then(() => fs.readFile(path, 'utf8'))
     .then(contents => {
@@ -48,16 +53,22 @@ export function importNotes(callback) {
           }
           return Promise.resolve(note);
         });
-        Promise.all(promises).then(data => {
-          callback(data);
-        })
+        return Promise.all(promises);
       } else {
-        callback(contents);
+        return Promise.resolve(contents);
       }
     })
     .catch((err) => {
       console.log(err.message, err.code);
-    })
+    });
+  return new Promise((resolve, reject) => {
+    Promise.all([tp, np]).then(e => {
+      resolve({
+        tags: e[0],
+        notes: e[1],
+      });
+    });
+  });
 }
 
 function getPathToSave() {

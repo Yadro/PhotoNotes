@@ -9,6 +9,7 @@ import icons from '../components/Icons';
 import store from "../redux/Store";
 import {ADD_FILTER, UPDATE_FILTER} from "../constants/ActionTypes";
 import {ScreenNavigationProp} from "react-navigation";
+import {Actions} from "../redux/Actions";
 const {checkWhite} = icons;
 
 interface EditFilterP extends ScreenNavigationProp {
@@ -34,10 +35,14 @@ const actions = [{
       type,
       tags: data.filter(e => e.value).map(e => e.title),
     };
-    if (id > -1) {
-      store.dispatch({type: UPDATE_FILTER, id, filter});
+    if (filter.tags.length) {
+      if (id > -1) {
+        Actions.updateFilter(id, filter);
+      } else {
+        Actions.addFilter(filter);
+      }
     } else {
-      store.dispatch({type: ADD_FILTER, filter});
+      // todo alert
     }
     this.props.navigation.goBack();
   }

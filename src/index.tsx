@@ -55,10 +55,10 @@ const AppDrawer = DrawerNavigator({
   },
 });
 
-importNotes(notes => {
-  if (typeof notes == "object" && notes.length) {
-    Actions.importNotes(notes);
-  }
+importNotes().then(data => {
+  Actions.importNotes(data)
+}).catch(e => {
+  console.log(e)
 });
 
 export default class AppWithStore extends Component<any, any> {

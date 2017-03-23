@@ -65,7 +65,7 @@ export default (state: Note[] = [], actions): NoteState => {
       return state.filter(e => !actions.ids.includes(e.id));
 
     case doImport:
-      return actions.notes;
+      return actions.data.notes;
 
     default:
       return state;
