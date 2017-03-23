@@ -26,9 +26,11 @@
     "react-native-vector-icons": "^4.0.0",
     "react-navigation": "https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "@types/ramda": "^0.0.5",
     "@types/react": "15.0.10",
     "@types/react-native": "0.37.12",
     "@types/react-redux": "^4.4.36",

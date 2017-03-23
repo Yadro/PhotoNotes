@@ -52,6 +52,13 @@ interface Icons {
   copyWhite;
   timeWhite;
   timeBlack;
+
+  labelOutlineWhite;
+  labelOutlineBlack;
+  checkboxWhite;
+  checkboxBlack;
+  checkboxBlankWhite;
+  checkboxBlankBlack;
 }
 
 const postfix = '_24dp';
@@ -88,11 +95,17 @@ const iconSource = {
   'copy': 'ic_content_copy',
   'past': 'ic_content_paste',
   'time': 'ic_access_time',
+
+  labelOutline: 'ic_label_outline',
+  checkbox: 'ic_check_box',
+  checkboxBlank: 'ic_check_box_outline_blank',
 };
 
 const icons = {};
+const pathsLocal = {};
 for (let color in colorsPostfix) {
   for (let name in iconSource) {
+    pathsLocal[name + color] = iconSource[name] + colorsPostfix[color] + postfix;
     icons[name + color] = nativeImageSource({
       android: iconSource[name] + colorsPostfix[color] + postfix,
       width: 24,
@@ -102,3 +115,5 @@ for (let color in colorsPostfix) {
 }
 
 export default <Icons>icons;
+
+export const paths = <Icons>pathsLocal;

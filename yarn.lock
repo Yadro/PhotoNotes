@@ -8,6 +8,10 @@
   dependencies:
     moment "*"
 
+"@types/ramda@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.0.5.tgz#8b381e3363de9db3cb89d3b62f23b73cfb56bc0b"
+
 "@types/react-native@0.37.12":
   version "0.37.12"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.37.12.tgz#497f01de71f67aec28592d16df29be8682c609dc"

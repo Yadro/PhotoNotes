@@ -31,7 +31,7 @@ export default (state, action) => {
     case SET_CURRENT_FILTER:
       return set(lensCurrent, action.current, state);
     case ADD_FILTER:
-      return over(lensFilters, filters => append(filters, action.filter), state);
+      return over(lensFilters, filters => append(action.filter, filters), state);
     case REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
     case UPDATE_FILTER:
