@@ -4,7 +4,7 @@ export const setSaved = 'SET_SAVED';
 export const addNote = 'ADD';
 export const updateNote = 'UPDATE';
 
-export const doImport = 'IMPORT';
+export const IMPORT = 'IMPORT';
 
 export const restore = 'RESTORE';
 
@@ -22,3 +22,8 @@ export const SET_CURRENT_FILTER = 'SET_CURRENT_FILTER';
 export const ADD_FILTER = 'ADD_FILTER';
 export const REMOVE_FILTER = 'REMOVE_FILTER';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
+
+export const STORE_KEYS = {
+  tags: '@Store:tags',
+  folder: '@Store:folder',
+};

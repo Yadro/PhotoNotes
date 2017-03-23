@@ -3,7 +3,7 @@ import store from './Store';
 import {exportNotes} from "./StoreImport";
 import {
   setFileName, setSaved, remove, removeArr, removeAnyway, removeAnywayArr,
-  restore, SET_SAVE_FOLDER, doImport, ADD_FILTER, UPDATE_FILTER
+  restore, SET_SAVE_FOLDER, IMPORT, ADD_FILTER, UPDATE_FILTER, STORE_KEYS
 } from '../constants/ActionTypes';
 import {tracker} from "../Analytics";
 import {AsyncStorage} from "react-native";
@@ -61,17 +61,19 @@ export const Actions = {
   },
 
   importNotes(data) {
-    store.dispatch({type: doImport, data});
+    store.dispatch({type: IMPORT, data});
   },
 
   addFilter(filter) {
     store.dispatch({type: ADD_FILTER, filter});
-    AsyncStorage.setItem('@Store:tags', JSON.stringify(store.getState().filter));
+    AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
+    if (!__DEV__) tracker.trackEvent('Filter', 'Add');
   },
 
   updateFilter(id, filter) {
     store.dispatch({type: UPDATE_FILTER, id, filter});
-    AsyncStorage.setItem('@Store:tags', JSON.stringify(store.getState().filter));
+    AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
+    if (!__DEV__) tracker.trackEvent('Filter', 'Update');
   },
 };
 

@@ -3,7 +3,7 @@ import Note from "./Note";
 import {transliterate} from "../util/transliterate";
 import {Actions} from "./Actions";
 import store from "./Store";
-import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
+import {SET_SAVE_FOLDER, STORE_KEYS} from "../constants/ActionTypes";
 const fs = require('react-native-fs');
 
 const path = fs.DocumentDirectoryPath + '/data.json';
@@ -21,7 +21,7 @@ export function exportNotes(notes: Note[]) {
 
 // todo refactoring
 export function importNotes() {
-  const tp = AsyncStorage.getItem('@Store:tags').then(e => {
+  const tp = AsyncStorage.getItem(STORE_KEYS.tags).then(e => {
     if (e == null) return;
     return JSON.parse(e);
   });
@@ -76,7 +76,7 @@ function getPathToSave() {
   if (other.folder) {
     return Promise.resolve(other.folder);
   }
-  return AsyncStorage.getItem('@Store:folder')
+  return AsyncStorage.getItem(STORE_KEYS.folder)
     .then(value => {
       if (!value) throw new Error('value = null');
       console.log(value);

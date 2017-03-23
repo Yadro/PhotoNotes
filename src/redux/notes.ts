@@ -1,7 +1,7 @@
 import Note from "./Note";
 import {
   setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
-  remove, removeArr, doImport, restore
+  remove, removeArr, IMPORT, restore
 } from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
@@ -64,7 +64,7 @@ export default (state: Note[] = [], actions): NoteState => {
     case removeAnywayArr:
       return state.filter(e => !actions.ids.includes(e.id));
 
-    case doImport:
+    case IMPORT:
       return actions.data.notes;
 
     default:

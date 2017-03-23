@@ -1,6 +1,6 @@
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over, lensByIndex} from "../util/lens";
-import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, doImport} from "../constants/ActionTypes";
+import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT} from "../constants/ActionTypes";
 
 const lensCurrent = lensProp('current');
 const lensFilters = lensProp('filters');
@@ -36,7 +36,7 @@ export default (state, action) => {
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
     case UPDATE_FILTER:
       return over(lensFilterByIdx(action.id), () => action.filter, state);
-    case doImport:
+    case IMPORT:
       return action.data.tags || state;
   }
   return state;
