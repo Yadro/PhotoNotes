@@ -1,41 +1,39 @@
 import * as React from 'react';
 import {View, Text, Image, TouchableNativeFeedback, StyleSheet} from 'react-native';
 import icons from '../components/Icons';
+import {ScreenNavigationProp} from "react-navigation";
+import {connect} from "react-redux";
+import {FilterState} from "../redux/filter";
 const {editWhite} = icons;
 
-interface TagsLayerP {
+interface TagsLayerP extends ScreenNavigationProp {
+  filter: FilterState;
 }
 interface TagsLayerS {
 }
 
 
-export default class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
-  buttons = [{
-    title: 'Добавить фильтр',
-    onPress: () => {
-    },
-    onLongPress: () => {
-    },
-  }, {
-    title: 'Добавить фильтр',
-    onPress: () => {
-    },
-    onLongPress: () => {
-    },
-  }];
+class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  onPress = (id) => {
+    this.props.navigation.navigate('EditFilter', {id});
+  };
+
+  onLongPress = id => () => {
+    this.props.navigation.navigate('EditFilter', {id});
+  };
 
   render() {
-    const items = this.buttons.map((e, i) => <Item key={i} {...e}/>);
+    const {filters} = this.props.filter;
     return <View style={{flex: 1}}>
-      {items}
+      {filters.map((e, idx) => <Item key={idx} title={e.title} onPress={this.onPress.bind(this, idx)}
+                                   onLongPress={this.onLongPress(idx)}/>)}
+      <Item title={'Add new filter'} onPress={this.onPress.bind(this, -1)} onLongPress={this.onLongPress(-1)}/>
     </View>
   }
 }
+
+export default connect(state => ({filter: state.filter}))(FilterTags);
 
 const Item = ({title, onPress, onLongPress}) => {
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress} style={css.container}>
@@ -45,6 +43,7 @@ const Item = ({title, onPress, onLongPress}) => {
     </View>
   </TouchableNativeFeedback>
 };
+
 
 const css = StyleSheet.create({
   container: {

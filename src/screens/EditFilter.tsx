@@ -8,9 +8,10 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import store from "../redux/Store";
 import {ADD_FILTER} from "../constants/ActionTypes";
+import {ScreenNavigationProp} from "react-navigation";
 const {checkWhite} = icons;
 
-interface EditFilterP {
+interface EditFilterP extends ScreenNavigationProp {
   filter: FilterState;
 }
 interface EditFilterS {
@@ -30,38 +31,42 @@ const actions = [{
     store.dispatch({type: ADD_FILTER, filter: {
       title,
       type,
-      tags: data.map(e => e.title),
+      tags: data.filter(e => e.value).map(e => e.title),
     }});
     this.props.navigation.goBack();
   }
 }];
+
 class EditFilter extends React.Component<EditFilterP, EditFilterS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
   constructor(props: EditFilterP) {
     super(props);
-    let state;
+    const {id} = props.navigation.state.params || {} as any;
     const data = props.filter;
-    if (data.current > -1) {
-      const filter = data.filters[data.current] || {} as Filter;
-      const items = [
-        {
-          title: 'one',
-          value: true,
-        }, {
-          title: 'two',
-          value: false,
-        },
-      ];
-      state = {
-        title: filter.title || '',
-        type: filter.type || 'white',
-        data: items,
-        dataSource: this.ds.cloneWithRows(items),
-        newItem: '',
-      };
+      let filter;
+      let items;
+    if (id != null && id > -1) {
+      filter = data.filters[id];
+    } else {
+      filter = {};
     }
-    this.state = state;
+    items = Array.from(
+      data.filters.reduce((res, item) => {
+        item.tags.forEach(e => res.add(e));
+        return res;
+      }, new Set())
+    ).map(e => ({
+      title: e,
+      value: filter.tags && filter.tags.indexOf(e) > -1 || false,
+    }));
+    this.state = {
+      title: filter.title || '',
+      type: filter.type || 'white',
+      data: items,
+      dataSource: this.ds.cloneWithRows(items),
+      newItem: '',
+    };
   }
 
   onCheckboxPress = (i) => {
@@ -113,7 +118,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
       </View>
       <View>
         <ListView
-          dataSource={this.state.dataSource}
+          dataSource={this.state.dataSource} enableEmptySections
           renderRow={(rowData, e, i) => <CheckboxItem key={i} onPress={this.onCheckboxPress(i)}
                                                      title={rowData.title} value={rowData.value}/>}
         />

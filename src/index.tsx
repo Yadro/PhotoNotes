@@ -45,10 +45,9 @@ const AppDrawer = DrawerNavigator({
   Settings: {screen: Settings},
 }, {
   contentComponent: (props) => {
-    const tags = ['one', 'two'];
     return <View style={{flex: 1}}>
       <DrawerView.Items {...props}/>
-      <FilterTags/>
+      <FilterTags {...props}/>
     </View>
   },
   contentOptions: {
