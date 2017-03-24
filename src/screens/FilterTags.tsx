@@ -42,7 +42,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 export default connect(state => ({filter: state.filter}))(FilterTags);
 
 const Item = ({title, onPress, onLongPress, selected}) => {
-  return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress} delayLongPress={3000}
+  return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress} delayLongPress={3500}
                                   style={css.container}>
     <View style={[css.item, selected && css.itemHighlight]}>
       {/*<Image source={{uri: editWhite}}/>*/}
