@@ -53,14 +53,13 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
     super(props);
     const {id} = props.navigation.state.params || {} as any;
     const data = props.filter;
-      let filter;
-      let items;
+    let filter;
     if (id != null && id > -1) {
       filter = data.filters[id];
     } else {
       filter = {};
     }
-    items = Array.from(
+    const items = Array.from(
       data.filters.reduce((res, item) => {
         item.tags.forEach(e => res.add(e));
         return res;
