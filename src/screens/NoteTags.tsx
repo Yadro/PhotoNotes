@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Toolbar from "../components/Toolbar";
 import CheckboxList from "../components/CheckboxList";
 import {connect} from "react-redux";
-import {FilterState} from "../redux/filter";
+import {FilterState} from "../reducers/filter";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import store from "../redux/Store";

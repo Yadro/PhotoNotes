@@ -1,4 +1,4 @@
-import Note from "./Note";
+import Note from "../redux/Note";
 import {
   setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
   remove, removeArr, IMPORT, restore, SET_TAGS

@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableNativeFeedback, StyleSheet} from 'react-nati
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
-import {FilterState} from "../redux/filter";
+import {FilterState} from "../reducers/filter";
 import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
 const {editWhite} = icons;

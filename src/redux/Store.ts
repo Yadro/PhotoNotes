@@ -1,8 +1,8 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
-import notes, {NoteState} from './notes';
-import other, {OtherState} from './other';
-import filter from './filter';
+import notes, {NoteState} from '../reducers/notes';
+import other, {OtherState} from '../reducers/other';
+import filter from '../reducers/filter';
 
 interface MyStore {
   notes: NoteState;

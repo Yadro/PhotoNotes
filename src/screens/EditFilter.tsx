@@ -2,7 +2,7 @@ import * as React from 'react';
 import {append} from 'ramda';
 import {View, Picker, TextInput, ListView, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import {FilterState} from "../redux/filter";
+import {FilterState} from "../reducers/filter";
 import {CheckboxItem} from "../components/CheckboxItem";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
