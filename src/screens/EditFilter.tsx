@@ -33,7 +33,7 @@ const actions = [{
       type,
       tags: data.filter(e => e.value).map(e => e.title),
     };
-    if (filter.tags.length) {
+    if (filter.tags.length || filter.type == 'black') {
       if (id > -1) {
         Actions.updateFilter(id, filter);
       } else {
