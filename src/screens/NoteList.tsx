@@ -52,11 +52,6 @@ const toolbarMainItems = [{
   onPress: function() {
     this.props.navigation.navigate('Settings');
   },
-}, {
-  title: 'EditFilter', show: 'never',
-  onPress: function() {
-    this.props.navigation.navigate('EditFilter');
-  },
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
