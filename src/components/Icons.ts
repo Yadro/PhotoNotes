@@ -55,6 +55,8 @@ interface Icons {
   timeWhite;
   timeBlack;
 
+  labelWhite;
+  labelBlack;
   labelOutlineWhite;
   labelOutlineBlack;
   checkboxWhite;
@@ -98,6 +100,7 @@ const iconSource = {
   'past': 'ic_content_paste',
   'time': 'ic_access_time',
 
+  label: 'ic_label',
   labelOutline: 'ic_label_outline',
   checkbox: 'ic_check_box',
   checkboxBlank: 'ic_check_box_outline_blank',
