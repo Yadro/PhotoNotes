@@ -17,7 +17,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
 import store from "../redux/Store";
 import Note from "../redux/Note";
-import icons from '../components/Icons'
+import icons, {paths} from '../components/Icons'
 import NoteEdit from "./NoteEdit";
 import {Actions} from "../redux/Actions";
 import {Markdown} from "../components/Markdown";
@@ -132,7 +132,7 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
     const fromTrash = type == 'trash';
     const {navigate} = this.props.navigation;
     const {image, note, size, isLoad} = this.state;
-    const {title, content, createdAt, updatedAt} = note;
+    const {title, content, createdAt, updatedAt, tags} = note;
     const img = image ? {uri: image} : false;
     return (
       <View style={css.container}>
@@ -140,7 +140,13 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
           <View style={css.header}>
-            <Text style={css.title}>{title}</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={css.title}>{title}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image source={{uri: paths.labelBlack}} style={{width: 24, height: 24, marginRight: 4}}/>
+                <Text>{tags.length}</Text>
+              </View>
+            </View>
             <Text style={css.time}>{moment(updatedAt || createdAt).format('lll')}</Text>
           </View>
           <View style={css.textView}>
