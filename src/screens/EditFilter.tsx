@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {append} from 'ramda';
-import {View, Image, Text, Picker, TextInput, TouchableNativeFeedback, ListView, StyleSheet} from 'react-native';
+import {View, Picker, TextInput, ListView, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import {FilterState, Filter} from "../redux/filter";
+import {FilterState} from "../redux/filter";
 import {CheckboxItem} from "../components/CheckboxItem";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
-import store from "../redux/Store";
-import {ADD_FILTER, UPDATE_FILTER} from "../constants/ActionTypes";
 import {ScreenNavigationProp} from "react-navigation";
 import {Actions} from "../redux/Actions";
 const {checkWhite} = icons;
