@@ -31,13 +31,9 @@ const {toolbar, editor, window} = l.NoteEdit;
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
-  undoWhite, redoWhite
+  undoWhite, redoWhite, labelWhite,
 } = icons;
 
-const toolbarActions = [
-  {title: toolbar.picker, icon: addPhotoWhite, show: 'always'},
-  {title: toolbar.share, icon: shareWhite, show: 'always'},
-];
 
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
@@ -55,7 +51,6 @@ interface NoteEditS {
   note?: Note;
   size?;
   isLoad;
-  actions?;
   save?;
   image?;
   selection?;
@@ -69,11 +64,31 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     ]
   });
 
+  toolbarActions = [{
+    title: 'tags', icon: labelWhite, show: 'always',
+    onPress: function () {
+      this.props.navigation.navigate('NoteTags', {tags: this.state.note.tags});
+    }
+  }, {
+    title: toolbar.picker, icon: addPhotoWhite, show: 'always',
+    onPress: function () {
+      this.showPicker();
+    }
+  }, {
+    title: toolbar.share, icon: shareWhite, show: 'always',
+    onPress: function () {
+      const {title, content} = this.state.note;
+      Share.share({
+        title,
+        message: `${title}\n${content}`,
+      }, {});
+    }
+  }];
+
   constructor(props) {
     super(props);
     const {notes} = store.getState();
     const {params} = props.navigation.state;
-    const actions = toolbarActions.slice();
     let note, state;
     if (params) {
       if (params.note) {
@@ -82,7 +97,10 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       } else if (params.id) {
         // from list
         note = Note.createInstance(notes.find(e => e.id == params.id) || {});
-        actions.push({title: toolbar.remove, icon: deleteIconWhite, show: 'always'});
+        this.toolbarActions.push({
+          title: toolbar.remove, icon: deleteIconWhite, show: 'always',
+          onPress: function () {this.onDelete()}
+        });
         state = {save: true};
       }
     } else {
@@ -99,7 +117,6 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     }
     this.state = Object.assign({}, state, {
       note,
-      actions,
       size: null,
       selection: {start: 0, end: 0},
     });
@@ -170,22 +187,11 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   onActionSelected = (action) => {
-    const actions = [
-      this.showPicker,
-      () => {
-        const {title, content} = this.state.note;
-        Share.share({
-          title,
-          message: `${title}\n${content}`,
-        }, {});
-      },
-      this.onDelete,
-    ];
-    actions[action] && actions[action]();
+    this.toolbarActions[action] && this.toolbarActions[action].onPress.call(this);
   };
 
   renderToolBar = () =>
-    <Toolbar title={toolbar.header} actions={this.state.actions}
+    <Toolbar title={toolbar.header} actions={this.toolbarActions}
              color="white" backgroundColor="#01B47C" navIcon={checkWhite}
              onIconClicked={this.onSave}
              onActionSelected={this.onActionSelected}/>;

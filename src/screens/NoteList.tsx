@@ -63,6 +63,7 @@ type SortMethod ='name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
   notes: Note[];
   tag: string;
+  filter;
 }
 interface NoteListS {
   dataSource?;
@@ -87,7 +88,10 @@ class NoteList extends Component<NoteListP, NoteListS> {
   constructor(props) {
     super(props);
     const notes = props.notes;
-    this.check = check(props.tag);
+
+    const current = props.filter.filters[props.filter.current] || {tags: []};
+    this.check = check(current.tags, current.type == 'white');
+
     const sorting = 'create';
     const reverse = false;
     const filtered = notes.filter(n => this.check(n.tags));
@@ -108,10 +112,20 @@ class NoteList extends Component<NoteListP, NoteListS> {
     const {sorting, reverse} = this.state;
     const {props} = this;
     const {notes} = newProps;
+
+    const filterUpdate = newProps.filter.current != props.filter.current;
+    if (filterUpdate) {
+      const current = newProps.filter.filters[newProps.filter.current] || {tags: []};
+      this.check = check(current.tags, current.type == 'white');
+    }
+
     const filtered = notes.filter(n => this.check(n.tags));
 
     if (filtered.length == props.notes.length &&
       filtered.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
+      if (filterUpdate) {
+        this.forceUpdate();
+      }
       return;
     }
 
@@ -230,7 +244,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 }
 
-export default connect(state => ({notes: state.notes, tag: '!trash'}))(NoteList);
+export default connect(state => ({notes: state.notes, tag: '!trash', filter: state.filter}))(NoteList);
 
 
 const css = StyleSheet.create({

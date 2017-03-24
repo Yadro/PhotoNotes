@@ -3,18 +3,11 @@ export const Tags = {
   password: 'password',
 };
 
-export const check = (tag: string) => {
-  let include;
-  let query;
-  if (tag.charAt(0) == '!') {
-    include = false;
-    query = tag.substr(1);
-  } else {
-    include = true;
-    query = tag;
-  }
+export const check = (tags: string[], isWhite: boolean) => {
   return (values: string[]) => {
-    const res = values.indexOf(query);
-    return include ? res > -1 : res == -1;
+    if (isWhite) {
+      return tags.some(tag => values.indexOf(tag) > -1);
+    }
+    return tags.length == 0 || tags.some(tag => values.indexOf(tag) == -1);
   };
 };

@@ -12,6 +12,7 @@ import store from "./redux/Store";
 import NoteEdit from './screens/NoteEdit';
 import NoteView from "./screens/NoteView";
 import NoteList from "./screens/NoteList";
+import NoteTags from "./screens/NoteTags";
 import Threshold from "./screens/Threshold";
 import PhotoViewComp from "./screens/PhotoView";
 import {tracker} from "./Analytics";
@@ -31,6 +32,7 @@ const App = StackNavigator({
   Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
+  NoteTags: {screen: NoteTags},
   PhotoView: {screen: PhotoViewComp},
   Threshold: {screen: Threshold},
   Settings: {screen: Settings},
