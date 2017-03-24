@@ -47,7 +47,7 @@ const Item = ({title, onPress, onLongPress, selected}) => {
                                   style={css.container}>
     <View style={[css.item, selected && css.itemHighlight]}>
       {/*<Image source={{uri: editWhite}}/>*/}
-      <Text>{title}</Text>
+      <Text style={[css.title, selected && css.titleHighlight]}>{title}</Text>
     </View>
   </TouchableNativeFeedback>
 };
@@ -63,9 +63,15 @@ const css = StyleSheet.create({
   container: {
     flex: 1,
   },
+  title: {
+    color: 'black',
+  },
   item: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  titleHighlight: {
+    fontWeight: 'bold',
   },
   itemHighlight: {
     backgroundColor: 'rgba(0,0,0,.05)'
