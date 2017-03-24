@@ -6,8 +6,12 @@ import {connect} from "react-redux";
 import {FilterState} from "../redux/filter";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
+import store from "../redux/Store";
+import {SET_TAGS} from "../constants/ActionTypes";
+import {green} from "../constants/theme";
 
 interface NoteTagsP extends ScreenNavigationProp {
+  id;
   tags;
   filter: FilterState;
 }
@@ -19,8 +23,7 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
 
   constructor(props) {
     super(props);
-    console.log(props);
-    const propsTags = props.navigation.state.params.tags;
+    const {note} = props.navigation.state.params;
     const tags = Array.from(
       props.filter.filters.reduce((res, item) => {
         item.tags.forEach(e => res.add(e));
@@ -28,7 +31,7 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
       }, new Set())
     ).map(title => ({
       title,
-      value: propsTags && propsTags.indexOf(title) > -1 || false,
+      value: note.tags.indexOf(title) > -1 || false,
     }));
 
     this.state = {
@@ -45,14 +48,18 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
   };
 
   onActionSelected = () => {
-
+    const {note} = this.props.navigation.state.params;
+    const {data} = this.state;
+    note.tags = data.filter(e => e.value).map(e => e.title);
     this.props.navigation.goBack();
   };
 
   render() {
     return <View style={{flex: 1}}>
-      <Toolbar title="Tags" navIcon={icons.arrowWhite} onActionSelected={this.onActionSelected}/>
-      <CheckboxList data={this.state.data} onChange={this.onChange} onAddItem={this.onAddItem}/>
+      <Toolbar title="Tags" color='white' backgroundColor={green}
+               navIcon={icons.arrowWhite} onActionSelected={this.onActionSelected}/>
+      <CheckboxList data={this.state.data} style={{backgroundColor: 'white'}}
+                    onChange={this.onChange} onAddItem={this.onAddItem}/>
     </View>
   }
 }

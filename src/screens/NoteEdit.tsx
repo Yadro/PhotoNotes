@@ -67,7 +67,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   toolbarActions = [{
     title: 'tags', icon: labelWhite, show: 'always',
     onPress: function () {
-      this.props.navigation.navigate('NoteTags', {tags: this.state.note.tags});
+      this.props.navigation.navigate('NoteTags', {note: this.state.note});
     }
   }, {
     title: toolbar.picker, icon: addPhotoWhite, show: 'always',

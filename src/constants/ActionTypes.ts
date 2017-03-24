@@ -3,6 +3,7 @@ export const setSaved = 'SET_SAVED';
 
 export const addNote = 'ADD';
 export const updateNote = 'UPDATE';
+export const SET_TAGS = 'SET_TAGS';
 
 export const IMPORT = 'IMPORT';
 

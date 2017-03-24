@@ -1,7 +1,7 @@
 import Note from "./Note";
 import {
   setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
-  remove, removeArr, IMPORT, restore
+  remove, removeArr, IMPORT, restore, SET_TAGS
 } from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
@@ -37,6 +37,9 @@ export default (state: Note[] = [], actions): NoteState => {
     case updateNote:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
       return set(lensById(actions.note.id), note, state);
+
+    case SET_TAGS:
+      return over(lensNoteTags(actions.id), () => actions.tags, state);
 
     case setFileName:
       return set(lensNoteFilename(actions.id), actions.fileName, state);

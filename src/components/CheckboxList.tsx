@@ -4,6 +4,7 @@ import {append} from 'ramda';
 import {CheckboxItem} from "./CheckboxItem";
 
 interface CheckboxListP {
+  style?;
   data;
   onChange;
   onAddItem;
@@ -53,7 +54,7 @@ export default class CheckboxList extends React.Component<CheckboxListP, Checkbo
   };
 
   render() {
-    return <View style={css.container}>
+    return <View style={[css.container, this.props.style]}>
       <View>
         <ListView
           dataSource={this.state.dataSource} enableEmptySections
