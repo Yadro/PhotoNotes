@@ -7,6 +7,8 @@ interface Icons {
   'addToPhotosWhite';
   'arrowBlack';
   'arrowWhite';
+  menuBlack;
+  menuWhite;
   'attachBlack';
   'attachWhite';
   'checkBlack';
@@ -99,6 +101,8 @@ const iconSource = {
   labelOutline: 'ic_label_outline',
   checkbox: 'ic_check_box',
   checkboxBlank: 'ic_check_box_outline_blank',
+
+  menu: 'ic_menu',
 };
 
 const icons = {};

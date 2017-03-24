@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
-import store from "../redux/Store";
 import Note from "../redux/Note";
 import {Actions} from "../redux/Actions";
 import Toolbar from "../components/Toolbar";
@@ -25,21 +24,39 @@ const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 const {PopupMenu} = NativeModules;
 
-const {deleteIconWhite, searchWhite, moreWhite, closeWhite} = icons;
+const {deleteIconWhite, searchWhite, moreWhite, closeWhite, menuWhite} = icons;
 
-const toolbarActionsItems: ToolbarAndroidAction[] = [
-  {title: toolbar.remove, icon: deleteIconWhite, show: 'always'},
-];
+const toolbarActionsItems = [{
+  title: toolbar.remove, icon: deleteIconWhite, show: 'always',
+  onPress: function () {
+    this.removeItems(this.state.selected);
+  },
+}];
 const toolbarMainItems = [{
-  title: toolbar.search, icon: searchWhite, show: 'always'
+  title: toolbar.search, icon: searchWhite, show: 'always',
+  onPress: function() {
+    this.toggleSearch();
+  },
 }, {
-  title: 'Сортировка...', show: 'never'
+  title: 'Сортировка...', show: 'never',
+  onPress: function() {
+    this.showSortAlert();
+  },
 }, {
-  title: 'Корзина', show: 'never'
+  title: 'Корзина', show: 'never',
+  onPress: function() {
+    this.props.navigation.navigate('Trash');
+  },
 }, {
-  title: 'Настройки', show: 'never'
+  title: 'Настройки', show: 'never',
+  onPress: function() {
+    this.props.navigation.navigate('Settings');
+  },
 }, {
-  title: 'EditFilter', show: 'never'
+  title: 'EditFilter', show: 'never',
+  onPress: function() {
+    this.props.navigation.navigate('EditFilter');
+  },
 }];
 
 type SortMethod ='name' | 'create' | 'edit';
@@ -167,20 +184,14 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (this.state.multi) {
       if (action == null) {
         this.disableMultiSelect();
-      } else if (action == 0) {
-        this.removeItems(this.state.selected);
+      } else {
+        toolbarActionsItems[action] && toolbarActionsItems[action].onPress.call(this);
       }
     } else {
-      if (action == 0) {
-        this.toggleSearch();
-      } else if (action == 1) {
-        this.showSortAlert();
-      } else if (action == 2) {
-        this.props.navigation.navigate('Trash');
-      } else if (action == 3) {
-        this.props.navigation.navigate('Settings');
-      } else if (action == 4) {
-        this.props.navigation.navigate('EditFilter');
+      if (action == null) {
+        this.props.navigation.navigate('DrawerOpen');
+      } else {
+        toolbarMainItems[action] && toolbarMainItems[action].onPress.call(this);
       }
     }
   };
@@ -204,7 +215,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     return (
       <View style={css.container}>
         <Toolbar title={multi ? "Select to remove" : 'edditr'}
-                 navIcon={multi ? closeWhite : null}
+                 navIcon={multi ? closeWhite : menuWhite}
                  overflowIcon={moreWhite}
                  color="white" backgroundColor="#01B47C"
                  onActionSelected={this.onActionSelected}
