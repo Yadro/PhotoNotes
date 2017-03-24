@@ -18,7 +18,8 @@ interface TagsLayerS {
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
   onPress = (id) => {
-    store.dispatch({type: SET_CURRENT_FILTER, current: id});
+    store.getState().filter.current != id &&
+      store.dispatch({type: SET_CURRENT_FILTER, current: id});
     this.props.navigation.navigate('DrawerClose');
   };
 

@@ -121,13 +121,14 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
     const filtered = notes.filter(n => this.check(n.tags));
 
-    if (filtered.length == props.notes.length &&
+    // fixme
+    /*if (filtered.length == props.notes.length &&
       filtered.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
       if (filterUpdate) {
         this.forceUpdate();
       }
       return;
-    }
+    }*/
 
     this.setState({
       dataSource: this.ds.cloneWithRows(sort[sorting](filtered, reverse)),
