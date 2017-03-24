@@ -8,6 +8,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {Actions} from "../redux/Actions";
+import CheckboxList from "../components/CheckboxList";
 const {checkWhite} = icons;
 
 interface EditFilterP extends ScreenNavigationProp {
@@ -18,7 +19,6 @@ interface EditFilterS {
   title;
   newItem;
   type;
-  dataSource;
   data;
 }
 
@@ -47,8 +47,6 @@ const actions = [{
 }];
 
 class EditFilter extends React.Component<EditFilterP, EditFilterS> {
-  private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
   constructor(props: EditFilterP) {
     super(props);
     const {id} = props.navigation.state.params || {} as any;
@@ -73,35 +71,20 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
       title: filter.title || '',
       type: filter.type || 'white',
       data: items,
-      dataSource: this.ds.cloneWithRows(items),
       newItem: '',
     };
   }
 
-  onCheckboxPress = (i) => {
-    const {data} = this.state;
-    return () => {
-      data[i].value = !data[i].value;
-      const {title} = this.state;
-      this.setState({
-        title: title || data[i].value && data[i].title || '',
-        data,
-        dataSource: this.ds.cloneWithRows(data)
-      });
-    }
+  onChange = (data) => {
+    this.setState({data});
   };
 
-  onSubmitItem = (e) => {
-    const title = e.nativeEvent.text;
-    if (title != '') {
-      const {data} = this.state;
-      const newData = append({title, value: true}, data);
-      this.setState({
-        data: newData,
-        dataSource: this.ds.cloneWithRows(newData),
-        newItem: '',
-      });
-    }
+  submitItem = (data) => {
+    const {title} = this.state;
+    this.setState({
+      title: title || data[data.length - 1].title || '',
+      data,
+    });
   };
 
   toolbarAction = (actionId) => {
@@ -125,15 +108,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
           <Picker.Item label="Black list" value="black"/>
         </Picker>
       </View>
-      <View>
-        <ListView
-          dataSource={this.state.dataSource} enableEmptySections
-          renderRow={(rowData, e, i) => <CheckboxItem key={i} onPress={this.onCheckboxPress(i)}
-                                                     title={rowData.title} value={rowData.value}/>}
-        />
-      </View>
-      <TextInput style={css.input} value={this.state.newItem} placeholder="Add new tag..."
-                 onChangeText={(text) => this.setState({newItem: text})} onSubmitEditing={this.onSubmitItem}/>
+      <CheckboxList data={this.state.data} onAddItem={this.submitItem} onChange={this.onChange}/>
     </View>
   }
 }
