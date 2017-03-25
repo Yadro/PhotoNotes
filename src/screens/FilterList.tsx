@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle} from 'react-native';
+import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle, TextStyle} from 'react-native';
 import icons, {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
@@ -32,8 +32,11 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   render() {
     const {current} = store.getState().filter;
     const {filters} = this.props.filter;
-    return <View style={css.wrapper}>
+    return <View style={css.container}>
       <ScrollView>
+        <View style={css.header}>
+          <Text style={css.headerTitle}>Edditr</Text>
+        </View>
         {filters.sort(wsort).map(e => (
           <Item key={e.id} title={e.title} selected={current == e.id}
                 onPress={this.setFilter.bind(this, e.id)}
@@ -81,13 +84,22 @@ export function sortstr(a, b) {
 }
 
 const css = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    marginTop: 8,
-  },
   container: {
     flex: 1,
   },
+
+  header: {
+    backgroundColor: green,
+    justifyContent: 'flex-end',
+    height: 70,
+    marginBottom: 8,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 18,
+    margin: 10
+  } as TextStyle,
+
   title: {
     fontSize: 16,
     color: 'black',
@@ -108,6 +120,7 @@ const css = StyleSheet.create({
   icon: {
     marginRight: 16
   },
+
   section: {
     borderTopWidth: 1,
     borderColor: 'rgba(0,0,0,.05)',
