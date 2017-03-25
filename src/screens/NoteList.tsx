@@ -86,7 +86,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     super(props);
     const notes = props.notes;
 
-    const current = props.filter.filters[props.filter.current] || {tags: []};
+    const current = props.filter.filters.find(e => e.id == props.filter.current) || {tags: []};
     this.check = check(current.tags, current.type == 'white');
 
     const sorting = 'create';
@@ -112,7 +112,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
     const filterUpdate = newProps.filter.current != props.filter.current;
     if (filterUpdate) {
-      const current = newProps.filter.filters[newProps.filter.current] || {tags: []};
+      const current = newProps.filter.filters.find(e => e.id == newProps.filter.current) || {tags: []};
       this.check = check(current.tags, current.type == 'white');
     }
 
