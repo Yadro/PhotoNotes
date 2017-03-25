@@ -94,6 +94,6 @@ const css = StyleSheet.create({
     paddingHorizontal: 16,
   },
   itemHighlight: {
-    backgroundColor: 'rgba(0,0,0,.05)'
+    backgroundColor: 'rgba(1,180,124,.05)'
   }
 });
