@@ -53,13 +53,18 @@ export default class CheckboxList extends React.Component<CheckboxListP, Checkbo
     }
   };
 
+  renderItem(data, i) {
+    return <CheckboxItem key={i}
+                         title={data.title} value={data.value}
+                         onPress={this.onCheckboxPress(i)}/>
+  }
+
   render() {
     return <View style={[css.container, this.props.style]}>
       <View>
         <ListView
           dataSource={this.state.dataSource} enableEmptySections
-          renderRow={(data, e, i) => <CheckboxItem key={i} onPress={this.onCheckboxPress(i)}
-                                                      title={data.title} value={data.value}/>}
+          renderRow={(data, e, i) => this.renderItem(data, i)}
         />
       </View>
       <TextInput style={css.input} value={this.state.newItem} placeholder="Add new tag..."
@@ -74,6 +79,6 @@ const css = StyleSheet.create({
     flex: 1,
   },
   input: {
-    marginHorizontal: 8
+    marginHorizontal: 16
   }
 });

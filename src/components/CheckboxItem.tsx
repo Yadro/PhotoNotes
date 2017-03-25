@@ -20,12 +20,13 @@ const css = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 8,
+    height: 48,
+    paddingHorizontal: 16,
   },
   image: {
     width: 24,
     height: 24,
-    marginRight: 8,
+    marginRight: 16,
   },
   text: {
     color: 'black',

@@ -99,7 +99,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
                actions={actions} onActionSelected={this.toolbarAction}/>
       <TextInput style={css.input} value={this.state.title} placeholder="Title"
                  onChangeText={(text) => this.setState({title: text})}/>
-      <View style={{marginHorizontal: 8}}>
+      <View style={css.piker}>
         <Picker
           mode="dropdown"
           selectedValue={this.state.type}
@@ -120,7 +120,12 @@ const css = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  piker: {
+    marginHorizontal: 16
+  },
   input: {
-    marginHorizontal: 8
+    marginTop: 8,
+    marginHorizontal: 16,
+    fontSize: 16,
   }
 });

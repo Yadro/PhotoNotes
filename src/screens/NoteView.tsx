@@ -24,6 +24,7 @@ import {Markdown} from "../components/Markdown";
 import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from './Localization';
 import {tracker} from "../Analytics";
+import {gray} from "../constants/theme";
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
@@ -143,7 +144,7 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={css.title}>{title}</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={{uri: paths.labelBlack}} style={{width: 24, height: 24, marginRight: 4}}/>
+                <Image source={{uri: paths.labelBlack}} style={{width: 24, height: 24, marginRight: 4}} tintColor={gray}/>
                 <Text>{tags.length}</Text>
               </View>
             </View>
