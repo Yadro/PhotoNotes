@@ -6,8 +6,6 @@ import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
-import store from "../redux/Store";
-import {SET_TAGS} from "../constants/ActionTypes";
 import {green} from "../constants/theme";
 
 interface NoteTagsP extends ScreenNavigationProp {
@@ -24,12 +22,12 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
   constructor(props) {
     super(props);
     const {note} = props.navigation.state.params;
-    const tags = Array.from(
-      props.filter.filters.reduce((res, item) => {
-        item.tags.forEach(e => res.add(e));
-        return res;
-      }, new Set())
-    ).map(title => ({
+
+    const tagSet = note.tags.reduce((res, tag) => res.add(tag), new Set());
+    const tags = Array.from(props.filter.filters.reduce((res, item) => {
+      item.tags.forEach(e => res.add(e));
+      return res;
+    }, tagSet)).map(title => ({
       title,
       value: note.tags.indexOf(title) > -1 || false,
     }));
