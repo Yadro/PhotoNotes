@@ -6,11 +6,12 @@ const lensCurrent = lensProp('current');
 const lensFilters = lensProp('filters');
 const lensFilterByIdx = (id) => compose(
   lensFilters,
-  lensByIndex(id)
+  lensById(id)
 );
 
 export type FilerType = 'white' | 'black';
 export interface Filter {
+  id: number;
   title: string;
   tags: string[];
   type: FilerType;
@@ -31,7 +32,10 @@ export default (state, action) => {
     case SET_CURRENT_FILTER:
       return set(lensCurrent, action.current, state);
     case ADD_FILTER:
-      return over(lensFilters, filters => append(action.filter, filters), state);
+      return over(lensFilters, filters => {
+        action.filter.id = filters.length;
+        return append(action.filter, filters);
+      }, state);
     case REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
     case UPDATE_FILTER:

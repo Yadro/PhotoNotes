@@ -34,9 +34,9 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
     const {filters} = this.props.filter;
     return <View style={css.wrapper}>
       <ScrollView>
-        {filters.sort(wsort).map((e, idx) => (
-          <Item key={idx} title={e.title} selected={current == idx}
-                onPress={this.setFilter.bind(this, idx)} onLongPress={this.goToEditFilter(idx)}/>
+        {filters.sort(wsort).map(e => (
+          <Item key={e.id} title={e.title} selected={current == e.id}
+                onPress={this.setFilter.bind(this, e.id)} onLongPress={this.goToEditFilter(e.id)}/>
         ))}
       </ScrollView>
       <Item title={'Add new filter'} onPress={this.goToEditFilter(-1)}
