@@ -1,4 +1,6 @@
 const nativeImageSource = require('nativeImageSource');
+import * as React from 'react';
+import {Image} from 'react-native';
 
 interface Icons {
   'addPhotoBlack';
@@ -121,6 +123,11 @@ for (let color in colorsPostfix) {
   }
 }
 
-export default <Icons>icons;
+export default icons as Icons;
 
-export const paths = <Icons>pathsLocal;
+export const paths = pathsLocal as Icons;
+
+const styleSize = {width: 24, height: 24};
+export const Icon = ({uri, tint, style}) => (
+  <Image style={[styleSize, style]} source={{uri}} tintColor={tint}/>
+);

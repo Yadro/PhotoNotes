@@ -1,15 +1,14 @@
 import * as React from 'react';
-import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet} from 'react-native';
-import icons from '../components/Icons';
+import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle} from 'react-native';
+import icons, {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
 import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
-import {green} from "../constants/theme";
+import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
-const {editWhite} = icons;
 
 interface TagsLayerP extends ScreenNavigationProp {
   filter: FilterState;
@@ -41,8 +40,15 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
                 onLongPress={e.id > -1 ? this.goToEditFilter(e.id) : null}/>
         ))}
       </ScrollView>
-      <Item title={'Add new filter'} onPress={this.goToEditFilter(-1)}
-            onLongPress={null} selected={false}/>
+
+      <View style={css.section}>
+        <TouchableNativeFeedback onPress={this.goToEditFilter(-1)} style={css.container}>
+          <View style={css.item}>
+            <Icon uri={paths.editWhite} tint={gray} style={css.icon}/>
+            <Text style={css.title}>{'Add new filter'}</Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
     </View>
   }
 }
@@ -60,7 +66,8 @@ const Item = (props: ItemP) => {
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
                                   style={css.container} delayLongPress={delay}>
     <View style={[css.item, selected && css.itemHighlight]}>
-      {/*<Image source={{uri: editWhite}}/>*/}
+      <Icon uri={selected ? paths.labelWhite : paths.labelOutlineWhite}
+            tint={[selected ? green : gray]} style={css.icon}/>
       <Text style={[css.title, selected && css.titleHighlight]}>{title}</Text>
     </View>
   </TouchableNativeFeedback>
@@ -76,12 +83,13 @@ export function sortstr(a, b) {
 const css = StyleSheet.create({
   wrapper: {
     flex: 1,
-    marginVertical: 8,
+    marginTop: 8,
   },
   container: {
     flex: 1,
   },
   title: {
+    fontSize: 16,
     color: 'black',
   },
   titleHighlight: {
@@ -89,11 +97,20 @@ const css = StyleSheet.create({
     color: green,
   },
   item: {
+    flexDirection: 'row',
+    alignItems: 'center',
     height: 48,
-    justifyContent: 'center',
     paddingHorizontal: 16,
   },
   itemHighlight: {
     backgroundColor: 'rgba(1,180,124,.05)'
-  }
+  },
+  icon: {
+    marginRight: 16
+  },
+  section: {
+    borderTopWidth: 1,
+    borderColor: 'rgba(0,0,0,.05)',
+    paddingVertical: 8,
+  } as ViewStyle,
 });
