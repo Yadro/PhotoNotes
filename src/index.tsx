@@ -43,12 +43,10 @@ const App = StackNavigator({
 
 const AppDrawer = DrawerNavigator({
   App: {screen: App},
-  Trash: {screen: Trash},
-  Settings: {screen: Settings},
 }, {
   contentComponent: (props) => {
     return <View style={{flex: 1}}>
-      <DrawerView.Items {...props}/>
+      {/*<DrawerView.Items {...props}/>*/}
       <FilterTags {...props}/>
     </View>
   },

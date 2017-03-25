@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {View, Text, Image, TouchableNativeFeedback, StyleSheet} from 'react-native';
+import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet} from 'react-native';
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
 import {FilterState} from "../reducers/filter";
 import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
+import {green} from "../constants/theme";
 const {editWhite} = icons;
 
 interface TagsLayerP extends ScreenNavigationProp {
@@ -30,12 +31,14 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   render() {
     const {current} = store.getState().filter;
     const {filters} = this.props.filter;
-    return <View style={{flex: 1}}>
-      {filters.sort(wsort).map((e, idx) => (
-        <Item key={idx} title={e.title} selected={current == idx}
-              onPress={this.onPress.bind(this, idx)} onLongPress={this.onLongPress(idx)}/>
-      ))}
-      <Item title={'Add new filter'} onPress={this.onPress.bind(this, -1)} onLongPress={this.onLongPress(-1)}/>
+    return <View style={css.wrapper}>
+      <ScrollView>
+        {filters.sort(wsort).map((e, idx) => (
+          <Item key={idx} title={e.title} selected={current == idx}
+                onPress={this.onPress.bind(this, idx)} onLongPress={this.onLongPress(idx)}/>
+        ))}
+      </ScrollView>
+      <Item title={'Add new filter'} onPress={this.onLongPress.bind(this, -1)} onLongPress={this.onLongPress(-1)}/>
     </View>
   }
 }
@@ -60,18 +63,24 @@ export function sortstr(a, b) {
 }
 
 const css = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    marginVertical: 8,
+  },
   container: {
     flex: 1,
   },
   title: {
     color: 'black',
   },
-  item: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
   titleHighlight: {
     fontWeight: 'bold',
+    color: green,
+  },
+  item: {
+    height: 48,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
   },
   itemHighlight: {
     backgroundColor: 'rgba(0,0,0,.05)'
