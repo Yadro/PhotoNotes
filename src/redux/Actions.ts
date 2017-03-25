@@ -3,7 +3,7 @@ import store from './Store';
 import {exportNotes} from "./StoreImport";
 import {
   setFileName, setSaved, remove, removeArr, removeAnyway, removeAnywayArr,
-  restore, SET_SAVE_FOLDER, IMPORT, ADD_FILTER, UPDATE_FILTER, STORE_KEYS
+  restore, SET_SAVE_FOLDER, IMPORT, ADD_FILTER, UPDATE_FILTER, STORE_KEYS, SET_CURRENT_FILTER
 } from '../constants/ActionTypes';
 import {tracker} from "../Analytics";
 import {AsyncStorage} from "react-native";
@@ -75,8 +75,17 @@ export const Actions = {
     AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
     if (!__DEV__) tracker.trackEvent('Filter', 'Update');
   },
-};
 
+  setCurrentFilter(id) {
+    store.dispatch({type: SET_CURRENT_FILTER, current: id});
+
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
+    }, 1000);
+  }
+};
+let timer;
 
 export const ActionOther = {
   setViewSize(size) {

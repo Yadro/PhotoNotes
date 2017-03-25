@@ -8,6 +8,7 @@ import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
 import {green} from "../constants/theme";
 import {delay} from "../constants/Config";
+import {Actions} from "../redux/Actions";
 const {editWhite} = icons;
 
 interface TagsLayerP extends ScreenNavigationProp {
@@ -21,7 +22,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
   setFilter = (id) => {
     store.getState().filter.current != id &&
-      store.dispatch({type: SET_CURRENT_FILTER, current: id});
+      Actions.setCurrentFilter(id);
     this.props.navigation.navigate('DrawerClose');
   };
 
