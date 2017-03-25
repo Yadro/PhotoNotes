@@ -63,6 +63,7 @@ interface NoteListP extends ScreenNavigationProp {
   filter;
 }
 interface NoteListS {
+  current;
   dataSource?;
   multi?;
   selected?;
@@ -94,6 +95,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     const filtered = notes.filter(n => this.check(n.tags));
     const sorted = sort[sorting](filtered, reverse);
     this.state = {
+      current,
       dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
       filter: false,
@@ -110,9 +112,10 @@ class NoteList extends Component<NoteListP, NoteListS> {
     const {props} = this;
     const {notes} = newProps;
 
+    let current;
     const filterUpdate = newProps.filter.current != props.filter.current;
     if (filterUpdate) {
-      const current = newProps.filter.filters.find(e => e.id == newProps.filter.current) || {tags: []};
+      current = newProps.filter.filters.find(e => e.id == newProps.filter.current) || {tags: []};
       this.check = check(current.tags, current.type == 'white');
     }
 
@@ -127,9 +130,13 @@ class NoteList extends Component<NoteListP, NoteListS> {
       return;
     }*/
 
-    this.setState({
-      dataSource: this.ds.cloneWithRows(sort[sorting](filtered, reverse)),
-    });
+    const state = {
+      dataSource: this.ds.cloneWithRows(sort[sorting](filtered, reverse))
+    };
+    if (current) {
+      state['current'] = current;
+    }
+    this.setState(state);
   }
 
   disableMultiSelect = () => {
@@ -222,11 +229,11 @@ class NoteList extends Component<NoteListP, NoteListS> {
   render() {
     console.log('render');
 
-    const {multi, dataSource, selected} = this.state;
+    const {multi, dataSource, selected, current} = this.state;
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : 'edditr'}
+        <Toolbar title={multi ? "Select to remove" : current.title}
                  navIcon={multi ? closeWhite : menuWhite}
                  overflowIcon={moreWhite}
                  color="white" backgroundColor="#01B47C"
