@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Picker, TextInput, ListView, StyleSheet} from 'react-native';
+import {View, KeyboardAvoidingView, TextInput, ListView, StyleSheet, ViewStyle} from 'react-native';
 import {append} from 'ramda';
 import {CheckboxItem} from "./CheckboxItem";
 
@@ -61,23 +61,27 @@ export default class CheckboxList extends React.Component<CheckboxListP, Checkbo
 
   render() {
     return <View style={[css.container, this.props.style]}>
-      <View>
-        <ListView
-          dataSource={this.state.dataSource} enableEmptySections
-          renderRow={(data, e, i) => this.renderItem(data, i)}
-        />
-      </View>
+      <ListView
+        dataSource={this.state.dataSource} enableEmptySections
+        renderRow={(data, e, i) => this.renderItem(data, i)}
+      />
       <TextInput style={css.input} value={this.state.newItem} placeholder="Add new tag..."
                  onChangeText={text => this.setState({newItem: text})}
                  onSubmitEditing={this.onSubmitItem}/>
-    </View>
+    </View >
   }
 }
 
 const css = StyleSheet.create({
   container: {
     flex: 1,
-  },
+  } as ViewStyle,
+  bottomPosition: {
+    position: 'absolute',
+    flex: 1,
+    height: 48,
+    bottom: 0,
+  } as ViewStyle,
   input: {
     marginHorizontal: 16
   }
