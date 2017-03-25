@@ -2,7 +2,7 @@ import * as React from 'react';
 import {append} from 'ramda';
 import {View, Picker, TextInput, ListView, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import {FilterState} from "../reducers/filter";
+import {selectFilter, FilterState} from "../reducers/filter";
 import {CheckboxItem} from "../components/CheckboxItem";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
@@ -53,7 +53,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
     const data = props.filter;
     let filter;
     if (id != null && id > -1) {
-      filter = data.filters[id];
+      filter = data.filters.find(e => e.id == id);
     } else {
       filter = {};
     }
@@ -113,7 +113,7 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
   }
 }
 
-export default connect(state => ({filter: state.filter}))(EditFilter);
+export default connect(state => ({filter: selectFilter(state)}))(EditFilter);
 
 const css = StyleSheet.create({
   container: {

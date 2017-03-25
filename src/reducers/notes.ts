@@ -5,6 +5,7 @@ import {
 } from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
+import {getMaxId} from "../util/util";
 
 export type NoteState = Note[];
 
@@ -30,7 +31,7 @@ export default (state: Note[] = [], actions): NoteState => {
   let note: Note;
   switch (actions.type) {
     case addNote:
-      note = set(lensId, getMax(state) + 1, actions.note);
+      note = set(lensId, getMaxId(state) + 1, actions.note);
       note = set(lensCreatedAt, actions.createdAt, note);
       return append(note, state);
 
@@ -75,10 +76,6 @@ export default (state: Note[] = [], actions): NoteState => {
   }
 };
 
-function getMax(arr: {id}[]) {
-  let max = 0;
-  arr.forEach(e => {
-    max = Math.max(e.id, max)
-  });
-  return max;
+export function selectNotes(state) {
+  return state.notes;
 }

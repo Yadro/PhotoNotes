@@ -56,7 +56,7 @@ const AppDrawer = DrawerNavigator({
 });
 
 importNotes().then(data => {
-  Actions.importNotes(data)
+  Actions.importNotes(data);
 }).catch(e => {
   console.log(e)
 });

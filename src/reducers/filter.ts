@@ -1,7 +1,9 @@
-import {set, compose, append} from 'ramda';
+import {set, compose, append, concat} from 'ramda';
 import {lensProp, lensById, over, lensByIndex} from "../util/lens";
 import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT} from "../constants/ActionTypes";
+import {getMaxId} from "../util/util";
 
+const lensId = lensProp('id');
 const lensCurrent = lensProp('current');
 const lensFilters = lensProp('filters');
 const lensFilterByIdx = (id) => compose(
@@ -33,8 +35,10 @@ export default (state, action) => {
       return set(lensCurrent, action.current, state);
     case ADD_FILTER:
       return over(lensFilters, filters => {
-        action.filter.id = filters.length;
-        return append(action.filter, filters);
+        return append(
+          set(lensId, getMaxId(filters) + 1, action.filter),
+          filters
+        );
       }, state);
     case REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
@@ -44,4 +48,20 @@ export default (state, action) => {
       return action.data.tags || state;
   }
   return state;
+}
+
+const systemTags = [{
+  id: -1,
+  title: 'All',
+  type: 'black',
+  tags: ['trash']
+}, {
+  id: -2,
+  title: 'Trash',
+  type: 'white',
+  tags: ['trash']
+}];
+
+export function selectFilter(state): FilterState {
+  return over(lensFilters, filters => concat(systemTags, filters), state.filter);
 }

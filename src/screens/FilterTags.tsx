@@ -3,7 +3,7 @@ import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet} from 'react
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
-import {FilterState} from "../reducers/filter";
+import {selectFilter, FilterState} from "../reducers/filter";
 import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
 import {green} from "../constants/theme";
@@ -36,7 +36,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       <ScrollView>
         {filters.sort(wsort).map(e => (
           <Item key={e.id} title={e.title} selected={current == e.id}
-                onPress={this.setFilter.bind(this, e.id)} onLongPress={this.goToEditFilter(e.id)}/>
+                onPress={this.setFilter.bind(this, e.id)}
+                onLongPress={e.id > -1 ? this.goToEditFilter(e.id) : null}/>
         ))}
       </ScrollView>
       <Item title={'Add new filter'} onPress={this.goToEditFilter(-1)}
@@ -45,9 +46,16 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   }
 }
 
-export default connect(state => ({filter: state.filter}))(FilterTags);
+export default connect(state => ({filter: selectFilter(state)}))(FilterTags);
 
-const Item = ({title, onPress, onLongPress, selected}) => {
+interface ItemP {
+  title
+  onPress
+  onLongPress?
+  selected
+}
+const Item = (props: ItemP) => {
+  const {title, onPress, onLongPress, selected} = props;
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
                                   style={css.container} delayLongPress={delay}>
     <View style={[css.item, selected && css.itemHighlight]}>

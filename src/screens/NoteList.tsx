@@ -20,6 +20,8 @@ import {connect} from "react-redux";
 import List from "./List";
 import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
+import {selectFilter} from "../reducers/filter";
+import {selectNotes} from "../reducers/notes";
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 const {PopupMenu} = NativeModules;
@@ -240,7 +242,10 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 }
 
-export default connect(state => ({notes: state.notes, tag: '!trash', filter: state.filter}))(NoteList);
+export default connect(state => ({
+  filter: selectFilter(state),
+  notes: selectNotes(state),
+}))(NoteList);
 
 
 const css = StyleSheet.create({

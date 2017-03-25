@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Toolbar from "../components/Toolbar";
 import CheckboxList from "../components/CheckboxList";
 import {connect} from "react-redux";
-import {FilterState} from "../reducers/filter";
+import {selectFilter, FilterState} from "../reducers/filter";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import store from "../redux/Store";
@@ -64,4 +64,4 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
   }
 }
 
-export default connect(state => ({filter: state.filter}))(NoteTags);
+export default connect(state => ({filter: selectFilter(state)}))(NoteTags);
