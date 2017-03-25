@@ -7,6 +7,7 @@ import {FilterState} from "../reducers/filter";
 import store from "../redux/Store";
 import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
 import {green} from "../constants/theme";
+import {delay} from "../constants/Config";
 const {editWhite} = icons;
 
 interface TagsLayerP extends ScreenNavigationProp {
@@ -18,13 +19,13 @@ interface TagsLayerS {
 
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
-  onPress = (id) => {
+  setFilter = (id) => {
     store.getState().filter.current != id &&
       store.dispatch({type: SET_CURRENT_FILTER, current: id});
     this.props.navigation.navigate('DrawerClose');
   };
 
-  onLongPress = id => () => {
+  goToEditFilter = id => () => {
     this.props.navigation.navigate('EditFilter', {id});
   };
 
@@ -35,10 +36,11 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       <ScrollView>
         {filters.sort(wsort).map((e, idx) => (
           <Item key={idx} title={e.title} selected={current == idx}
-                onPress={this.onPress.bind(this, idx)} onLongPress={this.onLongPress(idx)}/>
+                onPress={this.setFilter.bind(this, idx)} onLongPress={this.goToEditFilter(idx)}/>
         ))}
       </ScrollView>
-      <Item title={'Add new filter'} onPress={this.onLongPress.bind(this, -1)} onLongPress={this.onLongPress(-1)}/>
+      <Item title={'Add new filter'} onPress={this.goToEditFilter(-1)}
+            onLongPress={null} selected={false}/>
     </View>
   }
 }
@@ -46,8 +48,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 export default connect(state => ({filter: state.filter}))(FilterTags);
 
 const Item = ({title, onPress, onLongPress, selected}) => {
-  return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress} delayLongPress={3500}
-                                  style={css.container}>
+  return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
+                                  style={css.container} delayLongPress={delay}>
     <View style={[css.item, selected && css.itemHighlight]}>
       {/*<Image source={{uri: editWhite}}/>*/}
       <Text style={[css.title, selected && css.titleHighlight]}>{title}</Text>
