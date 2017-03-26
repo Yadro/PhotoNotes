@@ -96,14 +96,10 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   constructor(props) {
     super(props);
-    const notes = props.notes;
-
-    const current = props.filter.filters.find(e => e.id == props.filter.current) || {tags: []};
-    this.check = check(current.tags, current.type == 'white');
-
     const sorting = 'create';
     const reverse = false;
-    const filtered = notes.filter(n => this.check(n.tags));
+    const {current, filtered} = this.filterNote(props.filter, props.notes);
+
     const sorted = sort[sorting](filtered, reverse);
     this.state = {
       current,
@@ -112,25 +108,34 @@ class NoteList extends Component<NoteListP, NoteListS> {
       filter: false,
       search: '',
       selected: [],
-      sorting,
+      sorting, // todo rename to sortMethod
       reverse,
     };
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
-  componentWillReceiveProps(newProps: NoteListP) {
-    const {sorting, reverse} = this.state;
-    const {props} = this;
-    const {notes} = newProps;
-
-    let current;
-    const filterUpdate = newProps.filter.current != props.filter.current;
-    if (filterUpdate) {
-      current = newProps.filter.filters.find(e => e.id == newProps.filter.current) || {tags: []};
-      this.check = check(current.tags, current.type == 'white');
+  filterNote(filter, notes: Note[], currentFilter?) {
+    if (!currentFilter) {
+      currentFilter = filter.filters.find(e => e.id == filter.current) || {tags: []};
+      this.check = check(currentFilter.tags, currentFilter.type == 'white');
     }
 
-    const filtered = notes.filter(n => this.check(n.tags));
+    const isTrash = currentFilter.tags.indexOf('trash') !== -1;
+    let notesFilter;
+    if (!isTrash) {
+      notesFilter = notes.filter(n => n.tags.indexOf('trash') === -1);
+    } else {
+      notesFilter = notes;
+    }
+    return {
+      filtered: notesFilter.filter(n => this.check(n.tags)),
+      current: currentFilter,
+    }
+  }
+
+  componentWillReceiveProps(newProps: NoteListP) {
+    const {sorting, reverse} = this.state;
+    const {current, filtered} = this.filterNote(newProps.filter, newProps.notes);
 
     // fixme
     /*if (filtered.length == props.notes.length &&
@@ -160,8 +165,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   toggleSort = (sortBy: SortMethod, reverse) => {
     const {notes} = this.props;
+    const {current} = this.state;
     if (sort[sortBy]) {
-      const filtered = notes.filter(n => this.check(n.tags));
+      const {filtered} = this.filterNote(notes, notes, current);
       const sorted = sort[sortBy](filtered, reverse);
       this.setState({
         reverse,
