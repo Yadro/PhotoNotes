@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle, Linking, Share,
+  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle, ToastAndroid
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
@@ -69,7 +69,15 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
   }, {
     title: 'Версия приложения',
     subtitle: '1.0.1 (beta)',
+    onPress: () => {
+      this.count++;
+      if (this.count == 10) {
+        ToastAndroid.show('Здесь не на что смотреть.\nПроходите..', ToastAndroid.BOTTOM);
+      }
+    }
   }];
+
+  count = 0;
 
   getString(data) {
     if (typeof data == "function") {
