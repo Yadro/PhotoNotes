@@ -1,6 +1,7 @@
 import {
   Image,
   Dimensions,
+  Linking,
 } from 'react-native';
 import ImageResizer from "react-native-image-resizer";
 import {NavigationActions} from "react-navigation";
@@ -87,4 +88,14 @@ export function getMaxId(arr: {id}[]) {
     max = Math.max(e.id, max)
   });
   return max;
+}
+
+export function sendEmail(url) {
+  Linking.canOpenURL(url).then(supported => {
+    if (!supported) {
+      console.log('Can\'t handle url: ' + url);
+    } else {
+      return Linking.openURL(url);
+    }
+  }).catch(err => console.error('An error occurred', err));
 }
