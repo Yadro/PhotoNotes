@@ -3,7 +3,7 @@ import {
   SET_FILE_NAME, SET_SAVED, ADD, UPDATE, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR,
   REMOVE, REMOVE_ARR, IMPORT, RESTORE, SET_TAGS
 } from "../constants/ActionTypes";
-import {set, compose, append} from 'ramda';
+import {set, view, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 import {getMaxId} from "../util/util";
 
@@ -52,12 +52,20 @@ export default (state: Note[] = [], actions): NoteState => {
       return over(lensNoteTags(actions.id), tags => tags.filter(tag => tag != 'trash'), state);
 
     case REMOVE:
-      return over(lensNoteTags(actions.id), tags => append('trash', tags), state);
+      return over(
+        lensNoteTags(actions.id),
+        tags => Array.from(new Set(append('trash', tags))),
+        state
+      );
 
     case REMOVE_ARR:
       return state.map(note => {
         if (actions.ids.includes(note.id)) {
-          return over(lensTags, tags => append('trash', tags), note);
+          return over(
+            lensTags,
+            tags => Array.from(new Set(append('trash', tags))),
+            note
+          );
         }
         return note;
       });
