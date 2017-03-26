@@ -1,7 +1,7 @@
 import Note from "../redux/Note";
 import {
-  setFileName, setSaved, addNote, updateNote, removeAnyway, removeAnywayArr,
-  remove, removeArr, IMPORT, restore, SET_TAGS
+  SET_FILE_NAME, SET_SAVED, ADD, UPDATE, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR,
+  REMOVE, REMOVE_ARR, IMPORT, RESTORE, SET_TAGS
 } from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
@@ -30,31 +30,31 @@ const lensNoteTags = id => compose(
 export default (state: Note[] = [], actions): NoteState => {
   let note: Note;
   switch (actions.type) {
-    case addNote:
+    case ADD:
       note = set(lensId, getMaxId(state) + 1, actions.note);
       note = set(lensCreatedAt, actions.createdAt, note);
       return append(note, state);
 
-    case updateNote:
+    case UPDATE:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
       return set(lensById(actions.note.id), note, state);
 
     case SET_TAGS:
       return over(lensNoteTags(actions.id), () => actions.tags, state);
 
-    case setFileName:
+    case SET_FILE_NAME:
       return set(lensNoteFilename(actions.id), actions.fileName, state);
 
-    case setSaved:
+    case SET_SAVED:
       return set(lensNoteSaved(actions.id), true, state);
 
-    case restore:
+    case RESTORE:
       return over(lensNoteTags(actions.id), tags => tags.filter(tag => tag != 'trash'), state);
 
-    case remove:
+    case REMOVE:
       return over(lensNoteTags(actions.id), tags => append('trash', tags), state);
 
-    case removeArr:
+    case REMOVE_ARR:
       return state.map(note => {
         if (actions.ids.includes(note.id)) {
           return over(lensTags, tags => append('trash', tags), note);
@@ -62,10 +62,10 @@ export default (state: Note[] = [], actions): NoteState => {
         return note;
       });
 
-    case removeAnyway:
+    case REMOVE_ANYWAY:
       return state.filter(e => e.id != actions.id);
 
-    case removeAnywayArr:
+    case REMOVE_ANYWAY_ARR:
       return state.filter(e => !actions.ids.includes(e.id));
 
     case IMPORT:

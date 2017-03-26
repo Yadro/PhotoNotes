@@ -17,7 +17,7 @@ import {Actions} from "../redux/Actions";
 import l from './Localization';
 import Note from "../redux/Note";
 import store from "../redux/Store";
-import {removeAnywayArr, removeAnyway} from "../constants/ActionTypes";
+import {REMOVE_ANYWAY_ARR, REMOVE_ANYWAY} from "../constants/ActionTypes";
 import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
 const {removeMulti} = l.Alert;

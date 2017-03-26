@@ -8,6 +8,7 @@ import store from "../redux/Store";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
+const DialogAndroid = require('react-native-dialogs');
 
 interface TagsLayerP extends ScreenNavigationProp {
   filter: FilterState;
@@ -15,6 +16,23 @@ interface TagsLayerP extends ScreenNavigationProp {
 interface TagsLayerS {
 }
 
+
+function showDialog() {
+  return new Promise((resolve, reject) => {
+    try {
+      const dialog = new DialogAndroid();
+      dialog.set({
+        items: ['modify', 'delete'],
+        itemsCallback(id) {
+          resolve(id);
+        },
+      });
+      dialog.show();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
 
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
@@ -25,7 +43,15 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   };
 
   goToEditFilter = id => () => {
-    this.props.navigation.navigate('EditFilter', {id});
+    showDialog().then(selectedId => {
+      if (selectedId == 0) {
+        this.props.navigation.navigate('EditFilter', {id});
+      } else {
+        Actions.removeFilter(id);
+      }
+    }).catch(e => {
+      console.log(e);
+    })
   };
 
   render() {

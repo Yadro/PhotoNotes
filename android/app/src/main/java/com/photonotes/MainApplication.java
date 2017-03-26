@@ -2,8 +2,8 @@ package com.photonotes;
 
 import android.app.Application;
 
-//import com.popupmenu.PopupMenuPackage;
 import com.facebook.react.ReactApplication;
+import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.image.zoom.ReactImageZoom;
 import com.facebook.react.ReactNativeHost;
@@ -30,13 +30,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new ReactNativeDialogsPackage(),
         new ImageResizerPackage(),
         new ReactImageZoom(),
         new RNFSPackage(),
         new ImagePickerPackage(),
         new GoogleAnalyticsBridgePackage(),
         new MyPhotoViewPackage()
-//        new PopupMenuPackage()
       );
     }
   };

@@ -3303,6 +3303,10 @@ react-native-check-box@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/react-native-check-box/-/react-native-check-box-1.0.4.tgz#228507af6df59fa07b334dfd569aeb709e9ca1e6"
 
+react-native-dialogs@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/react-native-dialogs/-/react-native-dialogs-0.0.19.tgz#5fce60fa4f14779377598a10ab76ba274623f1f5"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -3341,14 +3345,6 @@ react-native-image-resizer@0.1.0:
 react-native-image-zoom@0.32.0:
   version "0.32.0"
   resolved "https://registry.yarnpkg.com/react-native-image-zoom/-/react-native-image-zoom-0.32.0.tgz#633f0b796d6303e8a7ef99133733c53dd5a7a81c"
-
-react-native-nav@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-nav/-/react-native-nav-1.1.4.tgz#e5d9453a4723745197429bb6cadff36a29cbbde7"
-
-"react-native-popup@git+https://github.com/Yadro/react-native-popup.git":
-  version "1.0.0"
-  resolved "git+https://github.com/Yadro/react-native-popup.git#4390346bf4862499a1ff35f02c272ca710451463"
 
 react-native-tab-view@^0.0.57:
   version "0.0.57"

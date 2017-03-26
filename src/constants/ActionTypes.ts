@@ -1,21 +1,21 @@
-export const setFileName = 'SET_FILE_NAME';
-export const setSaved = 'SET_SAVED';
+export const SET_FILE_NAME = 'SET_FILE_NAME';
+export const SET_SAVED = 'SET_SAVED';
 
-export const addNote = 'ADD';
-export const updateNote = 'UPDATE';
+export const ADD = 'ADD';
+export const UPDATE = 'UPDATE';
 export const SET_TAGS = 'SET_TAGS';
 
 export const IMPORT = 'IMPORT';
 
-export const restore = 'RESTORE';
+export const RESTORE = 'RESTORE';
 
-export const remove = 'REMOVE';
-export const removeArr = 'REMOVE_ARR';
-export const removeAnyway = 'REMOVE_ANYWAY';
-export const removeAnywayArr = 'REMOVE_ANYWAY_ARR';
+export const REMOVE = 'REMOVE';
+export const REMOVE_ARR = 'REMOVE_ARR';
+export const REMOVE_ANYWAY = 'REMOVE_ANYWAY';
+export const REMOVE_ANYWAY_ARR = 'REMOVE_ANYWAY_ARR';
 
-export const toggleMulti = 'TOGGLE_MULTI';
-export const selectItem = 'SELECT_ITEM';
+export const TOGGLE_MULTI = 'TOGGLE_MULTI';
+export const SELECT_ITEM = 'SELECT_ITEM';
 
 export const SET_SAVE_FOLDER = 'SET_SAVE_FOLDER';
 

@@ -1,4 +1,4 @@
-import {toggleMulti, selectItem} from "../constants/ActionTypes";
+import {TOGGLE_MULTI, SELECT_ITEM} from "../constants/ActionTypes";
 import {set, compose} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 
@@ -13,12 +13,12 @@ export default (state, action) => {
     };
 
   switch (action.type) {
-    case toggleMulti:
+    case TOGGLE_MULTI:
       let data = over(multiLens, multi => !multi, state);
       data = set(selectedLens, [], data);
       return data;
 
-    case selectItem:
+    case SELECT_ITEM:
       return {
         ...state,
         selected: [

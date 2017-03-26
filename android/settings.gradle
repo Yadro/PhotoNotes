@@ -12,5 +12,5 @@ include ':photos'
 project(':photos').projectDir = new File('PhotoModule/android')
 include ':react-native-google-analytics-bridge'
 project(':react-native-google-analytics-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-analytics-bridge/android')
-//include 'react-native-popup'
-//project(':react-native-popup').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-popup/android')
+include ':react-native-dialogs'
+project(':react-native-dialogs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-dialogs/android')
