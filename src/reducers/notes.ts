@@ -77,7 +77,7 @@ export default (state: Note[] = [], actions): NoteState => {
       return state.filter(e => !actions.ids.includes(e.id));
 
     case IMPORT:
-      return actions.data.notes;
+      return actions.data.notes || state;
 
     default:
       return state;

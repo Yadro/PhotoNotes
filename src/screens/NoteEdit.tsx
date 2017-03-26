@@ -89,7 +89,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     super(props);
     const {notes} = store.getState();
     const {params} = props.navigation.state;
-    let note, state;
+    let note, state, isCreateNew = false;
     if (params) {
       if (params.note) {
         // from threshold
@@ -106,6 +106,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     } else {
       // create new
       note = new Note();
+      isCreateNew = true;
     }
     if (note.image) {
       // fixme
@@ -115,6 +116,13 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         console.error(e);
       });
     }
+
+    const {filter} = store.getState();
+    const currentFilter = filter.filters.find(e => e.id == filter.current) || {tags: []};
+    if (currentFilter.type == 'white' && isCreateNew) {
+      note.tags = currentFilter.tags;
+    }
+
     this.state = Object.assign({}, state, {
       note,
       size: null,
