@@ -19,7 +19,7 @@ export interface Filter {
   type: FilerType;
 }
 export interface FilterState {
-  filters: Filter[],
+  filters: Filter[];
   current: number;
 }
 
@@ -33,6 +33,7 @@ export default (state, action) => {
   switch (action.type) {
     case SET_CURRENT_FILTER:
       return set(lensCurrent, action.current, state);
+
     case ADD_FILTER:
       return over(lensFilters, filters => {
         return append(
@@ -42,8 +43,10 @@ export default (state, action) => {
       }, state);
     case REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
+
     case UPDATE_FILTER:
       return over(lensFilterByIdx(action.id), () => action.filter, state);
+
     case IMPORT:
       return action.data.tags || state;
   }
