@@ -35,10 +35,8 @@ export default class Note {
     note.updatedAt = data.updatedAt;
     data.originalImage = data.originalImage;
     note.fileName = data.fileName;
-    note.saved = data.saved;
-    if (data.tags) {
-      note.tags = data.tags;
-    }
+    note.saved = data.saved || false;
+    note.tags = data.tags || [];
     return note;
   }
 
