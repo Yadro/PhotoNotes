@@ -135,7 +135,7 @@ const css = StyleSheet.create({
   headerTitle: {
     color: 'white',
     fontSize: 18,
-    margin: 10
+    margin: 16
   } as TextStyle,
 
   title: {
