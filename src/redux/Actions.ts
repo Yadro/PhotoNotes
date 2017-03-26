@@ -102,5 +102,6 @@ export const ActionOther = {
   },
   setSaveFolder(folder) {
     store.dispatch({type: SET_SAVE_FOLDER, folder});
+    AsyncStorage.setItem(STORE_KEYS.folder, folder);
   }
 };

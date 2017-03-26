@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  StyleSheet, View, Image, Text, TextInput, ScrollView, ListView, TouchableNativeFeedback, TextStyle, ViewStyle,
+  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle,
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
@@ -8,6 +8,8 @@ import store from "../redux/Store";
 import DialogAndroid from 'react-native-dialogs';
 import {ScreenNavigationProp} from "react-navigation";
 import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
+import fs from 'react-native-fs';
+import {ActionOther} from "../redux/Actions";
 const {arrowWhite} = icons;
 
 const Item = ({title, subtitle, onPress}) => (
@@ -51,10 +53,15 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
     title: 'Выбрать папку для сохранения',
     subtitle: () => store.getState().other.folder,
     onPress: () => {
-      showInputAlert(store.getState().other.folder).then(e => {
-        console.log(e);
-        store.dispatch({type: SET_SAVE_FOLDER, folder: e});
-      });
+      let folder;
+      showInputAlert(store.getState().other.folder).then(_folder => {
+        return fs.exists(folder = _folder);
+      }).then(exist => {
+        if (exist) {
+          console.log(folder);
+          ActionOther.setSaveFolder(folder);
+        }
+      })
     },
   }];
 
@@ -69,7 +76,8 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
         <Toolbar title={'Настройки'} onActionSelected={this.props.navigation.goBack}
                  color="white" backgroundColor="#01B47C" navIcon={arrowWhite}/>
         <ScrollView >
-          {this.items.map((e, i) => <Item key={i} title={e.title} subtitle={e.subtitle && e.subtitle()} onPress={e.onPress}/>)}
+          {this.items.map((e, i) => <Item key={i} title={e.title} subtitle={e.subtitle && e.subtitle()}
+                                          onPress={e.onPress}/>)}
         </ScrollView>
       </View>
     )
