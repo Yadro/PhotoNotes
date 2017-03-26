@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle, ToastAndroid
+  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle, ToastAndroid, Share,
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
@@ -10,7 +10,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 import fs from 'react-native-fs';
 import {ActionOther} from "../redux/Actions";
-import {emailSendFeedback, emailSendThx} from "../constants/Config";
+import {downloadUrl, emailSendFeedback, emailSendThx} from "../constants/Config";
 import {sendEmail} from "../util/util";
 const {arrowWhite} = icons;
 
@@ -66,8 +66,17 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
     },
   }, {
     title: 'Сказать спасибо :)',
+    subtitle: 'Но лучший способ меня поддержать - рассказать об этом приложении друзям, кнопка ниже',
     onPress() {
       sendEmail(emailSendThx);
+    },
+  }, {
+    title: 'Поделится с друзьями',
+    onPress() {
+      Share.share({
+        title: 'Edditr',
+        message: downloadUrl
+      }, {});
     },
   }, {
     title: 'Версия приложения',
