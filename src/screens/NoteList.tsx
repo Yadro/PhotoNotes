@@ -41,7 +41,7 @@ const toolbarMainItems = [{
     this.toggleSearch();
   },
 }, {
-  title: 'Сортировка...', show: 'never',
+  title: 'Сортировка', show: 'never',
   onPress: function() {
     this.showSortAlert();
   },
