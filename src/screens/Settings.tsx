@@ -56,12 +56,6 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
         store.dispatch({type: SET_SAVE_FOLDER, folder: e});
       });
     },
-  },{
-    title: 'Импорт',
-    onPress: () => {},
-  }, {
-    title: 'Экспорт',
-    onPress: () => {},
   }];
 
   constructor(props) {
