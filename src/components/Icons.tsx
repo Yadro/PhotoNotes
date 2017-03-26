@@ -39,6 +39,8 @@ interface Icons {
   'cameraWhite';
   'photoBlack';
   'photoWhite';
+  settingsBlack;
+  settingsWhite;
 
   boldBlack;
   boldWhite;
@@ -91,6 +93,7 @@ const iconSource = {
   'redo': 'ic_redo',
   'camera': 'ic_photo_camera',
   'photo': 'ic_photo',
+  'settings': 'ic_settings',
 
   // editor
   'bold': 'ic_format_bold',

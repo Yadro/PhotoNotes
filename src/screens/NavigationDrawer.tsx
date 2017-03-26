@@ -8,7 +8,7 @@ import store from "../redux/Store";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
-const DialogAndroid = require('react-native-dialogs');
+import DialogAndroid from 'react-native-dialogs';
 
 interface TagsLayerP extends ScreenNavigationProp {
   filter: FilterState;
@@ -79,7 +79,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
       <View style={css.section}>
         <GrayButton title="Add new filter" onPress={this.goToEditFilter(-1)} icon={paths.editWhite}/>
-        <GrayButton title="Settings" onPress={this.openSettings} icon={paths.closeWhite}/>
+        <GrayButton title="Settings" onPress={this.openSettings} icon={paths.settingsWhite}/>
       </View>
     </View>
   }
