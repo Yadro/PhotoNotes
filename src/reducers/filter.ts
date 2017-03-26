@@ -25,7 +25,7 @@ export interface FilterState {
 
 const defaultState: FilterState = {
   filters: [] as Filter[],
-  current: 0,
+  current: -1,
 };
 
 export default (state, action) => {
