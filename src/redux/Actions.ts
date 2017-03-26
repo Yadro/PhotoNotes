@@ -1,4 +1,3 @@
-import ReduxThunk from 'redux-thunk';
 import store from './Store';
 import {exportNotes} from "./StoreImport";
 import {
