@@ -29,6 +29,12 @@ export const Actions = {
   },
 
   remove(id) {
+    const {notes} = store.getState();
+    if (notes.find(e => e.id == id).tags.indexOf('trash') != -1) {
+      this.removeAnyway(id);
+      return;
+    }
+
     store.dispatch({type: REMOVE, id});
     exportNotes(store.getState().notes);
     if (!__DEV__) tracker.trackEvent('Note', REMOVE);
