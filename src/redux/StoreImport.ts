@@ -147,9 +147,19 @@ function genPath(name) {
 function writeFile(path, data) {
   fs.writeFile(path, data, 'utf8')
     .then((success) => {
-      console.log('FILE WRITTEN!');
+      console.log('FILE WRITTEN!', path);
     })
     .catch((err) => {
       console.log(err.message);
     });
+}
+
+export function removeFile(fileName) {
+  const path = genPath(fileName);
+  fs.exists(path).then(exists => {
+    if (!exists) throw new Error('RemoveFile: File not exists');
+    return fs.unlink(path);
+  }).then(() => {
+    console.log('Remove', path);
+  }).catch(e => console.log(e));
 }

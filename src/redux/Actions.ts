@@ -1,11 +1,12 @@
 import store from './Store';
-import {exportNotes} from "./StoreImport";
+import {exportNotes, removeFile} from "./StoreImport";
 import {
   SET_FILE_NAME, SET_SAVED, REMOVE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR,
   RESTORE, SET_SAVE_FOLDER, IMPORT, ADD_FILTER, UPDATE_FILTER, STORE_KEYS, SET_CURRENT_FILTER, REMOVE_FILTER, ADD
 } from '../constants/ActionTypes';
 import {tracker} from "../Analytics";
 import {AsyncStorage} from "react-native";
+import Note from "./Note";
 
 export const Actions = {
   add(note) {
@@ -29,8 +30,10 @@ export const Actions = {
 
   remove(id) {
     const {notes} = store.getState();
-    if (notes.find(e => e.id == id).tags.indexOf('trash') != -1) {
+    const note = notes.find(e => e.id == id) as Note;
+    if (note.tags.indexOf('trash') != -1) {
       this.removeAnyway(id);
+      removeFile(note.fileName);
       return;
     }
 
