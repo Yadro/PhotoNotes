@@ -75,7 +75,7 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
     onPress() {
       Share.share({
         title: 'Edditr',
-        message: downloadUrl
+        message: 'Скачать: ' + downloadUrl
       }, {});
     },
   }, {
