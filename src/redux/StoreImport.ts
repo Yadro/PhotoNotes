@@ -25,8 +25,12 @@ export function importNotes() {
     return JSON.parse(e);
   });
   const np = getPathToSave()
-    .then(path => fs.exists(path))
-    .then(() => fs.readFile(path, 'utf8'))
+    .then(path => {
+      return fs.exists(path)
+    })
+    .then(exists => {
+      return fs.readFile(path, 'utf8')
+    })
     .then(contents => {
       contents = JSON.parse(contents);
       if (!Array.isArray(contents)) {
@@ -137,7 +141,7 @@ function createName(note: Note, name) {
 }
 
 function genPath(name) {
-  return externalPath + '/' + name + '.md';
+  return (store.getState().other.folder || externalPath) + '/' + name + '.md';
 }
 
 function writeFile(path, data) {

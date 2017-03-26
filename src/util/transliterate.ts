@@ -1,4 +1,4 @@
-var a = {
+var transliterateSymbols = {
   "Ё": "YO",
   "Й": "I",
   "Ц": "TS",
@@ -64,11 +64,21 @@ var a = {
   "т": "t",
   "ь": "'",
   "б": "b",
-  "ю": "yu"
+  "ю": "yu",
+  '/': '_',
+  '\\': '_',
+  '<': '-',
+  '>': '-',
+  '?': '_',
+  ':': '.',
+  '*': '•',
+  '\"': '_',
+  '|': '_',
+
 };
 
 export function transliterate(word){
   return word.split('').map(function (char) {
-    return a[char] || char;
+    return transliterateSymbols[char] || char;
   }).join("");
 }
