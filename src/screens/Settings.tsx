@@ -53,6 +53,9 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
         if (exist) {
           console.log(folder);
           ActionOther.setSaveFolder(folder);
+          ToastAndroid.show('Ясно, а теперь перезапустите приложение', ToastAndroid.LONG);
+        } else {
+          ToastAndroid.show('Папка не найдена', ToastAndroid.LONG);
         }
       })
     },
