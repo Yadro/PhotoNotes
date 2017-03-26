@@ -109,7 +109,7 @@ function Item(props: ItemP) {
     <View style={[css.item, selected && css.itemHighlight]}>
       <Icon uri={selected ? paths.labelWhite : paths.labelOutlineWhite}
             tint={[selected ? green : gray]} style={css.icon}/>
-      <Text style={[css.title, selected && css.titleHighlight]}>{title}</Text>
+      <Text style={[css.title, selected && css.titleHighlight]} numberOfLines={1}>{title}</Text>
     </View>
   </TouchableNativeFeedback>
 };
