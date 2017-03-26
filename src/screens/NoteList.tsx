@@ -22,6 +22,7 @@ import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
 import {selectFilter} from "../reducers/filter";
 import {selectNotes} from "../reducers/notes";
+const DialogAndroid = require('react-native-dialogs');
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 const {PopupMenu} = NativeModules;
@@ -44,19 +45,29 @@ const toolbarMainItems = [{
   onPress: function() {
     this.showSortAlert();
   },
-}, {
-  title: 'Корзина', show: 'never',
-  onPress: function() {
-    this.props.navigation.navigate('Trash');
-  },
-}, {
-  title: 'Настройки', show: 'never',
-  onPress: function() {
-    this.props.navigation.navigate('Settings');
-  },
 }];
 
-type SortMethod ='name' | 'create' | 'edit';
+function showSortDialog(selectedIndex) {
+  return new Promise((resolve, reject) => {
+    try {
+      const dialog = new DialogAndroid();
+      dialog.set({
+        selectedIndex,
+        items: ['По алфавиту', 'По дате создания', 'По дате изменения'],
+        itemsCallbackSingleChoice(id) {
+          resolve(id);
+        },
+        positiveText: 'Ok',
+      });
+      dialog.show();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+const SortMethods = ['name', 'create', 'edit'];
+type SortMethod = 'name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
   notes: Note[];
   tag: string;
@@ -216,14 +227,20 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   showSortAlert = () => {
-    const {reverse} = this.state;
-    PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: reverse},
+    const {reverse, sorting} = this.state;
+    showSortDialog(SortMethods.indexOf(sorting)).then((id: number) => {
+      if (SortMethods.indexOf(id)) {
+        this.toggleSort(SortMethods[id] as SortMethod, reverse);
+      }
+    });
+
+    /*PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: reverse},
       ['По алфавиту', 'По дате создания', 'По дате изменения'], (e) => {
         const sort = ['name', 'create', 'edit'];
         if (sort.indexOf(e.which)) {
           this.toggleSort(sort[e.which] as SortMethod, e.checkbox);
         }
-      });
+      });*/
   };
 
   render() {
