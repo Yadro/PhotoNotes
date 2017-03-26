@@ -43,6 +43,10 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   };
 
   goToEditFilter = id => () => {
+    if (id < 0) {
+      this.props.navigation.navigate('EditFilter', {id});
+      return;
+    }
     showDialog().then(selectedId => {
       if (selectedId == 0) {
         this.props.navigation.navigate('EditFilter', {id});
@@ -52,6 +56,10 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
     }).catch(e => {
       console.log(e);
     })
+  };
+
+  openSettings = () => {
+    this.props.navigation.navigate('Settings');
   };
 
   render() {
@@ -70,12 +78,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       </ScrollView>
 
       <View style={css.section}>
-        <TouchableNativeFeedback onPress={this.goToEditFilter(-1)} style={css.container}>
-          <View style={css.item}>
-            <Icon uri={paths.editWhite} tint={gray} style={css.icon}/>
-            <Text style={css.title}>{'Add new filter'}</Text>
-          </View>
-        </TouchableNativeFeedback>
+        <GrayButton title="Add new filter" onPress={this.goToEditFilter(-1)} icon={paths.editWhite}/>
+        <GrayButton title="Settings" onPress={this.openSettings} icon={paths.closeWhite}/>
       </View>
     </View>
   }
@@ -83,13 +87,22 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
 export default connect(state => ({filter: selectFilter(state)}))(FilterTags);
 
+function GrayButton({title, onPress, icon}) {
+  return <TouchableNativeFeedback onPress={onPress} style={css.container}>
+    <View style={css.item}>
+      <Icon uri={icon} tint={gray} style={css.icon}/>
+      <Text style={css.title}>{title}</Text>
+    </View>
+  </TouchableNativeFeedback>;
+}
+
 interface ItemP {
   title
   onPress
   onLongPress?
   selected
 }
-const Item = (props: ItemP) => {
+function Item(props: ItemP) {
   const {title, onPress, onLongPress, selected} = props;
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
                                   style={css.container} delayLongPress={delay}>
