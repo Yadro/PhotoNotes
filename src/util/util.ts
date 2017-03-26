@@ -83,7 +83,7 @@ export function range(from, to) {
 }
 
 export function getMaxId(arr: {id}[]) {
-  let max = 0;
+  let max = 1;
   arr.forEach(e => {
     max = Math.max(e.id, max)
   });
