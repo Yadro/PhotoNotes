@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle, TextStyle} from 'react-native';
-import icons, {Icon, paths} from '../components/Icons';
+import {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
 import store from "../redux/Store";
-import {SET_CURRENT_FILTER} from "../constants/ActionTypes";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
@@ -89,11 +88,11 @@ const css = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: green,
     justifyContent: 'flex-end',
-    height: 70,
+    height: 150,
     marginBottom: 8,
-  },
+    backgroundColor: green,
+  } as ViewStyle,
   headerTitle: {
     color: 'white',
     fontSize: 18,

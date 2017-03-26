@@ -22,7 +22,7 @@ import Settings from "./screens/Settings";
 import Trash from './screens/Trash';
 import {Actions} from "./redux/Actions";
 import {importNotes} from "./redux/StoreImport";
-import FilterList from "./screens/FilterList";
+import NavigationDrawer from "./screens/NavigationDrawer";
 import EditFilter from './screens/EditFilter';
 
 const App = StackNavigator({
@@ -44,11 +44,8 @@ const App = StackNavigator({
 const AppDrawer = DrawerNavigator({
   App: {screen: App},
 }, {
-  contentComponent: (props) => {
-    return <View style={{flex: 1}}>
-      {/*<DrawerView.Items {...props}/>*/}
-      <FilterList {...props}/>
-    </View>
+  contentComponent(props) {
+    return <NavigationDrawer {...props}/>;
   },
   contentOptions: {
     activeTintColor: '#01B47C',
