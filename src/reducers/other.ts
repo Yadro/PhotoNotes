@@ -1,4 +1,4 @@
-import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
+import {SET_MULTI_CHOOSE, SET_SAVE_FOLDER, SET_VIEW_SIZE} from "../constants/ActionTypes";
 import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 
@@ -11,10 +11,10 @@ export type OtherState = {
 
 export default (state = {update: false, size: null, multi: false}, actions) => {
   switch (actions.type) {
-    case 'SET_VIEW_SIZE':
+    case SET_VIEW_SIZE:
       return set(lensProp('size'), actions.size, state);
 
-    case 'SET_MULTI_CHOOSE':
+    case SET_MULTI_CHOOSE:
       return set(lensProp('multi'), actions.multi, state);
 
     case SET_SAVE_FOLDER:

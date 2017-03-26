@@ -100,7 +100,7 @@ export const ActionOther = {
   setMultiChoose(multi) {
     store.dispatch({type: 'SET_MULTI_CHOOSE', multi});
   },
-  setSaveFolder(multi) {
-    store.dispatch({type: SET_SAVE_FOLDER, multi});
+  setSaveFolder(folder) {
+    store.dispatch({type: SET_SAVE_FOLDER, folder});
   }
 };

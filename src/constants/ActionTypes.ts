@@ -17,6 +17,8 @@ export const REMOVE_ANYWAY_ARR = 'REMOVE_ANYWAY_ARR';
 export const TOGGLE_MULTI = 'TOGGLE_MULTI';
 export const SELECT_ITEM = 'SELECT_ITEM';
 
+export const SET_VIEW_SIZE = 'SET_VIEW_SIZE';
+export const SET_MULTI_CHOOSE = 'SET_MULTI_CHOOSE';
 export const SET_SAVE_FOLDER = 'SET_SAVE_FOLDER';
 
 export const SET_CURRENT_FILTER = 'SET_CURRENT_FILTER';

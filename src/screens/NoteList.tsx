@@ -22,7 +22,7 @@ import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
 import {selectFilter} from "../reducers/filter";
 import {selectNotes} from "../reducers/notes";
-const DialogAndroid = require('react-native-dialogs');
+import DialogAndroid from 'react-native-dialogs';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
 const {PopupMenu} = NativeModules;
