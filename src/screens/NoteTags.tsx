@@ -23,7 +23,7 @@ class NoteTags extends React.Component<NoteTagsP, NoteTagsS> {
     super(props);
     const {note} = props.navigation.state.params;
 
-    const tagSet = note.tags.reduce((res, tag) => res.add(tag), new Set());
+    const tagSet = new Set(note.tags);
     const tags = Array.from(props.filter.filters.reduce((res, item) => {
       item.tags.forEach(e => res.add(e));
       return res;
