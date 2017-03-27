@@ -71,7 +71,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
           <Text style={css.headerTitle}>Edditr</Text>
         </View>
         {filters.sort(wsort).map(e => (
-          <Item key={e.id} title={e.title} selected={current == e.id}
+          <Item key={e.id} data={e}
+                selected={current == e.id}
                 onPress={this.setFilter.bind(this, e.id)}
                 onLongPress={e.id > -1 ? this.goToEditFilter(e.id) : null}/>
         ))}
@@ -97,22 +98,33 @@ function GrayButton({title, onPress, icon}) {
 }
 
 interface ItemP {
-  title
+  data;
   onPress
   onLongPress?
   selected
 }
 function Item(props: ItemP) {
-  const {title, onPress, onLongPress, selected} = props;
+  const {data, onPress, onLongPress, selected} = props;
+  let icon;
+  if (Array.isArray(data.icon)) {
+    icon = selected ? data.icon[0] : data.icon[1]
+  } else {
+    icon = selected ? paths.labelWhite : paths.labelOutlineWhite
+  }
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
                                   style={css.container} delayLongPress={delay}>
     <View style={[css.item, selected && css.itemHighlight]}>
-      <Icon uri={selected ? paths.labelWhite : paths.labelOutlineWhite}
-            tint={[selected ? green : gray]} style={css.icon}/>
-      <Text style={[css.title, selected && css.titleHighlight]} numberOfLines={1}>{title}</Text>
+      <Icon
+        uri={icon}
+        tint={[selected ? green : gray]}
+        style={css.icon}
+      />
+      <Text style={[css.title, selected && css.titleHighlight]} numberOfLines={1}>
+        {data.title}
+      </Text>
     </View>
   </TouchableNativeFeedback>
-};
+}
 
 export function wsort(a, b) {
   return sortstr(a.title, b.title);

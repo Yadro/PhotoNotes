@@ -2,6 +2,7 @@ import {set, compose, append, concat} from 'ramda';
 import {lensProp, lensById, over, lensByIndex} from "../util/lens";
 import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT} from "../constants/ActionTypes";
 import {getMaxId} from "../util/util";
+import {paths} from '../components/Icons';
 
 const lensId = lensProp('id');
 const lensCurrent = lensProp('current');
@@ -57,12 +58,20 @@ const systemTags = [{
   id: -1,
   title: 'All',
   type: 'black',
-  tags: ['trash']
+  tags: ['trash'],
+  icon: [
+    paths.checkboxBlankWhite,
+    paths.checkboxBlankWhite,
+  ]
 }, {
   id: -2,
   title: 'Trash',
   type: 'white',
-  tags: ['trash']
+  tags: ['trash'],
+  icon: [
+    paths.deleteIconWhite,
+    paths.deleteIconWhite,
+  ]
 }];
 
 export function selectFilter(state): FilterState {
