@@ -1,15 +1,14 @@
 import * as React from 'react';
-import {append} from 'ramda';
-import {View, Picker, TextInput, ListView, StyleSheet} from 'react-native';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
-import {CheckboxItem} from "../components/CheckboxItem";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {Actions} from "../redux/Actions";
 import CheckboxList from "../components/CheckboxList";
 import {green} from "../constants/theme";
+import DropdownPicker from "../components/material/DropdownPicker";
 const {checkWhite} = icons;
 
 interface EditFilterP extends ScreenNavigationProp {
@@ -47,6 +46,11 @@ const actions = [{
     this.props.navigation.goBack();
   }
 }];
+
+const pickerItems = [
+  {label: "White list", value: "white"},
+  {label: "Black list", value: "black"}
+];
 
 class EditFilter extends React.Component<EditFilterP, EditFilterS> {
   constructor(props: EditFilterP) {
@@ -105,17 +109,18 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
                navIcon={icons.arrowWhite}
                actions={actions} onActionSelected={this.toolbarAction}
       />
-      <TextInput style={css.input} value={this.state.title} placeholder="Title"
-                 onChangeText={(text) => this.setState({title: text})}/>
-      <View style={css.piker}>
-        <Picker
-          mode="dropdown"
-          selectedValue={this.state.type}
-          onValueChange={(type) => this.setState({type})}>
-          <Picker.Item label="White list" value="white"/>
-          <Picker.Item label="Black list" value="black"/>
-        </Picker>
-      </View>
+      <TextInput
+        style={css.input}
+        value={this.state.title} placeholder="Title"
+        onChangeText={(text) => this.setState({title: text})}
+      />
+      <DropdownPicker
+        title="Type of filter"
+        items={pickerItems}
+        value={this.state.type}
+        onValueChange={(type) => this.setState({type})}
+      />
+      <Text style={css.hint}>Select tag</Text>
       <CheckboxList data={this.state.data} onAddItem={this.submitItem} onChange={this.onChange}/>
     </View>
   }
@@ -128,12 +133,13 @@ const css = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  piker: {
-    marginHorizontal: 16
-  },
   input: {
     marginTop: 8,
+    marginHorizontal: 14,
+    fontSize: 20,
+  },
+  hint: {
+    fontSize: 12,
     marginHorizontal: 16,
-    fontSize: 16,
   }
 });
