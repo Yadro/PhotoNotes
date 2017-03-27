@@ -9,6 +9,7 @@ import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {Actions} from "../redux/Actions";
 import CheckboxList from "../components/CheckboxList";
+import {green} from "../constants/theme";
 const {checkWhite} = icons;
 
 interface EditFilterP extends ScreenNavigationProp {
@@ -91,13 +92,19 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
   toolbarAction = (actionId) => {
     if (actionId != null) {
       actions[actionId] && actions[actionId].onPress.call(this);
+    } else {
+      this.props.navigation.goBack();
     }
   };
 
   render() {
     return <View style={css.container}>
-      <Toolbar title="Filter" color="white" backgroundColor="#01b47c"
-               actions={actions} onActionSelected={this.toolbarAction}/>
+      <Toolbar title="Filter"
+               color="white"
+               backgroundColor={green}
+               navIcon={icons.arrowWhite}
+               actions={actions} onActionSelected={this.toolbarAction}
+      />
       <TextInput style={css.input} value={this.state.title} placeholder="Title"
                  onChangeText={(text) => this.setState({title: text})}/>
       <View style={css.piker}>
