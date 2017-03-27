@@ -48,10 +48,15 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       return;
     }
     showDialog().then(selectedId => {
-      if (selectedId == 0) {
-        this.props.navigation.navigate('EditFilter', {id});
-      } else {
-        Actions.removeFilter(id);
+      switch (selectedId) {
+        case 0:
+          this.props.navigation.navigate('EditFilter', {id});
+          break;
+        case 1:
+          Actions.removeFilter(id);
+          Actions.setCurrentFilter(-1);
+          this.props.navigation.navigate('DrawerClose');
+          break;
       }
     }).catch(e => {
       console.log(e);
