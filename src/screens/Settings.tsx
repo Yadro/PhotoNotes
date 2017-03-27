@@ -10,7 +10,7 @@ import {ScreenNavigationProp} from "react-navigation";
 import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 import fs from 'react-native-fs';
 import {ActionOther} from "../redux/Actions";
-import {downloadUrl, emailSendFeedback, emailSendThx} from "../constants/Config";
+import {downloadUrl, emailSendFeedback, emailSendThx, version} from "../constants/Config";
 import {sendEmail} from "../util/util";
 const {arrowWhite} = icons;
 
@@ -80,7 +80,7 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
     },
   }, {
     title: 'Версия приложения',
-    subtitle: '1.0.1 (beta)',
+    subtitle: version,
     onPress: () => {
       this.count++;
       if (this.count == 10) {
