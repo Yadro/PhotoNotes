@@ -180,13 +180,13 @@ const css = StyleSheet.create({
 
   header: {
     flex: 1,
+    paddingTop: 16,
+    paddingHorizontal: 16,
     borderColor: '#ebebeb',
     borderBottomWidth: 1,
     backgroundColor: '#f7f7f7',
   } as ViewStyle,
   headerContainer: {
-    marginTop: 15,
-    marginHorizontal: 15,
     flexDirection: 'row',
   } as ViewStyle,
   titleContainer: {
@@ -209,7 +209,7 @@ const css = StyleSheet.create({
   } as TextStyle,
 
   textView: {
-    margin: 15,
+    margin: 16,
   },
   text: {
     fontSize: 17,
