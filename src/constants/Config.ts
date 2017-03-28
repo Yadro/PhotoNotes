@@ -1,4 +1,4 @@
-export const version = '1.0.3 (beta)';
+export const version = '1.0.4 (beta)';
 export const delay = __DEV__ && 3500 || 1000;
 
 export const downloadUrl = 'https://github.com/Yadro/PhotoNotes/releases';
