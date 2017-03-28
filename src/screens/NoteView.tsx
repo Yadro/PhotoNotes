@@ -10,7 +10,7 @@ import {
   Share,
   TextStyle,
   ActivityIndicator,
-  Dimensions,
+  ViewStyle,
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import {ScreenNavigationProp} from "react-navigation";
@@ -141,10 +141,16 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
                  navIcon={arrowWhite} onActionSelected={this.onActionSelected}/>
         <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
           <View style={css.header}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={css.title}>{title}</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={{uri: paths.labelBlack}} style={{width: 24, height: 24, marginRight: 4}} tintColor={gray}/>
+            <View style={css.headerContainer}>
+              <View style={css.titleContainer}>
+                <Text style={css.title} numberOfLines={1}>{title}</Text>
+              </View>
+              <View style={css.label}>
+                <Image
+                  source={{uri: paths.labelBlack}}
+                  style={{width: 24, height: 24, marginRight: 4}}
+                  tintColor={gray}
+                />
                 <Text>{tags.length}</Text>
               </View>
             </View>
@@ -174,17 +180,27 @@ const css = StyleSheet.create({
 
   header: {
     flex: 1,
-    paddingTop: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
     borderColor: '#ebebeb',
     borderBottomWidth: 1,
     backgroundColor: '#f7f7f7',
+  } as ViewStyle,
+  headerContainer: {
+    marginTop: 15,
+    marginHorizontal: 15,
+    flexDirection: 'row',
+  } as ViewStyle,
+  titleContainer: {
+    flex: 1,
+    paddingRight: 5,
   },
   title: {
     fontSize: 20,
     color: 'black',
   },
+  label: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  } as ViewStyle,
   time: {
     color: 'black',
     textAlign: 'right',
