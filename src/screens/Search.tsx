@@ -100,8 +100,13 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
       <View style={css.bar} elevation={5}>
         <View style={css.searchBox} elevation={2}>
           <Image source={searchBlack}/>
-          <TextInput style={css.search} placeholder={window.search} underlineColorAndroid="transparent"
-                     onChangeText={this.onChange} value={this.state.search}/>
+          <TextInput style={css.search}
+                     placeholder={window.search}
+                     underlineColorAndroid="transparent"
+                     onChangeText={this.onChange}
+                     value={this.state.search}
+                     autoFocus
+          />
         </View>
       </View>
       <ScrollView>
