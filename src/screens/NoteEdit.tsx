@@ -300,7 +300,6 @@ const css = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    height: 36,
   },
   textMultiLine: {
     fontSize: 15,
