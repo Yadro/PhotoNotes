@@ -28,7 +28,7 @@ export default class List extends React.Component<ListP, ListS> {
               <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
               <PreviewCircle text={title}/>}
           </View>
-          <Text style={css.text}>{title}</Text>
+          <Text style={css.text} numberOfLines={1}>{title}</Text>
         </View>
       </TouchableNativeFeedback>
     );
@@ -49,11 +49,13 @@ const css = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: 56,
   },
   text: {
     flex: 1,
     fontSize: 17,
+    marginRight: 16,
     color: 'black',
   },
   selectedItem: {
