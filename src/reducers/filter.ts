@@ -60,8 +60,8 @@ const systemTags = [{
   type: 'black',
   tags: ['trash'],
   icon: [
-    paths.checkboxBlankWhite,
-    paths.checkboxBlankWhite,
+    paths.libraryBooksWhite,
+    paths.libraryBooksWhite,
   ]
 }, {
   id: -2,

@@ -22,8 +22,7 @@ const {toolbar, editor, window} = l.NoteEdit;
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite, moreWhite,
   pastBlack, timeBlack, boldBlack, italicBlack, underBlack, listBulletBlack, titleBlack,
-  boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
-  undoWhite, redoWhite, labelWhite,
+  labelWhite,
 } = icons;
 
 
