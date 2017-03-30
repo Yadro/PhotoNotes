@@ -1,16 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {
-  StyleSheet,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
-  Platform,
-  Clipboard,
-  Alert,
-  Share,
-  ActivityIndicator,
+  StyleSheet, View, Image, TextInput, ScrollView, Platform, Clipboard, Alert, Share, ActivityIndicator
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import store from "../redux/Store";
@@ -30,6 +21,7 @@ const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
+  pastBlack, timeBlack, boldBlack, italicBlack, underBlack, listBulletBlack, titleBlack,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
   undoWhite, redoWhite, labelWhite,
 } = icons;
@@ -38,13 +30,13 @@ const {
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
    {title: 'Redo', icon: redoWhite, show: 'always'},*/
-  {title: editor.past, icon: pastWhite, show: 'always'},
-  {title: editor.timestamp, icon: timeWhite, show: 'always'},
-  {title: editor.bold, icon: boldWhite, show: 'always'},
-  {title: editor.italic, icon: italicWhite, show: 'always'},
-  {title: editor.underline, icon: underWhite, show: 'always'},
-  {title: editor.list, icon: listBulletWhite, show: 'always'},
-  {title: editor.header, icon: titleWhite, show: 'always'},
+  {title: editor.past, icon: pastBlack, show: 'always'},
+  {title: editor.timestamp, icon: timeBlack, show: 'always'},
+  {title: editor.bold, icon: boldBlack, show: 'always'},
+  {title: editor.italic, icon: italicBlack, show: 'always'},
+  {title: editor.underline, icon: underBlack, show: 'always'},
+  {title: editor.list, icon: listBulletBlack, show: 'always'},
+  {title: editor.header, icon: titleBlack, show: 'always'},
 ];
 
 interface NoteEditS {
@@ -54,6 +46,7 @@ interface NoteEditS {
   save?;
   image?;
   selection?;
+  editorFocus;
 }
 
 export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
@@ -127,6 +120,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       note,
       size: null,
       selection: {start: 0, end: 0},
+      editorFocus: false,
     });
     if (!__DEV__) tracker.trackScreenView('NoteEdit');
   }
@@ -160,6 +154,12 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     note[field] = data;
     this.setState({note});
   };
+
+  setFocus = (editorFocus) => this.setState({editorFocus});
+
+  onFocus = () => this.setFocus(true);
+
+  onBlur = () => this.setFocus(false);
 
   onMultiLineInput = (data) => {
     const {note} = this.state;
@@ -241,15 +241,19 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   renderTools = () =>
-    <Toolbar actions={tools} color="white" backgroundColor="#01B47C"
-             onActionSelected={this.onToolAction}/>;
+    <Toolbar
+      actions={tools}
+      color="black"
+      backgroundColor="white"
+      onActionSelected={this.onToolAction}
+    />;
 
   onImageLoad = () => {
     this.setState({isLoad: true});
   };
 
   render() {
-    const {note, size, isLoad} = this.state;
+    const {note, size, isLoad, editorFocus} = this.state;
     const {title, content, image} = note;
     const {navigate} = this.props.navigation;
     const img = image && size ? {uri: image} : false;
@@ -266,10 +270,16 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
                        autoFocus
                        onChangeText={this.onChange.bind(null, 'title')}
             />
-            <AutoExpandingTextInput value={content} style={css.textMultiLine}
-                                    placeholder={window.content} autoCapitalize="sentences"
-                                    onChangeText={this.onMultiLineInput}
-                                    underlineColorAndroid='transparent'/>
+            <AutoExpandingTextInput
+              value={content}
+              style={css.textMultiLine}
+              placeholder={window.content}
+              autoCapitalize="sentences"
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+              onChangeText={this.onMultiLineInput}
+              underlineColorAndroid='transparent'
+            />
           </View>
           {img &&
             <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>
@@ -280,7 +290,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
           }
           {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
         </ScrollView>
-        {this.renderTools()}
+        {editorFocus && this.renderTools()}
       </View>
     );
   }
