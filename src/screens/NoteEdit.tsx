@@ -20,7 +20,7 @@ import l from './Localization';
 const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {
-  checkWhite, addPhotoWhite, shareWhite, deleteIconWhite,
+  checkWhite, addPhotoWhite, shareWhite, deleteIconWhite, moreWhite,
   pastBlack, timeBlack, boldBlack, italicBlack, underBlack, listBulletBlack, titleBlack,
   boldWhite, italicWhite, underWhite, listBulletWhite, titleWhite, pastWhite, timeWhite,
   undoWhite, redoWhite, labelWhite,
@@ -63,12 +63,12 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       this.props.navigation.navigate('NoteTags', {note: this.state.note});
     }
   }, {
-    title: toolbar.picker, icon: addPhotoWhite, show: 'always',
+    title: toolbar.picker, icon: addPhotoWhite, show: 'never',
     onPress: function () {
       this.showPicker();
     }
   }, {
-    title: toolbar.share, icon: shareWhite, show: 'always',
+    title: toolbar.share, icon: shareWhite, show: 'never',
     onPress: function () {
       const {title, content} = this.state.note;
       Share.share({
@@ -91,7 +91,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         // from list
         note = Note.createInstance(notes.find(e => e.id == params.id) || {});
         this.toolbarActions.push({
-          title: toolbar.remove, icon: deleteIconWhite, show: 'always',
+          title: toolbar.remove, icon: deleteIconWhite, show: 'never',
           onPress: function () {this.onDelete()}
         });
         state = {save: true};
@@ -199,10 +199,16 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
   };
 
   renderToolBar = () =>
-    <Toolbar title={toolbar.header} actions={this.toolbarActions}
-             color="white" backgroundColor="#01B47C" navIcon={checkWhite}
-             onIconClicked={this.onSave}
-             onActionSelected={this.onActionSelected}/>;
+    <Toolbar
+      title={toolbar.header}
+      navIcon={checkWhite}
+      overflowIcon={moreWhite}
+      actions={this.toolbarActions}
+      color="white"
+      backgroundColor="#01B47C"
+      onIconClicked={this.onSave}
+      onActionSelected={this.onActionSelected}
+    />;
 
   onToolAction = (action) => {
     const {note, selection} = this.state;
@@ -262,13 +268,14 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         {this.renderToolBar()}
         <ScrollView style={{flex: 1}}>
           <View style={css.textBox}>
-            <TextInput value={title}
-                       style={css.text}
-                       placeholder={window.title}
-                       blurOnSubmit={false}
-                       returnKeyType="next"
-                       autoFocus
-                       onChangeText={this.onChange.bind(null, 'title')}
+            <TextInput
+              value={title}
+              style={css.text}
+              placeholder={window.title}
+              blurOnSubmit={false}
+              returnKeyType="next"
+              autoFocus
+              onChangeText={this.onChange.bind(null, 'title')}
             />
             <AutoExpandingTextInput
               value={content}
