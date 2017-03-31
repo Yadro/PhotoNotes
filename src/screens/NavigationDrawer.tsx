@@ -84,7 +84,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       </ScrollView>
 
       <View style={css.section}>
-        <GrayButton title="Add new filter" onPress={this.goToEditFilter(-1)} icon={paths.editWhite}/>
+        <GrayButton title="Add new filter" onPress={this.goToEditFilter(-1)} icon={paths.addWhite}/>
         <GrayButton title="Settings" onPress={this.openSettings} icon={paths.settingsWhite}/>
       </View>
     </View>
