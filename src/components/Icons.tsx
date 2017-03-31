@@ -3,6 +3,8 @@ import * as React from 'react';
 import {Image} from 'react-native';
 
 interface Icons {
+  addBlack;
+  addWhite;
   addPhotoBlack;
   addPhotoWhite;
   addToPhotosBlack;
@@ -78,6 +80,7 @@ const colorsPostfix = {
 };
 
 const iconSource = {
+  add: 'ic_add',
   addPhoto: 'ic_add_a_photo',
   addToPhotos: 'ic_add_to_photos',
   arrow: 'ic_arrow_back',
