@@ -78,7 +78,7 @@ interface NoteListS {
   dataSource?;
   multi?;
   selected?;
-  sorting?: SortMethod;
+  sortMethod?: SortMethod;
   reverse: boolean;
   filter: boolean;
   search: string;
@@ -96,11 +96,11 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   constructor(props) {
     super(props);
-    const sorting = 'create';
+    const sortMethod = 'create';
     const reverse = false;
     const {current, filtered} = this.filterNote(props.filter, props.notes);
 
-    const sorted = sort[sorting](filtered, reverse);
+    const sorted = sort[sortMethod](filtered, reverse);
     this.state = {
       current,
       dataSource: this.ds.cloneWithRows(sorted),
@@ -108,7 +108,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       filter: false,
       search: '',
       selected: [],
-      sorting, // todo rename to sortMethod
+      sortMethod,
       reverse,
     };
     if (!__DEV__) tracker.trackScreenView('NoteList');
@@ -134,7 +134,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
-    const {sorting, reverse} = this.state;
+    const {sortMethod, reverse} = this.state;
     const {current, filtered} = this.filterNote(newProps.filter, newProps.notes);
 
     // fixme
@@ -147,7 +147,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     }*/
 
     const state = {
-      dataSource: this.ds.cloneWithRows(sort[sorting](filtered, reverse))
+      dataSource: this.ds.cloneWithRows(sort[sortMethod](filtered, reverse))
     };
     if (current) {
       state['current'] = current;
@@ -171,7 +171,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       const sorted = sort[sortBy](filtered, reverse);
       this.setState({
         reverse,
-        sorting: sortBy,
+        sortMethod: sortBy,
         dataSource: this.ds.cloneWithRows(sorted)
       });
     }
@@ -233,8 +233,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   showSortAlert = () => {
-    const {reverse, sorting} = this.state;
-    showSortDialog(SortMethods.indexOf(sorting)).then((id: number) => {
+    const {reverse, sortMethod} = this.state;
+    showSortDialog(SortMethods.indexOf(sortMethod)).then((id: number) => {
       if (SortMethods.indexOf(id)) {
         this.toggleSort(SortMethods[id] as SortMethod, reverse);
       }
