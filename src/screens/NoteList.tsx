@@ -15,7 +15,7 @@ import Note from "../redux/Note";
 import {Actions} from "../redux/Actions";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
-import l from './Localization';
+import l from '../constants/Localization';
 import {connect} from "react-redux";
 import List from "./List";
 import {check} from "../util/tagUtil";

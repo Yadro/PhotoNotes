@@ -15,7 +15,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import store from "../redux/Store";
 import {ScreenNavigationProp} from "react-navigation";
-import l from './Localization';
+import l from '../constants/Localization';
 import PreviewCircle from '../components/PreviewCircle';
 import {tracker} from "../Analytics";
 const {toolbar, window} = l.Search;

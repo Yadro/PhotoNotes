@@ -16,7 +16,7 @@ import {getResizedImage, pixelToDimensions, getSizePexel} from "../util/util";
 import {InputSelection} from "../components/AutoExpandingTextInput";
 import {tracker} from '../Analytics';
 import moment from 'moment';
-import l from './Localization';
+import l from '../constants/Localization';
 const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {

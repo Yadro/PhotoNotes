@@ -17,7 +17,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import store from "../redux/Store";
 import {getSizeInContainer} from "../util/util";
-import l from './Localization';
+import l from '../constants/Localization';
 import {tracker} from "../Analytics";
 const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;

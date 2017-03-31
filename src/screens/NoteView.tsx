@@ -22,7 +22,7 @@ import NoteEdit from "./NoteEdit";
 import {Actions} from "../redux/Actions";
 import {Markdown} from "../components/Markdown";
 import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
-import l from './Localization';
+import l from '../constants/Localization';
 import {tracker} from "../Analytics";
 import {gray} from "../constants/theme";
 const {remove} = l.Alert;

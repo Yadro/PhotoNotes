@@ -14,7 +14,7 @@ import Toolbar from '../components/Toolbar';
 import List from "./List";
 import icons from '../components/Icons'
 import {Actions} from "../redux/Actions";
-import l from './Localization';
+import l from '../constants/Localization';
 import Note from "../redux/Note";
 import store from "../redux/Store";
 import {REMOVE_ANYWAY_ARR, REMOVE_ANYWAY} from "../constants/ActionTypes";
