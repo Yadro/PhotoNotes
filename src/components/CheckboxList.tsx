@@ -65,10 +65,15 @@ export default class CheckboxList extends React.Component<CheckboxListP, Checkbo
         dataSource={this.state.dataSource} enableEmptySections
         renderRow={(data, e, i) => this.renderItem(data, i)}
       />
-      <TextInput style={css.input} value={this.state.newItem} placeholder="Add new tag..."
-                 onChangeText={text => this.setState({newItem: text})}
-                 onSubmitEditing={this.onSubmitItem}/>
-    </View >
+      <TextInput
+        style={css.input}
+        value={this.state.newItem}
+        placeholder="Add new tag..."
+        onChangeText={text => this.setState({newItem: text})}
+        onSubmitEditing={this.onSubmitItem}
+        autoFocus
+      />
+    </View >;
   }
 }
 
