@@ -17,6 +17,8 @@ import {InputSelection} from "../components/AutoExpandingTextInput";
 import {tracker} from '../Analytics';
 import moment from 'moment';
 import l from '../constants/Localization';
+import {connect} from "react-redux";
+import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
 const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {
@@ -38,6 +40,12 @@ const tools = [
   {title: editor.header, icon: titleBlack, show: 'always'},
 ];
 
+
+interface NoteEditP extends ScreenNavigationProp {
+  notes: Note[];
+  currentFilter: Filter;
+}
+
 interface NoteEditS {
   note?: Note;
   size?;
@@ -48,7 +56,7 @@ interface NoteEditS {
   editorFocus;
 }
 
-export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS> {
+class NoteEdit extends Component<NoteEditP, NoteEditS> {
   static resetAction = NavigationActions.reset({
     index: 0,
     actions: [
@@ -77,9 +85,8 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
     }
   }];
 
-  constructor(props) {
+  constructor(props: NoteEditP) {
     super(props);
-    const {notes} = store.getState();
     const {params} = props.navigation.state;
     let note, state, isCreateNew = false;
     if (params) {
@@ -88,7 +95,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
         note = params.note;
       } else if (params.id) {
         // from list
-        note = Note.createInstance(notes.find(e => e.id == params.id) || {});
+        note = Note.createInstance(props.notes.find(e => e.id == params.id) || {});
         this.toolbarActions.push({
           title: toolbar.remove, icon: deleteIconWhite, show: 'never',
           onPress: function () {this.onDelete()}
@@ -109,8 +116,7 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       });
     }
 
-    const {filter} = store.getState();
-    const currentFilter = filter.filters.find(e => e.id == filter.current) || {tags: []};
+    const currentFilter = props.currentFilter;
     if (currentFilter.type == 'white' && isCreateNew) {
       note.tags = currentFilter.tags;
     }
@@ -300,7 +306,15 @@ export default class NoteEdit extends Component<ScreenNavigationProp, NoteEditS>
       </View>
     );
   }
-};
+}
+
+export default connect(state => {
+  const filter = selectFilter(state);
+  return {
+    currentFilter: selectCurrentFilter(filter),
+    notes: state.notes
+  };
+})(NoteEdit);
 
 function past(text: string, selection: InputSelection, past: {start: string, end: string}) {
   if (selection.start == selection.end) {
