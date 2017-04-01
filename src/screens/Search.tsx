@@ -90,23 +90,27 @@ class Search extends React.Component<SearchP, SearchS> {
 
   render() {
     return <View style={css.container}>
-      <Toolbar title={toolbar.header} navIcon={arrowWhite} color="white" backgroundColor="#01B47C"
-               onIconClicked={this.pressIcon}/>
+      <Toolbar
+        title={toolbar.header}
+        navIcon={arrowWhite}
+        color="white"
+        backgroundColor="#01B47C"
+        onIconClicked={this.pressIcon}
+      />
       <View style={css.bar} elevation={5}>
         <View style={css.searchBox} elevation={2}>
           <Image source={searchBlack}/>
-          <TextInput style={css.search}
-                     placeholder={window.search}
-                     underlineColorAndroid="transparent"
-                     onChangeText={this.onChange}
-                     value={this.state.search}
-                     autoFocus
+          <TextInput
+            style={css.search}
+            placeholder={window.search}
+            underlineColorAndroid="transparent"
+            onChangeText={this.onChange}
+            value={this.state.search}
+            autoFocus
           />
         </View>
       </View>
-      <ScrollView>
-        <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
-      </ScrollView>
+      <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
     </View>
   }
 }
