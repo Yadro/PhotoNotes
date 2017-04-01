@@ -7,6 +7,8 @@ import {set, view, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 import {getMaxId} from "../util/util";
 import {AppStore} from "../redux/IAppStore";
+import {check} from "../util/tagUtil";
+import {Filter, FilterState} from "./filter";
 
 export type NoteState = Note[];
 
@@ -85,6 +87,18 @@ export default (state: Note[] = [], actions): NoteState => {
   }
 };
 
-export function selectNotes(state: AppStore) {
+export function selectNotesAll(state: AppStore) {
   return state.notes;
+}
+
+export function selectNotes(state: AppStore, filterState: FilterState): NoteState {
+  const {notes} = state;
+  const {filters, current} = filterState;
+
+  const filter = filters.find(e => e.id == current) || {tags: []} as Filter;
+  const isTrash = filter.tags.indexOf('trash') !== -1;
+  const isWhite = filter.type === 'white';
+  const notesFilter = !isTrash ? notes.filter(n => n.tags.indexOf('trash') === -1) : notes;
+  const checker = check(filter.tags, isWhite);
+  return notesFilter.filter(n => checker(n.tags));
 }

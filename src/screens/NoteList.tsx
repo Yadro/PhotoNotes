@@ -21,7 +21,7 @@ import List from "./List";
 import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
 import {selectFilter} from "../reducers/filter";
-import {selectNotes} from "../reducers/notes";
+import {selectNotes, selectNotesAll} from "../reducers/notes";
 import DialogAndroid from 'react-native-dialogs';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
@@ -70,6 +70,7 @@ const SortMethods = ['name', 'create', 'edit'];
 type SortMethod = 'name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
   notes: Note[];
+  filtered: Note[];
   tag: string;
   filter;
 }
@@ -134,6 +135,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
+    console.log(newProps.filtered);
     const {sortMethod, reverse} = this.state;
     const {current, filtered} = this.filterNote(newProps.filter, newProps.notes);
 
@@ -272,10 +274,14 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 }
 
-export default connect(state => ({
-  filter: selectFilter(state),
-  notes: selectNotes(state),
-}))(NoteList);
+export default connect(state => {
+  const filter = selectFilter(state);
+  return {
+    filter,
+    notes: selectNotesAll(state),
+    filtered: selectNotes(state, filter),
+  };
+})(NoteList);
 
 
 const css = StyleSheet.create({
