@@ -164,9 +164,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (this.state.multi) {
       let {selected} = this.state;
       if (selected.includes(id)) {
-        selected = selected.filter(e => e != id);
+        selected = selected.filter(e => e != id); // exclude selected note
       } else {
-        selected.push(id);
+        selected.push(id); // add selected note
       }
       this.setState({selected});
     } else {
