@@ -91,11 +91,19 @@ export function selectNotesAll(state: AppStore) {
   return state.notes;
 }
 
-export function selectNotes(state: AppStore, filterState: FilterState): NoteState {
-  const {notes} = state;
-  const {filters, current} = filterState;
+const emptyFilter = {
+  id: null,
+  title: 'EmptyFilter',
+  tags: [],
+  type: 'black'
+} as Filter;
+export function selectCurrentFilter(state: AppStore): Filter {
+  const {current, filters} = state.filter;
+  return filters.find(e => e.id == current) || emptyFilter;
+}
 
-  const filter = filters.find(e => e.id == current) || {tags: []} as Filter;
+export function selectNotes(state: AppStore, filter: Filter): NoteState {
+  const {notes} = state;
   const isTrash = filter.tags.indexOf('trash') !== -1;
   const isWhite = filter.type === 'white';
   const notesFilter = !isTrash ? notes.filter(n => n.tags.indexOf('trash') === -1) : notes;

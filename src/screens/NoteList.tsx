@@ -20,8 +20,8 @@ import {connect} from "react-redux";
 import List from "./List";
 import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
-import {selectFilter} from "../reducers/filter";
-import {selectNotes, selectNotesAll} from "../reducers/notes";
+import {Filter, FilterState, selectFilter} from "../reducers/filter";
+import {selectCurrentFilter, selectNotes, selectNotesAll} from "../reducers/notes";
 import DialogAndroid from 'react-native-dialogs';
 const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
 const {remove, removeMulti} = l.Alert;
@@ -69,13 +69,13 @@ function showSortDialog(selectedIndex) {
 const SortMethods = ['name', 'create', 'edit'];
 type SortMethod = 'name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
+  current: Filter;
   notes: Note[];
   filtered: Note[];
   tag: string;
-  filter;
+  filter: FilterState;
 }
 interface NoteListS {
-  current;
   dataSource?;
   multi?;
   selected?;
@@ -95,15 +95,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
   check;
 
-  constructor(props) {
+  constructor(props: NoteListP) {
     super(props);
     const sortMethod = 'create';
     const reverse = false;
-    const {current, filtered} = this.filterNote(props.filter, props.notes);
-
-    const sorted = sort[sortMethod](filtered, reverse);
+    const sorted = sort[sortMethod](props.filtered, reverse);
     this.state = {
-      current,
       dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
       filter: false,
@@ -166,10 +163,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   toggleSort = (sortBy: SortMethod, reverse) => {
-    const {notes} = this.props;
-    const {current} = this.state;
     if (sort[sortBy]) {
-      const {filtered} = this.filterNote(notes, notes, current);
+      const {filtered} = this.props;
       const sorted = sort[sortBy](filtered, reverse);
       this.setState({
         reverse,
@@ -254,7 +249,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
   render() {
     console.log('render');
 
-    const {multi, dataSource, selected, current} = this.state;
+    const {current} = this.props;
+    const {multi, dataSource, selected} = this.state;
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
@@ -275,11 +271,13 @@ class NoteList extends Component<NoteListP, NoteListS> {
 }
 
 export default connect(state => {
+  const current = selectCurrentFilter(state);
   const filter = selectFilter(state);
   return {
     filter,
     notes: selectNotesAll(state),
-    filtered: selectNotes(state, filter),
+    current,
+    filtered: selectNotes(state, current),
   };
 })(NoteList);
 
