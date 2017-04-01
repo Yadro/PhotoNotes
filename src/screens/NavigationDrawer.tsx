@@ -68,8 +68,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   };
 
   render() {
-    const {current} = store.getState().filter;
-    const {filters} = this.props.filter;
+    const {filters, current} = this.props.filter;
     return <View style={css.container}>
       <ScrollView>
         <View style={css.header}>
