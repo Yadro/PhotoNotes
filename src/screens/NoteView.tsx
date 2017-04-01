@@ -25,6 +25,8 @@ import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from '../constants/Localization';
 import {tracker} from "../Analytics";
 import {gray} from "../constants/theme";
+import {connect} from "react-redux";
+import {selectFilter} from "../reducers/filter";
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
@@ -41,6 +43,7 @@ const trashActions = [
 
 type TypeFromView = 'trash' | 'list';
 interface NoteViewP extends ScreenNavigationProp {
+  notes: Note[];
   type?: TypeFromView;
 }
 interface NoteViewS {
@@ -50,13 +53,12 @@ interface NoteViewS {
   isLoad;
   type: TypeFromView;
 }
-export default class NoteView extends Component<NoteViewP, NoteViewS> {
+class NoteView extends Component<NoteViewP, NoteViewS> {
   toolbarActions;
   callbackActions;
 
-  constructor(props) {
+  constructor(props: NoteViewP) {
     super(props);
-    const {notes} = store.getState();
     const {id, type} = props.navigation.state.params;
     const fromTrash = type == 'trash';
     if (fromTrash) {
@@ -83,7 +85,7 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
     }
     this.callbackActions.push(this.onDelete);
 
-    const note: Note = notes.find(e => e.id == id);
+    const note: Note = props.notes.find(e => e.id == id);
 
     if (note.image) {
       getResizedImage(note.image, getSizePexel()).then(({image, size}) => {
@@ -172,6 +174,11 @@ export default class NoteView extends Component<NoteViewP, NoteViewS> {
     );
   }
 }
+export default connect(state => {
+  return {
+    notes: state.notes
+  };
+})(NoteView);
 
 const css = StyleSheet.create({
   container: {
