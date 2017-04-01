@@ -19,6 +19,8 @@ import store from "../redux/Store";
 import {getSizeInContainer} from "../util/util";
 import l from '../constants/Localization';
 import {tracker} from "../Analytics";
+import {OtherState} from "../reducers/other";
+import {connect} from "react-redux";
 const {toolbar} = l.Threshold;
 const {closeWhite, checkWhite, cropBlack, redoBlack, undoBlack}  = icons;
 
@@ -39,14 +41,15 @@ const goBack = (note) => NavigationActions.reset({
     params: {note}
   })]
 });
-interface ThresholdP {
+interface ThresholdP extends ScreenNavigationProp {
+  other: OtherState;
 }
 interface ThresholdS {
   value;
   src;
   disabled;
 }
-export default class ThresholdComponent extends Component<ScreenNavigationProp, ThresholdS> {
+class ThresholdComponent extends Component<ThresholdP, ThresholdS> {
   navigation;
 
   constructor(props) {
@@ -66,7 +69,6 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
       this.navigation.goBack();
     }
     if (action == 0) {
-      const {other: {size}} = store.getState();
       const {src: originPath, value, disabled} = this.state;
       const thresholdPath = originPath + 'bw.png';
 
@@ -112,6 +114,8 @@ export default class ThresholdComponent extends Component<ScreenNavigationProp, 
     </View>
   }
 }
+
+export default connect(state => ({other: state.other}))(ThresholdComponent);
 
 const css = StyleSheet.create({
   slider: {

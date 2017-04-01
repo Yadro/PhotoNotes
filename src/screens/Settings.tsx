@@ -12,6 +12,8 @@ import fs from 'react-native-fs';
 import {ActionOther} from "../redux/Actions";
 import {downloadUrl, emailSendFeedback, emailSendThx, version} from "../constants/Config";
 import {sendEmail} from "../util/util";
+import {OtherState} from "../reducers/other";
+import {connect} from "react-redux";
 const {arrowWhite} = icons;
 
 function showInputAlert(prefill) {
@@ -37,17 +39,18 @@ function showInputAlert(prefill) {
 }
 
 interface SettingsP extends ScreenNavigationProp {
+  other: OtherState;
 }
 interface SettingsS {
 }
-export default class Settings extends React.Component<SettingsP, SettingsS> {
+class Settings extends React.Component<SettingsP, SettingsS> {
 
   items = [{
     title: 'Выбрать папку для сохранения',
-    subtitle:() => store.getState().other.folder,
+    subtitle:() => this.props.other.folder,
     onPress() {
       let folder;
-      showInputAlert(store.getState().other.folder).then(_folder => {
+      showInputAlert(this.props.other.folder).then(_folder => {
         return fs.exists(folder = _folder);
       }).then(exist => {
         if (exist) {
@@ -112,6 +115,11 @@ export default class Settings extends React.Component<SettingsP, SettingsS> {
     )
   }
 }
+export default connect(state => {
+  return {
+    other: state.other
+  };
+})(Settings);
 
 function Item({title, subtitle, onPress}) {
   return <TouchableNativeFeedback onPress={onPress}>

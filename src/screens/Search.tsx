@@ -18,24 +18,27 @@ import {ScreenNavigationProp} from "react-navigation";
 import l from '../constants/Localization';
 import PreviewCircle from '../components/PreviewCircle';
 import {tracker} from "../Analytics";
+import Note from "../redux/Note";
+import {connect} from "react-redux";
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
-interface SearchP {
+interface SearchP extends ScreenNavigationProp {
+  notes: Note[];
 }
 interface SearchS {
   dataSource;
   search;
 }
-export default class Search extends React.Component<ScreenNavigationProp, SearchS> {
+class Search extends React.Component<SearchP, SearchS> {
   private disp;
   private searchDelay;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
-  constructor(props) {
+  constructor(props: SearchP) {
     super(props);
     this.state = {
-      dataSource: this.ds.cloneWithRows(store.getState().notes),
+      dataSource: this.ds.cloneWithRows(props.notes),
       search: '',
     };
     if (!__DEV__) tracker.trackScreenView('Search');
@@ -115,6 +118,11 @@ export default class Search extends React.Component<ScreenNavigationProp, Search
     </View>
   }
 }
+export default connect(state => {
+  return {
+    notes: state.notes
+  };
+})(Search);
 
 const css = StyleSheet.create({
   container: {
