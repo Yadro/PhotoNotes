@@ -98,7 +98,6 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
-    console.log(newProps.notes);
     const {sortMethod, reverse} = this.state;
 
     // fixme
