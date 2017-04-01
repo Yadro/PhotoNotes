@@ -22,6 +22,8 @@ import Note from "../redux/Note";
 import {connect} from "react-redux";
 import {ListItem} from "../components/ListItem";
 import {navigationReset} from "../util/util";
+import {selectNotes} from "../reducers/notes";
+import {selectCurrentFilter, selectFilter} from "../reducers/filter";
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
@@ -48,7 +50,7 @@ class Search extends React.Component<SearchP, SearchS> {
   componentWillReceiveProps(newProps) {
     // todo need update ?
     this.setState({
-      dataSource: this.ds.cloneWithRows(newProps),
+      dataSource: this.ds.cloneWithRows(newProps.notes),
     });
   }
 
@@ -117,8 +119,10 @@ class Search extends React.Component<SearchP, SearchS> {
   }
 }
 export default connect(state => {
+  const filter = selectFilter(state);
+  const currentFilter = selectCurrentFilter(filter);
   return {
-    notes: state.notes
+    notes: selectNotes(state, currentFilter),
   };
 })(Search);
 
