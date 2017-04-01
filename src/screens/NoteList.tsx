@@ -59,8 +59,8 @@ function showSortDialog(selectedIndex) {
 const SortMethods = ['name', 'create', 'edit'];
 type SortMethod = 'name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
-  current: Filter;
-  filtered: Note[];
+  filter: Filter;
+  notes: Note[];
 }
 interface NoteListS {
   dataSource?;
@@ -86,7 +86,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     super(props);
     const sortMethod = 'create';
     const reverse = false;
-    const sorted = sort[sortMethod](props.filtered, reverse);
+    const sorted = sort[sortMethod](props.notes, reverse);
     this.state = {
       dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
@@ -100,12 +100,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
   }
 
   componentWillReceiveProps(newProps: NoteListP) {
-    console.log(newProps.filtered);
+    console.log(newProps.notes);
     const {sortMethod, reverse} = this.state;
 
     // fixme
-    /*if (filtered.length == props.notes.length &&
-      filtered.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
+    /*if (notes.length == props.notes.length &&
+      notes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
       if (filterUpdate) {
         this.forceUpdate();
       }
@@ -113,7 +113,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     }*/
 
     this.setState({
-      dataSource: this.ds.cloneWithRows(sort[sortMethod](newProps.filtered, reverse))
+      dataSource: this.ds.cloneWithRows(sort[sortMethod](newProps.notes, reverse))
     });
   }
 
@@ -127,8 +127,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   toggleSort = (sortBy: SortMethod, reverse) => {
     if (sort[sortBy]) {
-      const {filtered} = this.props;
-      const sorted = sort[sortBy](filtered, reverse);
+      const {notes} = this.props;
+      const sorted = sort[sortBy](notes, reverse);
       this.setState({
         reverse,
         sortMethod: sortBy,
@@ -212,12 +212,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
   render() {
     console.log('render');
 
-    const {current} = this.props;
+    const {filter} = this.props;
     const {multi, dataSource, selected} = this.state;
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : current.title}
+        <Toolbar title={multi ? "Select to remove" : filter.title}
                  navIcon={multi ? closeWhite : menuWhite}
                  overflowIcon={moreWhite}
                  color="white" backgroundColor="#01B47C"
@@ -237,8 +237,8 @@ export default connect(state => {
   const filter = selectFilter(state);
   const currentFilter = selectCurrentFilter(filter);
   return {
-    current: currentFilter,
-    filtered: selectNotes(state, currentFilter),
+    filter: currentFilter,
+    notes: selectNotes(state, currentFilter),
   };
 })(NoteList);
 
