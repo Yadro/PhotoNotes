@@ -14,13 +14,14 @@ import {
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import store from "../redux/Store";
-import {ScreenNavigationProp} from "react-navigation";
+import {NavigationActions, ScreenNavigationProp} from "react-navigation";
 import l from '../constants/Localization';
 import PreviewCircle from '../components/PreviewCircle';
 import {tracker} from "../Analytics";
 import Note from "../redux/Note";
 import {connect} from "react-redux";
 import {ListItem} from "../components/ListItem";
+import {navigationReset} from "../util/util";
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
@@ -56,7 +57,20 @@ class Search extends React.Component<SearchP, SearchS> {
   };
 
   pressHandler = (id) => () => {
-    this.props.navigation.navigate('NoteView', {id: id})
+    this.props.navigation.dispatch(
+      NavigationActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({
+            routeName: 'Main',
+          }),
+          NavigationActions.navigate({
+            routeName: 'NoteView',
+            params: {id: id}
+          })
+        ]
+      })
+    );
   };
 
   onChange = (search) => {
