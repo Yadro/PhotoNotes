@@ -31,7 +31,6 @@ interface SearchS {
   search;
 }
 class Search extends React.Component<SearchP, SearchS> {
-  private disp;
   private searchDelay;
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
@@ -44,17 +43,11 @@ class Search extends React.Component<SearchP, SearchS> {
     if (!__DEV__) tracker.trackScreenView('Search');
   }
 
-  componentWillMount() {
-    this.disp = store.subscribe(() => {
-      const {notes} = store.getState();
-      this.setState({
-        dataSource: this.ds.cloneWithRows(notes),
-      });
+  componentWillReceiveProps(newProps) {
+    // todo need update ?
+    this.setState({
+      dataSource: this.ds.cloneWithRows(newProps),
     });
-  }
-
-  componentWillUnmount() {
-    this.disp();
   }
 
   pressIcon = () => {
@@ -66,9 +59,8 @@ class Search extends React.Component<SearchP, SearchS> {
   };
 
   onChange = (search) => {
-    const {notes} = store.getState();
     const searchLower = search.toLowerCase();
-    const filtered = notes.filter((e) => e.title.toLowerCase().indexOf(searchLower) >= 0);
+    const filtered = this.props.notes.filter((e) => e.title.toLowerCase().indexOf(searchLower) >= 0);
     this.setState({search});
 
     clearTimeout(this.searchDelay);
