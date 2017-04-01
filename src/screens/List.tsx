@@ -14,6 +14,7 @@ interface ListS {
 }
 export default class List extends React.Component<ListP, ListS> {
   renderRow = (rowData: Note) => {
+    // todo refactoring
     const {id, image, title, images} = rowData;
     const {selected, pressHandler, longPressHandler} = this.props;
     const isSelected = selected.includes(id);

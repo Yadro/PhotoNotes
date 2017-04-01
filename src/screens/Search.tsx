@@ -20,6 +20,7 @@ import PreviewCircle from '../components/PreviewCircle';
 import {tracker} from "../Analytics";
 import Note from "../redux/Note";
 import {connect} from "react-redux";
+import {ListItem} from "../components/ListItem";
 const {toolbar, window} = l.Search;
 const {arrowWhite, searchBlack} = icons;
 
@@ -71,23 +72,6 @@ class Search extends React.Component<SearchP, SearchS> {
     }, 500);
   };
 
-  renderRow = (rowData) => {
-    const {id, image, title, images} = rowData;
-    const thumbnail = images && images.thumbnail && images.thumbnail['50'] || image;
-    return (
-      <TouchableNativeFeedback onPress={this.pressHandler(id)}>
-        <View style={css.item}>
-          <View style={css.imagePrevWrapper}>
-            {!!thumbnail ?
-              <Image source={{uri: thumbnail}} style={css.imagePrev}/> :
-              <PreviewCircle text={title}/>}
-          </View>
-          <Text style={css.text}>{title}</Text>
-        </View>
-      </TouchableNativeFeedback>
-    );
-  };
-
   render() {
     return <View style={css.container}>
       <Toolbar
@@ -110,7 +94,11 @@ class Search extends React.Component<SearchP, SearchS> {
           />
         </View>
       </View>
-      <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow}/>
+      <ListView
+        enableEmptySections
+        dataSource={this.state.dataSource}
+        renderRow={data => <ListItem {...data} onPress={this.pressHandler}/>}
+      />
     </View>
   }
 }
