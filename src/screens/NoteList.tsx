@@ -1,14 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  ListView,
-  Vibration,
-  Alert,
-  ToolbarAndroidAction,
-  NativeModules,
-} from 'react-native';
+import {StyleSheet, View, ListView, Vibration, Alert,} from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
 import Note from "../redux/Note";
@@ -18,14 +10,12 @@ import icons from '../components/Icons'
 import l from '../constants/Localization';
 import {connect} from "react-redux";
 import List from "./List";
-import {check} from "../util/tagUtil";
 import {tracker} from "../Analytics";
-import {Filter, FilterState, selectFilter} from "../reducers/filter";
-import {selectCurrentFilter, selectNotes, selectNotesAll} from "../reducers/notes";
+import {Filter, selectFilter} from "../reducers/filter";
+import {selectCurrentFilter, selectNotes} from "../reducers/notes";
 import DialogAndroid from 'react-native-dialogs';
-const {toolbar, sortCreate, sortEdit, sortName} = l.NoteList;
-const {remove, removeMulti} = l.Alert;
-const {PopupMenu} = NativeModules;
+const {toolbar} = l.NoteList;
+const {removeMulti} = l.Alert;
 
 const {deleteIconWhite, searchWhite, moreWhite, closeWhite, menuWhite} = icons;
 
@@ -70,10 +60,7 @@ const SortMethods = ['name', 'create', 'edit'];
 type SortMethod = 'name' | 'create' | 'edit';
 interface NoteListP extends ScreenNavigationProp {
   current: Filter;
-  notes: Note[];
   filtered: Note[];
-  tag: string;
-  filter: FilterState;
 }
 interface NoteListS {
   dataSource?;
@@ -112,29 +99,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
-  filterNote(filter, notes: Note[], currentFilter?) {
-    if (!currentFilter) {
-      currentFilter = filter.filters.find(e => e.id == filter.current) || {tags: []};
-      this.check = check(currentFilter.tags, currentFilter.type == 'white');
-    }
-
-    const isTrash = currentFilter.tags.indexOf('trash') !== -1;
-    let notesFilter;
-    if (!isTrash) {
-      notesFilter = notes.filter(n => n.tags.indexOf('trash') === -1);
-    } else {
-      notesFilter = notes;
-    }
-    return {
-      filtered: notesFilter.filter(n => this.check(n.tags)),
-      current: currentFilter,
-    }
-  }
-
   componentWillReceiveProps(newProps: NoteListP) {
     console.log(newProps.filtered);
     const {sortMethod, reverse} = this.state;
-    const {current, filtered} = this.filterNote(newProps.filter, newProps.notes);
 
     // fixme
     /*if (filtered.length == props.notes.length &&
@@ -145,13 +112,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
       return;
     }*/
 
-    const state = {
-      dataSource: this.ds.cloneWithRows(sort[sortMethod](filtered, reverse))
-    };
-    if (current) {
-      state['current'] = current;
-    }
-    this.setState(state);
+    this.setState({
+      dataSource: this.ds.cloneWithRows(sort[sortMethod](newProps.filtered, reverse))
+    });
   }
 
   disableMultiSelect = () => {
@@ -271,13 +234,11 @@ class NoteList extends Component<NoteListP, NoteListS> {
 }
 
 export default connect(state => {
-  const current = selectCurrentFilter(state);
   const filter = selectFilter(state);
+  const currentFilter = selectCurrentFilter(filter);
   return {
-    filter,
-    notes: selectNotesAll(state),
-    current,
-    filtered: selectNotes(state, current),
+    current: currentFilter,
+    filtered: selectNotes(state, currentFilter),
   };
 })(NoteList);
 

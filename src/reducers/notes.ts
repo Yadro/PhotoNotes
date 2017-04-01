@@ -97,8 +97,8 @@ const emptyFilter = {
   tags: [],
   type: 'black'
 } as Filter;
-export function selectCurrentFilter(state: AppStore): Filter {
-  const {current, filters} = state.filter;
+export function selectCurrentFilter(state: FilterState): Filter {
+  const {current, filters} = state;
   return filters.find(e => e.id == current) || emptyFilter;
 }
 
