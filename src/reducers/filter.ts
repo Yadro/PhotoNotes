@@ -75,6 +75,17 @@ const systemTags = [{
   ]
 }];
 
+const emptyFilter = {
+  id: null,
+  title: 'EmptyFilter',
+  tags: [],
+  type: 'black'
+} as Filter;
+export function selectCurrentFilter(state: FilterState): Filter {
+  const {current, filters} = state;
+  return filters.find(e => e.id == current) || emptyFilter;
+}
+
 export function selectFilter(state: AppStore): FilterState {
   return over(lensFilters, filters => concat(systemTags, filters), state.filter);
 }

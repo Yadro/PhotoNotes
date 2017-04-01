@@ -91,17 +91,6 @@ export function selectNotesAll(state: AppStore) {
   return state.notes;
 }
 
-const emptyFilter = {
-  id: null,
-  title: 'EmptyFilter',
-  tags: [],
-  type: 'black'
-} as Filter;
-export function selectCurrentFilter(state: FilterState): Filter {
-  const {current, filters} = state;
-  return filters.find(e => e.id == current) || emptyFilter;
-}
-
 export function selectNotes(state: AppStore, filter: Filter): NoteState {
   const {notes} = state;
   const isTrash = filter.tags.indexOf('trash') !== -1;
