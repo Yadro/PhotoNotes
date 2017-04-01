@@ -37,7 +37,7 @@ function showDialog() {
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 
   setFilter = (id) => {
-    store.getState().filter.current != id &&
+    this.props.filter.current != id &&
       Actions.setCurrentFilter(id);
     this.props.navigation.navigate('DrawerClose');
   };
@@ -91,7 +91,9 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   }
 }
 
-export default connect(state => ({filter: selectFilter(state)}))(FilterTags);
+export default connect(state => ({
+  filter: selectFilter(state)
+}))(FilterTags);
 
 function GrayButton({title, onPress, icon}) {
   return <TouchableNativeFeedback onPress={onPress} style={css.container}>
