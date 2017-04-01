@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Alert, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
 import Toolbar from "../components/Toolbar";
@@ -9,6 +9,8 @@ import {Actions} from "../redux/Actions";
 import CheckboxList from "../components/CheckboxList";
 import {green} from "../constants/theme";
 import DropdownPicker from "../components/material/DropdownPicker";
+import Localization from '../constants/Localization';
+const L = Localization.Filter;
 const {checkWhite} = icons;
 
 interface EditFilterP extends ScreenNavigationProp {
@@ -26,7 +28,7 @@ const actions = [{
   title: 'Ok',
   icon: checkWhite,
   show: 'always',
-  onPress: function() {
+  onPress: function () {
     const {title, type, data, id} = this.state;
     const filter = {
       title,
@@ -34,14 +36,19 @@ const actions = [{
       tags: data.filter(e => e.value).map(e => e.title),
       id: 0,
     };
-    if (filter.tags.length || filter.type == 'black') {
+    if ((filter.tags.length || filter.type == 'black') && title.length) {
       if (id > -1) {
         Actions.updateFilter(id, filter);
       } else {
         Actions.addFilter(filter);
       }
     } else {
-      // todo alert
+      Alert.alert(
+        'Проверте правильность ввода',
+        'Заголовок должен быть заполнен и выбран хотя бы один тег (только в white list)',
+        [{text: 'Ok'}]
+      );
+      return;
     }
     this.props.navigation.goBack();
   }
@@ -103,25 +110,31 @@ class EditFilter extends React.Component<EditFilterP, EditFilterS> {
 
   render() {
     return <View style={css.container}>
-      <Toolbar title="Filter"
-               color="white"
-               backgroundColor={green}
-               navIcon={icons.arrowWhite}
-               actions={actions} onActionSelected={this.toolbarAction}
+      <Toolbar
+        title={L.title}
+        color="white"
+        backgroundColor={green}
+        navIcon={icons.arrowWhite}
+        actions={actions} onActionSelected={this.toolbarAction}
       />
       <TextInput
         style={css.input}
-        value={this.state.title} placeholder="Title"
+        value={this.state.title}
+        placeholder={L.titleInput}
         onChangeText={(text) => this.setState({title: text})}
       />
       <DropdownPicker
-        title="Type of filter"
+        title={L.filterType}
         items={pickerItems}
         value={this.state.type}
         onValueChange={(type) => this.setState({type})}
       />
-      <Text style={css.hint}>Select tag</Text>
-      <CheckboxList data={this.state.data} onAddItem={this.submitItem} onChange={this.onChange}/>
+      <Text style={css.hint}>{L.selectTag}</Text>
+      <CheckboxList
+        data={this.state.data}
+        onAddItem={this.submitItem}
+        onChange={this.onChange}
+      />
     </View>
   }
 }

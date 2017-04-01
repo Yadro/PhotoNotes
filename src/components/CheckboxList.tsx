@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {View, KeyboardAvoidingView, TextInput, ListView, StyleSheet, ViewStyle} from 'react-native';
+import Localization from '../constants/Localization';
+const L = Localization.Filter;
 import {append} from 'ramda';
 import {CheckboxItem} from "./CheckboxItem";
 
@@ -68,7 +70,7 @@ export default class CheckboxList extends React.Component<CheckboxListP, Checkbo
       <TextInput
         style={css.input}
         value={this.state.newItem}
-        placeholder="Add new tag..."
+        placeholder={L.addNewTag}
         onChangeText={text => this.setState({newItem: text})}
         onSubmitEditing={this.onSubmitItem}
         autoFocus

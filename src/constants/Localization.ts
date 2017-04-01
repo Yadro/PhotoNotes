@@ -72,7 +72,13 @@ export default {
       }
     }
   },
-
+  Filter: {
+    title: 'Фильтр',
+    titleInput: 'Заголовок',
+    filterType: 'Тип фильтра',
+    selectTag: 'Теги',
+    addNewTag: 'Добавить новый тег (enter)'
+  },
   sayHi: {
     prefix: 'Добрый',
     day: [
