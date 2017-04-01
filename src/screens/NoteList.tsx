@@ -9,7 +9,7 @@ import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import l from '../constants/Localization';
 import {connect} from "react-redux";
-import List from "./List";
+import List from "../components/List";
 import {tracker} from "../Analytics";
 import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
 import {selectNotes} from "../reducers/notes";

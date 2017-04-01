@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {View, ListView, TouchableNativeFeedback, Image, Text, StyleSheet, ViewStyle} from 'react-native';
 import Note from "../redux/Note";
-import PreviewCircle from '../components/PreviewCircle';
+import PreviewCircle from './PreviewCircle';
 const delay = __DEV__ ? 3500 : 1000;
 
 interface ListP {
