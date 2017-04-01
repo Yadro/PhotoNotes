@@ -64,6 +64,10 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
     ]
   });
 
+  static toolbarActionDelete = {
+    title: toolbar.remove, icon: deleteIconWhite, show: 'never',
+    onPress: function () {this.onDelete()}
+  };
   toolbarActions = [{
     title: 'tags', icon: labelWhite, show: 'always',
     onPress: function () {
@@ -96,10 +100,7 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
       } else if (params.id) {
         // from list
         note = Note.createInstance(props.notes.find(e => e.id == params.id) || {});
-        this.toolbarActions.push({
-          title: toolbar.remove, icon: deleteIconWhite, show: 'never',
-          onPress: function () {this.onDelete()}
-        });
+        this.toolbarActions.push(NoteEdit.toolbarActionDelete);
         state = {save: true};
       }
     } else {
@@ -118,7 +119,7 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
 
     const currentFilter = props.currentFilter;
     if (currentFilter.type == 'white' && isCreateNew) {
-      note.tags = currentFilter.tags;
+      note.tags = Object.assign({}, currentFilter.tags);
     }
 
     this.state = Object.assign({}, state, {
