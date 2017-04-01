@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {StyleSheet, View, ListView, Vibration, Alert,} from 'react-native';
+import {StyleSheet, View, ListView, Vibration, Alert, ListViewDataSource} from 'react-native';
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
 import Note from "../redux/Note";
@@ -63,12 +63,11 @@ interface NoteListP extends ScreenNavigationProp {
   notes: Note[];
 }
 interface NoteListS {
-  dataSource?;
-  multi?;
-  selected?;
-  sortMethod?: SortMethod;
+  dataSource: ListViewDataSource;
+  multi: boolean;
+  selected: number[];
+  sortMethod: SortMethod;
   reverse: boolean;
-  filter: boolean;
   search: string;
 }
 
@@ -90,7 +89,6 @@ class NoteList extends Component<NoteListP, NoteListS> {
     this.state = {
       dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
-      filter: false,
       search: '',
       selected: [],
       sortMethod,
