@@ -1,13 +1,8 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {
-  View,
-  StatusBar,
-  AsyncStorage,
-  Text,
-} from 'react-native';
+import {View, StatusBar} from 'react-native';
 import {StackNavigator, DrawerNavigator, DrawerView} from 'react-navigation';
-import {Provider, connect} from 'react-redux'
+import {Provider} from 'react-redux'
 import store from "./redux/Store";
 import NoteEdit from './screens/NoteEdit';
 import NoteView from "./screens/NoteView";
@@ -19,7 +14,6 @@ import {tracker} from "./Analytics";
 import Search from "./screens/Search";
 import Password from "./screens/Password";
 import Settings from "./screens/Settings";
-import Trash from './screens/Trash';
 import {Actions} from "./redux/Actions";
 import {importNotes} from "./redux/StoreImport";
 import NavigationDrawer from "./screens/NavigationDrawer";
@@ -28,7 +22,6 @@ import EditFilter from './screens/EditFilter';
 const App = StackNavigator({
   Main: {screen: NoteList},
   EditFilter: {screen: EditFilter},
-  Trash: {screen: Trash},
   Search: {screen: Search},
   NoteEdit: {screen: NoteEdit},
   NoteView: {screen: NoteView},
