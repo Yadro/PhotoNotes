@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {View, Text, TextInput, Alert, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import {selectFilter, FilterState} from "../reducers/filter";
+import {selectFilter, FilterState, Filter} from "../reducers/filter";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
@@ -21,7 +21,10 @@ interface EditFilterS {
   title;
   newItem;
   type;
-  data;
+  data: {
+    title
+    value
+  }[];
 }
 
 const actions = [{

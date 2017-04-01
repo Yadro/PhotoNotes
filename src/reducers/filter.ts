@@ -3,6 +3,7 @@ import {lensProp, lensById, over, lensByIndex} from "../util/lens";
 import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT} from "../constants/ActionTypes";
 import {getMaxId} from "../util/util";
 import {paths} from '../components/Icons';
+import {AppStore} from "../redux/IAppStore";
 
 const lensId = lensProp('id');
 const lensCurrent = lensProp('current');
@@ -74,6 +75,6 @@ const systemTags = [{
   ]
 }];
 
-export function selectFilter(state): FilterState {
+export function selectFilter(state: AppStore): FilterState {
   return over(lensFilters, filters => concat(systemTags, filters), state.filter);
 }

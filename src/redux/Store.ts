@@ -1,22 +1,18 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
-import notes, {NoteState} from '../reducers/notes';
-import other, {OtherState} from '../reducers/other';
+import notes from '../reducers/notes';
+import other from '../reducers/other';
 import filter from '../reducers/filter';
+import {AppStore} from "./IAppStore";
 
-interface MyStore {
-  notes: NoteState;
-  other: OtherState;
-}
-
-const reducers = combineReducers<MyStore>({
+const reducers = combineReducers<AppStore>({
   notes,
   other,
   filter,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore<MyStore>(
+const store = createStore<AppStore>(
   reducers,
   composeEnhancers(
     applyMiddleware(thunk),

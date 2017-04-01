@@ -6,6 +6,7 @@ import {
 import {set, view, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
 import {getMaxId} from "../util/util";
+import {AppStore} from "../redux/IAppStore";
 
 export type NoteState = Note[];
 
@@ -84,6 +85,6 @@ export default (state: Note[] = [], actions): NoteState => {
   }
 };
 
-export function selectNotes(state) {
+export function selectNotes(state: AppStore) {
   return state.notes;
 }
