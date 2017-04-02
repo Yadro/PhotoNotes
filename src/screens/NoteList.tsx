@@ -71,7 +71,7 @@ interface NoteListS {
   search: string;
 }
 
-const sort = {
+const sortMethods = {
   'name': (items, reverse) => items.sort((a: Note, b) => ((reverse) ? a.title < b.title : a.title > b.title) ? 1 : a.title == b.title ? 0 : -1),
   'create': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.createdAt - b.createdAt : b.createdAt - a.createdAt),
   'edit': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt),
@@ -79,13 +79,12 @@ const sort = {
 
 class NoteList extends Component<NoteListP, NoteListS> {
   private ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
-  check;
 
   constructor(props: NoteListP) {
     super(props);
     const sortMethod = 'create';
     const reverse = false;
-    const sorted = sort[sortMethod](props.notes, reverse);
+    const sorted = sortMethods[sortMethod](props.notes, reverse);
     this.state = {
       dataSource: this.ds.cloneWithRows(sorted),
       multi: false,
@@ -110,7 +109,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
     }*/
 
     this.setState({
-      dataSource: this.ds.cloneWithRows(sort[sortMethod](newProps.notes, reverse))
+      dataSource: this.ds.cloneWithRows(sortMethods[sortMethod](newProps.notes, reverse))
     });
   }
 
@@ -123,9 +122,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   toggleSort = (sortBy: SortMethod, reverse) => {
-    if (sort[sortBy]) {
+    if (sortMethods[sortBy]) {
       const {notes} = this.props;
-      const sorted = sort[sortBy](notes, reverse);
+      const sorted = sortMethods[sortBy](notes, reverse);
       this.setState({
         reverse,
         sortMethod: sortBy,
@@ -192,18 +191,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
   showSortAlert = () => {
     const {reverse, sortMethod} = this.state;
     showSortDialog(SortMethods.indexOf(sortMethod)).then((id: number) => {
-      if (SortMethods.indexOf(id)) {
-        this.toggleSort(SortMethods[id] as SortMethod, reverse);
-      }
+      SortMethods[id] && this.toggleSort(SortMethods[id] as SortMethod, reverse);
     });
-
-    /*PopupMenu.showRadio('Сортировка', '', ['ok'], {text: 'инверитровать', value: reverse},
-      ['По алфавиту', 'По дате создания', 'По дате изменения'], (e) => {
-        const sort = ['name', 'create', 'edit'];
-        if (sort.indexOf(e.which)) {
-          this.toggleSort(sort[e.which] as SortMethod, e.checkbox);
-        }
-      });*/
   };
 
   render() {
@@ -214,17 +203,26 @@ class NoteList extends Component<NoteListP, NoteListS> {
     const {navigate} = this.props.navigation;
     return (
       <View style={css.container}>
-        <Toolbar title={multi ? "Select to remove" : filter.title}
-                 navIcon={multi ? closeWhite : menuWhite}
-                 overflowIcon={moreWhite}
-                 color="white" backgroundColor="#01B47C"
-                 onActionSelected={this.onActionSelected}
-                 actions={multi ? toolbarActionsItems : toolbarMainItems}
+        <Toolbar
+          title={multi ? "Select to remove" : filter.title}
+          navIcon={multi ? closeWhite : menuWhite}
+          overflowIcon={moreWhite}
+          color="white" backgroundColor="#01B47C"
+          onActionSelected={this.onActionSelected}
+          actions={multi ? toolbarActionsItems : toolbarMainItems}
         />
-        <List dataSource={dataSource} selected={selected}
-              pressHandler={this.pressHandler} longPressHandler={this.longPressHandler}/>
-        <ActionButton buttonColor="rgba(231,76,60,1)"
-                      onPress={() => {navigate('NoteEdit')}}/>
+        <List
+          dataSource={dataSource}
+          selected={selected}
+          pressHandler={this.pressHandler}
+          longPressHandler={this.longPressHandler}
+        />
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => {
+            navigate('NoteEdit')
+          }}
+        />
       </View>
     );
   }
