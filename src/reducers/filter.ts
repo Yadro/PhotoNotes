@@ -6,6 +6,7 @@ import {paths} from '../components/Icons';
 import {AppStore} from "../redux/IAppStore";
 
 const lensId = lensProp('id');
+const lensNoteCount= lensProp('noteCount');
 const lensCurrent = lensProp('current');
 const lensFilters = lensProp('filters');
 const lensFilterByIdx = (id) => compose(
@@ -19,6 +20,7 @@ export interface Filter {
   title: string;
   tags: string[];
   type: FilerType;
+  noteCount: number;
 }
 export interface FilterState {
   filters: Filter[];
@@ -43,6 +45,7 @@ export default (state, action) => {
           filters
         );
       }, state);
+
     case REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
 
