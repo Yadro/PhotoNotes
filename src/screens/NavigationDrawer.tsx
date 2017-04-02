@@ -4,7 +4,6 @@ import {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
 import {selectFilter, FilterState} from "../reducers/filter";
-import store from "../redux/Store";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
@@ -75,16 +74,18 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
           <Text style={css.headerTitle}>Edditr</Text>
         </View>
         {filters.sort(wsort).map(e => (
-          <Item key={e.id} data={e}
-                selected={current == e.id}
-                onPress={this.setFilter.bind(this, e.id)}
-                onLongPress={e.id > -1 ? this.goToEditFilter(e.id) : null}/>
+          <Item
+            key={e.id} data={e}
+            selected={current == e.id}
+            onPress={this.setFilter.bind(this, e.id)}
+            onLongPress={e.id > -1 ? this.goToEditFilter(e.id) : null}
+          />
         ))}
       </ScrollView>
 
       <View style={css.section}>
-        <GrayButton title="Add new filter" onPress={this.goToEditFilter(-1)} icon={paths.addWhite}/>
-        <GrayButton title="Settings" onPress={this.openSettings} icon={paths.settingsWhite}/>
+        <GrayButton title="Добавить фильтр" onPress={this.goToEditFilter(-1)} icon={paths.addWhite}/>
+        <GrayButton title="Настройки" onPress={this.openSettings} icon={paths.settingsWhite}/>
       </View>
     </View>
   }
