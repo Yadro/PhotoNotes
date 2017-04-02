@@ -1,13 +1,21 @@
 
-/*declare module 'react-native-photo-view' {
-  import {Component} from 'react';
-  export default class PhotoView extends Component<any, any> {}
-}*/
-
 declare module 'react-native-image-resizer' {
   export default class {
     static createResizedImage(path, maxWidth, maxHeight,
                               compressFormat, quality, rotation?, outputPath?): Promise<string>;
+  }
+}
+
+declare module 'react-native-google-analytics-bridge' {
+  export class GoogleAnalyticsTracker {
+    constructor(id: string);
+    trackScreenView(screen: string);
+  }
+}
+declare module 'react-native-dialogs' {
+  export default class {
+    set(options);
+    show()
   }
 }
 
