@@ -139,7 +139,7 @@ function GrayButton({title, onPress, icon}) {
 }
 
 interface ItemP {
-  data;
+  data: Filter;
   onPress
   onLongPress?
   selected
@@ -152,6 +152,7 @@ function Item(props: ItemP) {
   } else {
     icon = selected ? paths.labelWhite : paths.labelOutlineWhite
   }
+  const textStyle = [css.title, selected && css.titleHighlight];
   return <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}
                                   style={css.container} delayLongPress={delay}>
     <View style={[css.item, selected && css.itemHighlight]}>
@@ -160,9 +161,14 @@ function Item(props: ItemP) {
         tint={[selected ? green : gray]}
         style={css.icon}
       />
-      <Text style={[css.title, selected && css.titleHighlight]} numberOfLines={1}>
-        {data.title}
-      </Text>
+      <View style={css.textWrapper}>
+        <Text style={textStyle} numberOfLines={1}>
+          {data.title}
+        </Text>
+        <Text style={textStyle} numberOfLines={1}>
+          {data.noteCount}
+        </Text>
+      </View>
     </View>
   </TouchableNativeFeedback>
 }
@@ -210,6 +216,11 @@ const css = StyleSheet.create({
   },
   icon: {
     marginRight: 16
+  },
+  textWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   section: {

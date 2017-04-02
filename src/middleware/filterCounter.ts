@@ -1,4 +1,3 @@
-
 import {
   ADD, IMPORT, REMOVE, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR, REMOVE_ARR, RESTORE, SET_FILTER_COUNT, SET_TAGS,
   UPDATE
@@ -7,12 +6,12 @@ import {AppStore} from "../redux/IAppStore";
 import {check} from "../util/tagUtil";
 
 const ACTIONS = [
-  ADD, /*UPDATE, SET_TAGS, REMOVE, RESTORE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR, IMPORT*/
+  ADD, UPDATE, SET_TAGS, REMOVE, RESTORE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR, IMPORT
 ];
 
 export function filterCounter({getState}) {
-  return (next) =>
-    function dispatchSetCountNotes(action) {
+  return (next) => {
+    return function dispatchSetCountNotes(action) {
       next(action);
       const state = getState() as AppStore;
       const {filter: {filters}, notes} = state;
