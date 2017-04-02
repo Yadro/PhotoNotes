@@ -9,6 +9,7 @@ import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
 import DialogAndroid from 'react-native-dialogs';
 import {NoteState} from "../reducers/notes";
+import {notEqualArray} from "../util/equalsCheck";
 
 
 function showDialog() {
@@ -41,17 +42,13 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   }
 
   shouldComponentUpdate(nextProps: TagsLayerP, nextState: TagsLayerS) {
+    // fixme (not updated after create/change filter)
     const {filter, notes} = this.props;
     return (
       nextProps.filter.current != filter.current ||
       nextProps.notes.some(nextNote => {
         const note = notes.find(e => e.id === nextNote.id);
-        return !(
-          // found previous note and all tags equals
-          note &&
-          note.tags.length == nextNote.tags.length &&
-          note.tags.every((tag, i) => tag === nextNote.tags[i])
-        );
+        return !note || notEqualArray(note.tags, nextNote.tags)
       })
     );
   }
