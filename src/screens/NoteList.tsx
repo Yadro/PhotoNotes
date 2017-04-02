@@ -96,18 +96,26 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
+  shouldComponentUpdate(nextProps: NoteListP) {
+    const {notes, filter} = this.props;
+    const nextNotes = nextProps.notes;
+    return (
+      filter.id != nextProps.filter.id ||
+      filter.title != nextProps.filter.title ||
+      filter.tags.length != nextProps.filter.tags.length ||
+
+      notes.length !== nextNotes.length ||
+      notes.some((note, id) => {
+        const nextNote = nextNotes[id];
+        return Object.keys(note).some(key => {
+          return note[key] != nextNote[key];
+        })
+      })
+    )
+  }
+
   componentWillReceiveProps(newProps: NoteListP) {
     const {sortMethod, reverse} = this.state;
-
-    // fixme
-    /*if (notes.length == props.notes.length &&
-      notes.every(note => Note.equalNeedUpdate(note, props.notes.find(e => e.id == note.id)))) {
-      if (filterUpdate) {
-        this.forceUpdate();
-      }
-      return;
-    }*/
-
     this.setState({
       dataSource: this.ds.cloneWithRows(sortMethods[sortMethod](newProps.notes, reverse))
     });
