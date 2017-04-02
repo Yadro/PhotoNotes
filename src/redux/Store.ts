@@ -5,6 +5,7 @@ import other from '../reducers/other';
 import filter from '../reducers/filter';
 import {AppStore} from "./IAppStore";
 import {analytics} from "../middleware/analytics";
+import {filterCounter} from "../middleware/filterCounter";
 
 const reducers = combineReducers<AppStore>({
   notes,
@@ -17,7 +18,8 @@ const store = createStore<AppStore>(
   reducers,
   composeEnhancers(
     applyMiddleware(thunk),
-    applyMiddleware(analytics)
+    applyMiddleware(analytics),
+    applyMiddleware(filterCounter)
   )
 );
 

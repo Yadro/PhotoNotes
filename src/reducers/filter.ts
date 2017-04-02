@@ -1,6 +1,9 @@
 import {set, compose, append, concat} from 'ramda';
 import {lensProp, lensById, over, lensByIndex} from "../util/lens";
-import {ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT} from "../constants/ActionTypes";
+import {
+  ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT,
+  SET_FILTER_COUNT
+} from "../constants/ActionTypes";
 import {getMaxId} from "../util/util";
 import {paths} from '../components/Icons';
 import {AppStore} from "../redux/IAppStore";
@@ -37,6 +40,11 @@ export default (state: FilterState, action): FilterState => {
   switch (action.type) {
     case SET_CURRENT_FILTER:
       return set(lensCurrent, action.current, state);
+
+    case SET_FILTER_COUNT:
+      return over(lensFilterByIdx(action.id), filter => {
+        return set(lensNoteCount, action.count, filter)
+      }, state);
 
     case ADD_FILTER:
       return over(lensFilters, filters => {
