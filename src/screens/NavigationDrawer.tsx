@@ -8,12 +8,7 @@ import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
 import DialogAndroid from 'react-native-dialogs';
-
-interface TagsLayerP extends ScreenNavigationProp {
-  filter: FilterState;
-}
-interface TagsLayerS {
-}
+import {NoteState} from "../reducers/notes";
 
 
 function showDialog() {
@@ -33,7 +28,33 @@ function showDialog() {
   });
 }
 
+interface TagsLayerP extends ScreenNavigationProp {
+  filter: FilterState;
+  notes: NoteState;
+}
+interface TagsLayerS {
+}
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
+
+  constructor(props: TagsLayerP) {
+    super(props);
+  }
+
+  shouldComponentUpdate(nextProps: TagsLayerP, nextState: TagsLayerS) {
+    const {filter, notes} = this.props;
+    return (
+      nextProps.filter.current != filter.current ||
+      nextProps.notes.some(nextNote => {
+        const note = notes.find(e => e.id === nextNote.id);
+        return !(
+          // found previous note and all tags equals
+          note &&
+          note.tags.length == nextNote.tags.length &&
+          note.tags.every((tag, i) => tag === nextNote.tags[i])
+        );
+      })
+    );
+  }
 
   setFilter = (id) => {
     this.props.filter.current != id &&
@@ -104,7 +125,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
 }
 
 export default connect(state => ({
-  filter: selectFilter(state)
+  notes: state.notes,
+  filter: selectFilter(state),
 }))(FilterTags);
 
 function GrayButton({title, onPress, icon}) {
