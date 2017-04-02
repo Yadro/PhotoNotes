@@ -30,7 +30,7 @@ const lensNoteTags = id => compose(
   lensTags
 );
 
-export default (state: Note[] = [], actions): NoteState => {
+export default (state: NoteState = [], actions): NoteState => {
   let note: Note;
   switch (actions.type) {
     case ADD:

@@ -32,7 +32,7 @@ const defaultState: FilterState = {
   current: -1,
 };
 
-export default (state, action) => {
+export default (state: FilterState, action): FilterState => {
   state = state || defaultState;
   switch (action.type) {
     case SET_CURRENT_FILTER:
