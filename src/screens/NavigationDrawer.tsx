@@ -3,7 +3,7 @@ import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle, 
 import {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
-import {selectFilter, FilterState} from "../reducers/filter";
+import {selectFilter, FilterState, Filter} from "../reducers/filter";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
 import {Actions} from "../redux/Actions";
@@ -66,6 +66,18 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
     this.props.navigation.navigate('Settings');
   };
 
+  sortItems(filters: Filter[]): Filter[] {
+    const first = filters.find(e => e.id == -1);
+    const last = filters.find(e => e.id == -2);
+    [first, last].forEach(el => {
+      filters.splice(filters.indexOf(el), 1);
+    });
+    const sorted = filters.sort(wsort);
+    sorted.unshift(first);
+    sorted.push(last);
+    return sorted;
+  }
+
   render() {
     const {filters, current} = this.props.filter;
     return <View style={css.container}>
@@ -73,7 +85,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
         <View style={css.header}>
           <Text style={css.headerTitle}>Edditr</Text>
         </View>
-        {filters.sort(wsort).map(e => (
+        {this.sortItems(filters).map(e => (
           <Item
             key={e.id} data={e}
             selected={current == e.id}
