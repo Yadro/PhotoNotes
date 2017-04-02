@@ -16,7 +16,7 @@ export function analytics({getState}) {
         const actions = SCREEN_ACTIONS[screen];
         if (actions.indexOf(action.type) !== -1) {
           if (__DEV__) {
-            console.info(`ANALYTICS: Screen (${screen}) => event(${action.type})`)
+            console.info(`ANALYTICS: Screen (${screen}) => event (${action.type})`)
           } else {
             tracker.trackEvent(screen, action.type);
           }
