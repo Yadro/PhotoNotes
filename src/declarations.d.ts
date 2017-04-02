@@ -9,6 +9,7 @@ declare module 'react-native-image-resizer' {
 declare module 'react-native-google-analytics-bridge' {
   export class GoogleAnalyticsTracker {
     constructor(id: string);
+    trackEvent(screen: string, action: string);
     trackScreenView(screen: string);
   }
 }
