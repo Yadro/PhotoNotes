@@ -182,6 +182,7 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
     if (save) {
       Actions.update(note);
     } else {
+      note.title = note.title || moment().format('YYYY-MM-DD');
       Actions.add(note);
     }
     // this.props.navigation.goBack();
