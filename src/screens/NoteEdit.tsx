@@ -25,6 +25,7 @@ const {
   checkWhite, addPhotoWhite, shareWhite, deleteIconWhite, moreWhite,
   pastBlack, timeBlack, boldBlack, italicBlack, underBlack, listBulletBlack, titleBlack,
   labelWhite,
+  undoWhite, redoWhite,
 } = icons;
 
 
@@ -69,6 +70,16 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
     onPress: function () {this.onDelete()}
   };
   toolbarActions = [{
+    title: 'Undo', icon: undoWhite, show: 'always',
+    onPress: function () {
+
+    }
+  }, {
+    title: 'Redo', icon: redoWhite, show: 'always',
+    onPress: function () {
+
+    }
+  }, {
     title: 'tags', icon: labelWhite, show: 'always',
     onPress: function () {
       this.props.navigation.navigate('NoteTags', {note: this.state.note});
@@ -206,7 +217,6 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
 
   renderToolBar = () =>
     <Toolbar
-      title={toolbar.header}
       navIcon={checkWhite}
       overflowIcon={moreWhite}
       actions={this.toolbarActions}
