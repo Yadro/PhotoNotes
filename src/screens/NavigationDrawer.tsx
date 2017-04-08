@@ -135,6 +135,9 @@ function GrayButton({title, onPress, icon}) {
   </TouchableNativeFeedback>;
 }
 
+function maxCount(count) {
+  return count != null ? (count < 100 ? count : '99+') : null;
+}
 interface ItemP {
   data: Filter;
   onPress
@@ -163,7 +166,7 @@ function Item(props: ItemP) {
           {data.title}
         </Text>
         <Text style={textStyle} numberOfLines={1}>
-          {data.noteCount}
+          {maxCount(data.noteCount)}
         </Text>
       </View>
     </View>
