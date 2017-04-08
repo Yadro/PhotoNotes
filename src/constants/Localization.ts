@@ -72,14 +72,21 @@ export default {
       }
     }
   },
+
+  // EditFilter
   Filter: {
     title: 'Фильтр',
     titleInput: 'Заголовок',
     filterType: 'Тип фильтра',
     selectTag: 'Теги',
-    addNewTag: 'Добавить новый тег (enter)'
+    addNewTag: 'Добавить новый тег (enter)',
+    alert: {
+      title: 'Проверьте правильность ввода',
+      content: 'Заголовок должен быть заполнен и выбран хотя бы один тег (только в white list)',
+    }
   },
 
+  // NavigationDrawer
   DrawerMenu: {
     title: 'Edditr',
     buttons: {

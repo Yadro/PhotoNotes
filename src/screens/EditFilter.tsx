@@ -46,11 +46,7 @@ const actions = [{
         Actions.addFilter(filter);
       }
     } else {
-      Alert.alert(
-        'Проверте правильность ввода',
-        'Заголовок должен быть заполнен и выбран хотя бы один тег (только в white list)',
-        [{text: 'Ok'}]
-      );
+      Alert.alert(L.alert.title, L.alert.content, [{text: 'Ok'}]);
       return;
     }
     this.props.navigation.goBack();
