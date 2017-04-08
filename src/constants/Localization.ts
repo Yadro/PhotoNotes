@@ -79,6 +79,15 @@ export default {
     selectTag: 'Теги',
     addNewTag: 'Добавить новый тег (enter)'
   },
+
+  DrawerMenu: {
+    title: 'Edditr',
+    buttons: {
+      addFilter: 'Добавить фильтр',
+      settings: 'Настройки',
+    }
+  },
+
   sayHi: {
     prefix: 'Добрый',
     day: [

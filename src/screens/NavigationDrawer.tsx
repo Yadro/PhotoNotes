@@ -10,7 +10,8 @@ import {Actions} from "../redux/Actions";
 import DialogAndroid from 'react-native-dialogs';
 import {NoteState} from "../reducers/notes";
 import {equalObject, notEqualArray} from "../util/equalsCheck";
-
+import l from '../constants/Localization';
+const L = l.DrawerMenu;
 
 function showDialog() {
   return new Promise((resolve, reject) => {
@@ -101,7 +102,7 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
     return <View style={css.container}>
       <ScrollView>
         <View style={css.header}>
-          <Text style={css.headerTitle}>Edditr</Text>
+          <Text style={css.headerTitle}>{L.title}</Text>
         </View>
         {this.sortItems(filters).map(e => (
           <Item
@@ -114,8 +115,8 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
       </ScrollView>
 
       <View style={css.section}>
-        <GrayButton title="Добавить фильтр" onPress={this.goToEditFilter(-1)} icon={paths.addWhite}/>
-        <GrayButton title="Настройки" onPress={this.openSettings} icon={paths.settingsWhite}/>
+        <GrayButton title={L.buttons.addFilter} onPress={this.goToEditFilter(-1)} icon={paths.addWhite}/>
+        <GrayButton title={L.buttons.settings} onPress={this.openSettings} icon={paths.settingsWhite}/>
       </View>
     </View>
   }
