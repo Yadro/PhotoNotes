@@ -12,8 +12,8 @@
     "@types/moment": "2.13.0",
     "moment": "2.17.1",
     "ramda": "^0.23.0",
-    "react": "16",
-    "react-native": "0.43.2",
+    "react": "15.4.2",
+    "react-native": "0.41.2",
     "react-native-action-button": "2.6.2",
     "react-native-check-box": "1.0.4",
     "react-native-dialogs": "^0.0.19",
@@ -22,7 +22,7 @@
     "react-native-image-picker": "^0.25.1",
     "react-native-image-resizer": "0.1.0",
     "react-native-image-zoom": "0.32.0",
-    "react-navigation": "git+https://github.com/react-community/react-navigation.git#7edd9a7",
+    "react-navigation": "https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0"
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/ramda": "^0.0.5",
     "@types/react": "^15.0.21",
-    "@types/react-native": "^0.43.0",
+    "@types/react-native": "^0.41.0",
     "@types/react-redux": "^4.4.36",
     "@types/redux": "3.6.0",
     "babel-jest": "18.0.0",
