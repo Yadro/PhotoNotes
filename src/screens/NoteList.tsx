@@ -14,6 +14,7 @@ import {tracker} from "../Analytics";
 import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
 import {selectNotes} from "../reducers/notes";
 import DialogAndroid from 'react-native-dialogs';
+import {equalObject} from "../util/equalsCheck";
 const {toolbar} = l.NoteList;
 const {removeMulti} = l.Alert;
 
@@ -96,13 +97,12 @@ class NoteList extends Component<NoteListP, NoteListS> {
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
 
-  shouldComponentUpdate(nextProps: NoteListP) {
+  shouldComponentUpdate(nextProps: NoteListP, nextState: NoteListS) {
     const {notes, filter} = this.props;
     const nextNotes = nextProps.notes;
     return (
-      filter.id != nextProps.filter.id ||
-      filter.title != nextProps.filter.title ||
-      filter.tags.length != nextProps.filter.tags.length ||
+      !equalObject(this.state, nextState) ||
+      !equalObject(filter, nextProps.filter) ||
 
       notes.length !== nextNotes.length ||
       notes.some((note, id) => {
@@ -156,10 +156,9 @@ class NoteList extends Component<NoteListP, NoteListS> {
 
   longPressHandler = (id) => {
     const {selected} = this.state;
-    selected.push(id);
     this.setState({
       multi: true,
-      selected
+      selected: [...selected, id],
     });
 
     Vibration.vibrate([0, 40], false);
@@ -172,7 +171,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       if (selected.includes(id)) {
         selected = selected.filter(e => e != id); // exclude selected note
       } else {
-        selected.push(id); // add selected note
+        selected = [...selected, id]; // add selected note
       }
       this.setState({selected});
     } else {
