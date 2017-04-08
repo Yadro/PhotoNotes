@@ -220,18 +220,16 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
   onToolAction = (action) => {
     const {note, selection} = this.state;
     const actions = [
-      /*null,
-       null,*/
       () => {
         Clipboard.getString().then(text => {
           note.content = past(note.content, selection, {start: '', end: text});
           this.setState({note});
         });
-      },
-      () => {
+      }, null,
+      /*() => {
         note.content = past(note.content, selection, {start: '', end: moment().format('YYYY.MM.DD hh:mm ')});
         this.setState({note});
-      },
+      },*/
       () => {
         note.content = past(note.content, selection, {start: '*', end: '*'});
         this.setState({note});
@@ -241,13 +239,14 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
       }, () => {
         note.content = past(note.content, selection, {start: '~~', end: '~~'});
         this.setState({note});
-      }, () => {
+      }, null,
+      () => {
         note.content = past(note.content, selection, {start: '', end: '\n- '});
         this.setState({note});
-      }, () => {
+      }, /*() => {
         note.content = past(note.content, selection, {start: '', end: '# '});
         this.setState({note});
-      }
+      }*/
     ];
     actions[action] && actions[action]();
     if (!__DEV__) tracker.trackEvent('Note', 'Use toolbar');
@@ -304,7 +303,7 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
           }
           {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
         </ScrollView>
-        {editorFocus && <EditBar onPress={(i) => console.log(i)}/>}
+        {editorFocus && <EditBar onPress={this.onToolAction}/>}
         {/*{editorFocus && this.renderTools()}*/}
       </View>
     );
