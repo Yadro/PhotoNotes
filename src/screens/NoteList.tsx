@@ -43,8 +43,9 @@ function showSortDialog(selectedIndex) {
     try {
       const dialog = new DialogAndroid();
       dialog.set({
+        title: 'Сортировка',
         selectedIndex,
-        items: ['По алфавиту', 'По дате создания', 'По дате изменения'],
+        items: ['по алфавиту', 'по дате создания', 'по дате изменения'],
         itemsCallbackSingleChoice(id) {
           resolve(id);
         },
