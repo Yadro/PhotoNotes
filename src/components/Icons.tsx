@@ -137,6 +137,10 @@ export default icons as Icons;
 export const paths = pathsLocal as Icons;
 
 const styleSize = {width: 24, height: 24};
-export const Icon = ({uri, tint, style}) => (
-  <Image style={[styleSize, style]} source={{uri}} tintColor={tint}/>
-);
+export function Icon(props) {
+  const {uri, tint, style} = props;
+  if (tint) {
+    return <Image style={[styleSize, style]} source={{uri}} tintColor={tint}/>
+  }
+  return <Image style={[styleSize, style]} source={{uri}}/>
+}

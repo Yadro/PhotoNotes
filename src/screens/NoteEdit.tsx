@@ -19,6 +19,7 @@ import moment from 'moment';
 import l from '../constants/Localization';
 import {connect} from "react-redux";
 import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
+import {EditBar} from "../components/EditBar";
 const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {
@@ -303,7 +304,8 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
           }
           {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
         </ScrollView>
-        {editorFocus && this.renderTools()}
+        {editorFocus && <EditBar onPress={(i) => console.log(i)}/>}
+        {/*{editorFocus && this.renderTools()}*/}
       </View>
     );
   }

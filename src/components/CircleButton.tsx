@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Component} from 'react';
 import {
   Text,
   View,
@@ -13,7 +12,8 @@ const css = StyleSheet.create({
     flex: 1, justifyContent: 'center', alignItems: 'center'
   }
 });
-export const CircleButton = ({title, color, size, backgroundColor, highlight, onPress}) => {
+export function CircleButton({title, color, size, backgroundColor, highlight, onPress}) {
+  size = +size;
   return (
     <View style={{borderRadius: size / 2, width: size, height: size}}>
       <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple(highlight, true)} onPress={onPress}>
@@ -23,6 +23,24 @@ export const CircleButton = ({title, color, size, backgroundColor, highlight, on
       </TouchableNativeFeedback>
     </View>
   )
-};
+}
+
+export function CircleButtonImage(props) {
+  let {content, color, size, fontSize, backgroundColor, highlight, onPress} = props;
+  size = +size;
+  fontSize = +fontSize;
+  return (
+    <View style={{borderRadius: size / 2, width: size, height: size}}>
+      <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple(highlight, true)} onPress={onPress}>
+        <View style={{backgroundColor: backgroundColor, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          {typeof content == "string"
+            ? <Text style={{color, fontSize}}>{content}</Text>
+            : content
+          }
+        </View>
+      </TouchableNativeFeedback>
+    </View>
+  )
+}
 
 
