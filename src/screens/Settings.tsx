@@ -4,10 +4,8 @@ import {
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
-import store from "../redux/Store";
 import DialogAndroid from 'react-native-dialogs';
 import {ScreenNavigationProp} from "react-navigation";
-import {SET_SAVE_FOLDER} from "../constants/ActionTypes";
 import fs from 'react-native-fs';
 import {ActionOther} from "../redux/Actions";
 import {downloadUrl, emailSendFeedback, emailSendThx, version} from "../constants/Config";
