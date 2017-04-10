@@ -67,7 +67,9 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
 
   static toolbarActionDelete = {
     title: toolbar.remove, icon: deleteIconWhite, show: 'never',
-    onPress: function () {this.onDelete()}
+    onPress: function () {
+      this.onDelete()
+    }
   };
   toolbarActions = [{
     title: 'tags', icon: labelWhite, show: 'always',
@@ -192,7 +194,8 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
   onDelete = () => {
     Alert.alert(remove.title, remove.subtitle, [{
       text: remove.buttons.cancel,
-      onPress: () => {}
+      onPress: () => {
+      }
     }, {
       text: remove.buttons.remove,
       onPress: () => {
@@ -240,14 +243,14 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
       }, () => {
         note.content = past(note.content, selection, {start: '~~', end: '~~'});
         this.setState({note});
+      }, () => {
+        note.content = past(note.content, selection, {start: '', end: '# '});
+        this.setState({note});
       }, null,
       () => {
         note.content = past(note.content, selection, {start: '', end: '\n- '});
         this.setState({note});
-      }, /*() => {
-        note.content = past(note.content, selection, {start: '', end: '# '});
-        this.setState({note});
-      }*/
+      },
     ];
     actions[action] && actions[action]();
     if (!__DEV__) tracker.trackEvent('Note', 'Use toolbar');

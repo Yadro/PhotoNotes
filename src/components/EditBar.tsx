@@ -36,6 +36,7 @@ const buttons: (JSX.Element | Function)[] = [
   <Icon uri={paths.boldWhite} tint="grey"/>,
   <Icon uri={paths.italicWhite} tint="grey"/>,
   <Icon uri={paths.underWhite} tint="grey"/>,
+  <Icon uri={paths.titleWhite} tint="grey"/>,
   (key) => <Delimiter key={key}/>,
   <Icon uri={paths.listBulletWhite} tint="grey"/>,
 ];
