@@ -1,5 +1,8 @@
 import * as React from 'react';
-import {View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle, TextStyle} from 'react-native';
+import {
+  View, Text, ScrollView, TouchableNativeFeedback, StyleSheet, ViewStyle, TextStyle, Image,
+} from 'react-native';
+const nativeImageSource = require('nativeImageSource');
 import {Icon, paths} from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
 import {connect} from "react-redux";
@@ -37,6 +40,7 @@ interface TagsLayerP extends ScreenNavigationProp {
 interface TagsLayerS {
 }
 class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
+  layout;
 
   constructor(props: TagsLayerP) {
     super(props);
@@ -97,12 +101,21 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
     return sorted;
   }
 
+  onLayout = ({nativeEvent: {layout}}) => {
+    this.layout = layout;
+  };
+
   render() {
     const {filters, current} = this.props.filter;
-    return <View style={css.container}>
+    const width = this.layout && this.layout.width;
+    return <View style={css.container} onLayout={this.onLayout}>
       <ScrollView>
-        <View style={css.header}>
-          <Text style={css.headerTitle}>{L.title}</Text>
+        <View style={css.headerImage}>
+          <Image
+            source={require('../../../assets/header.jpg')}
+            style={{width, flex: 1}}
+            resizeMode="cover"
+          />
         </View>
         {this.sortItems(filters).map(e => (
           <Item
@@ -186,10 +199,16 @@ const css = StyleSheet.create({
     flex: 1,
   },
 
-  header: {
-    justifyContent: 'flex-end',
-    height: 150,
+  headerImage: {
+    flex: 1,
+    height: 180,
     marginBottom: 8,
+  },
+  header: {
+    // flexDirection: 'row',
+    // justifyContent: 'stretch',
+    // height: 150,
+    paddingBottom: 8,
     backgroundColor: green,
   } as ViewStyle,
   headerTitle: {
@@ -211,7 +230,7 @@ const css = StyleSheet.create({
     alignItems: 'center',
     height: 48,
     paddingHorizontal: 16,
-  },
+  } as ViewStyle,
   itemHighlight: {
     backgroundColor: 'rgba(1,180,124,.05)'
   },
@@ -222,7 +241,7 @@ const css = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
+  } as ViewStyle,
 
   section: {
     borderTopWidth: 1,
