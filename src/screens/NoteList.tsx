@@ -74,7 +74,11 @@ interface NoteListS {
 }
 
 const sortMethods = {
-  'name': (items, reverse) => items.sort((a: Note, b) => ((reverse) ? a.title < b.title : a.title > b.title) ? 1 : a.title == b.title ? 0 : -1),
+  'name': (items, reverse) => items.sort((a: Note, b: Note) => {
+    const aTitle = a.title.toLowerCase();
+    const bTitle = b.title.toLowerCase();
+    return (reverse ? aTitle < bTitle : aTitle > bTitle) ? 1 : aTitle == bTitle ? 0 : -1;
+  }),
   'create': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.createdAt - b.createdAt : b.createdAt - a.createdAt),
   'edit': (items, reverse) => items.sort((a: Note, b) => (reverse) ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt),
 };
