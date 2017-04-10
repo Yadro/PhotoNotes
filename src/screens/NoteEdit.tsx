@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {
-  StyleSheet, View, Image, TextInput, ScrollView, Platform, Clipboard, Alert, Share, ActivityIndicator
+  StyleSheet, View, Image, TextInput, ScrollView, Platform, Clipboard, Alert, Share, ActivityIndicator,
+  DatePickerAndroid
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import store from "../redux/Store";
+import Dialog from 'react-native-dialogs';
 import {Actions} from "../redux/Actions";
 import Note from "../redux/Note";
 import {NavigationActions} from "react-navigation";
@@ -28,6 +29,35 @@ const {
   labelWhite,
 } = icons;
 
+function pastDialog() {
+  return new Promise((resolve, reject) => {
+    try {
+      const dialog = new Dialog();
+      dialog.set({
+        title: 'Вставить',
+        items: ['из буфера', 'текущее время', 'дату'],
+        itemsCallback(id) {
+          resolve(id);
+        }
+      });
+      dialog.show();
+    } catch (err) {
+      reject();
+    }
+  });
+}
+
+function showPicker() {
+  return new Promise((resolve, reject) => {
+    DatePickerAndroid.open({date: new Date()}).then(({action, year, month, day}) => {
+      if (action === DatePickerAndroid.dismissedAction) {
+        reject();
+      } else {
+        resolve(new Date(year, month, day));
+      }
+    });
+  });
+}
 
 const tools = [
   /*{title: 'Undo', icon: undoWhite, show: 'always'},
@@ -225,15 +255,30 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
     const {note, selection} = this.state;
     const actions = [
       () => {
-        Clipboard.getString().then(text => {
-          note.content = past(note.content, selection, {start: '', end: text});
-          this.setState({note});
+        pastDialog().then(choose => {
+          switch (choose) {
+            case 0:
+              Clipboard.getString().then(text => {
+                this.setState({
+                  note: pastToNote(note, selection, {start: '', end: text})
+                });
+              });
+              break;
+            case 1:
+              this.setState({
+                note: pastToNote(note, selection, {start: '', end: moment().format('YYYY.MM.DD hh:mm ')})
+              });
+              break;
+            case 2:
+              showPicker().then(date => {
+                this.setState({
+                  note: pastToNote(note, selection, {start: '', end: moment(date).format('YYYY.MM.DD hh:mm ')})
+                });
+              });
+              break;
+          }
         });
       }, null,
-      /*() => {
-        note.content = past(note.content, selection, {start: '', end: moment().format('YYYY.MM.DD hh:mm ')});
-        this.setState({note});
-      },*/
       () => {
         note.content = past(note.content, selection, {start: '*', end: '*'});
         this.setState({note});
@@ -299,11 +344,11 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
             />
           </View>
           {img &&
-            <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>
-              <Image source={img} resizeMode="contain"
-                     style={{width: size.width, height: size.height}}
-                     onLoadEnd={this.onImageLoad}/>
-            </View>
+          <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>
+            <Image source={img} resizeMode="contain"
+                   style={{width: size.width, height: size.height}}
+                   onLoadEnd={this.onImageLoad}/>
+          </View>
           }
           {!!note.image && !isLoad && <ActivityIndicator animating size="large"/>}
         </ScrollView>
@@ -322,13 +367,18 @@ export default connect(state => {
   };
 })(NoteEdit);
 
-function past(text: string, selection: InputSelection, past: {start: string, end: string}) {
+function pastToNote(note: Note, selection: InputSelection, pastPos: { start: string, end: string }) {
+  return Object.assign({}, note, {
+    content: past(note.content, selection, pastPos)
+  });
+}
+function past(text: string, selection: InputSelection, pastPos: { start: string, end: string }) {
   if (selection.start == selection.end) {
-    return text.substring(0, selection.start) + past.end + text.substring(selection.start);
+    return text.substring(0, selection.start) + pastPos.end + text.substring(selection.start);
   }
   return text.substring(0, selection.start) +
-    past.start + text.substring(selection.start, selection.end) +
-    past.end + text.substring(selection.end);
+    pastPos.start + text.substring(selection.start, selection.end) +
+    pastPos.end + text.substring(selection.end);
 }
 
 const css = StyleSheet.create({
