@@ -58,7 +58,7 @@ export default (state: FilterState, action): FilterState => {
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
 
     case UPDATE_FILTER:
-      return over(lensFilterByIdx(action.id), () => action.filter, state);
+      return over(lensFilterByIdx(action.filter.id), () => action.filter, state);
 
     case IMPORT:
       return action.data.tags || state;

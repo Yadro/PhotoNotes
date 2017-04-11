@@ -70,8 +70,8 @@ export const Actions = {
     AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
   },
 
-  updateFilter(id, filter) {
-    store.dispatch({type: UPDATE_FILTER, id, filter});
+  updateFilter(filter) {
+    store.dispatch({type: UPDATE_FILTER, filter});
     AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(store.getState().filter));
   },
 

@@ -37,11 +37,11 @@ const actions = [{
       title,
       type,
       tags: data.filter(e => e.value).map(e => e.title),
-      id: 0,
+      id,
     };
     if ((filter.tags.length || filter.type == 'black') && title.length) {
       if (id > -1) {
-        Actions.updateFilter(id, filter);
+        Actions.updateFilter(filter);
       } else {
         Actions.addFilter(filter);
       }
