@@ -152,7 +152,7 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
 
     const currentFilter = props.currentFilter;
     if (currentFilter.type == 'white' && isCreateNew) {
-      note.tags = Object.assign({}, currentFilter.tags);
+      note.tags = [...currentFilter.tags];
     }
 
     this.state = Object.assign({}, state, {
