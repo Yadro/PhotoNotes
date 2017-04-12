@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {View, StatusBar} from 'react-native';
+import {View, StatusBar, Text} from 'react-native';
 import {Provider} from 'react-redux'
 import store from "./redux/Store";
 import {tracker} from "./Analytics";

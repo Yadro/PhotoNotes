@@ -15,7 +15,6 @@ import {
 import Toolbar from "../components/Toolbar";
 import {ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
-import store from "../redux/Store";
 import Note from "../redux/Note";
 import icons, {paths} from '../components/Icons'
 import NoteEdit from "./NoteEdit";
@@ -26,7 +25,7 @@ import l from '../constants/Localization';
 import {tracker} from "../Analytics";
 import {gray} from "../constants/theme";
 import {connect} from "react-redux";
-import {selectFilter} from "../reducers/filter";
+import {parse} from "../components/SimpleMarkdown";
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
@@ -159,7 +158,7 @@ class NoteView extends Component<NoteViewP, NoteViewS> {
             <Text style={css.time}>{moment(updatedAt || createdAt).format('lll')}</Text>
           </View>
           <View style={css.textView}>
-            <Text style={css.text} selectable>{Markdown.parse(content)}</Text>
+            {parse(content)}
           </View>
           {img &&
             <View onTouchEnd={() => navigate('PhotoView', {img: {uri: note.image}})}>

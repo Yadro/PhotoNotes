@@ -25,7 +25,8 @@
     "react-navigation": "https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "simple-markdown": "^0.2.1"
   },
   "devDependencies": {
     "@types/ramda": "^0.0.5",
