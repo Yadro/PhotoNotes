@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, TextStyle, StyleSheet, View} from 'react-native';
+import {Text, TextStyle, StyleSheet, View, ViewStyle} from 'react-native';
 import {defaultBlockParse} from 'simple-markdown';
 
 type InlineType = 'text' | 'em' | 'u' |  'strong' | 'del' | 'link' | 'url' | 'mailto';
@@ -30,10 +30,23 @@ function createElement(el: string | IMarkdownItem | IMarkdownItem[] | IMarkdownI
     return el;
   }
   if (Array.isArray(el)) {
-    return el.map((e, idx) => {
+    return (el as IMarkdownItem[]).map((e, idx) => {
       data.idx = idx;
+      if (data.list) {
+        if (e.type === 'list') {
+          return <View key={idx} style={css.listItem}>
+            {createElement(e, data)}
+          </View>
+        }
+        return <View key={idx} style={css.listItem}>
+          <ListCircle/>{createElement(e, data)}
+        </View>
+      }
       return createElement(e, data);
     });
+  }
+  if (data.list === true) {
+    data = Object.assign({}, data, {list: false});
   }
   const id = data.idx;
   data.idx++;
@@ -60,9 +73,9 @@ function createElement(el: string | IMarkdownItem | IMarkdownItem[] | IMarkdownI
       return <SimpleText key={id} value={createElement(el.content, data)}/>;
     case 'list':
       data.list = true;
-      return <View key={id} style={{paddingLeft: 5}}>{createElement(el.items, data)}</View>;
+      return <View key={id} style={{paddingLeft: 8}}>{createElement(el.items, data)}</View>;
     case 'blockQuote':
-      return <View key={id} style={{paddingLeft: 5, borderLeftWidth: 1, borderColor: 'grey'}}>
+      return <View key={id} style={css.quote}>
         {createElement(el.content, data)}
       </View>;
   }
@@ -76,7 +89,7 @@ const Link = ({value}) => <Text style={css.link}>{value}</Text>;
 const List = ({value}) => <Text>{' •\t'}<Text>{value}</Text></Text>;
 const ListBlock = ({value}) => <Text>{'\t'}<Text>{value}</Text></Text>;
 const Header = ({value}) => <Text style={css.header}>{value}</Text>;
-
+const ListCircle = () => <View style={css.circle}/>;
 
 const css = StyleSheet.create({
   bold: {
@@ -96,4 +109,23 @@ const css = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
   } as TextStyle,
+  quote: {
+    paddingLeft: 4,
+    borderLeftWidth: 2,
+    borderColor: 'grey',
+    marginVertical: 2,
+    paddingVertical: 2,
+  },
+  listItem: {
+
+  },
+  circle: {
+    position: 'absolute',
+    top: 9,
+    left: -7,
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: 'grey',
+  } as ViewStyle
 });
