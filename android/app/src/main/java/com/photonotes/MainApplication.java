@@ -14,6 +14,7 @@ import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.facebook.soloader.SoLoader;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +30,15 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        new ReactNativeDialogsPackage(),
-        new ImageResizerPackage(),
-        new ReactImageZoom(),
-        new RNFSPackage(),
-        new ImagePickerPackage(),
-        new GoogleAnalyticsBridgePackage(),
-        new MyPhotoViewPackage()
+            new MainReactPackage(),
+            new ReactNativeDialogsPackage(),
+            new ImageResizerPackage(),
+            new ReactImageZoom(),
+            new RNFSPackage(),
+            new ImagePickerPackage(),
+            new GoogleAnalyticsBridgePackage(),
+            new MyPhotoViewPackage(),
+            new RNFetchBlobPackage()
       );
     }
   };

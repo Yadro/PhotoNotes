@@ -1,5 +1,5 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import notes from '../reducers/notes';
 import other from '../reducers/other';
 import filter from '../reducers/filter';
@@ -12,15 +12,18 @@ const reducers = combineReducers<AppStore>({
   other,
   filter,
 });
+const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore<AppStore>(
   reducers,
   composeEnhancers(
-    applyMiddleware(thunk),
+    applyMiddleware(sagaMiddleware),
     applyMiddleware(analytics),
     applyMiddleware(filterCounter)
   )
 );
+
+// sagaMiddleware.run(helloSaga);
 
 export default store;

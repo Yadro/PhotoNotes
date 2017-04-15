@@ -142,6 +142,7 @@ dependencies {
     compile project(':react-native-image-picker')
     compile project(':react-native-fs')
     compile project(':photos')
+    compile project(':react-native-fetch-blob')
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.gms:play-services-analytics:9.0.0'

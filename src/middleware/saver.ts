@@ -1,8 +1,15 @@
+import {takeEvery} from 'redux-saga';
+import {ADD, REMOVE, UPDATE} from "../constants/ActionTypes";
 
+const actions = [ADD, REMOVE, UPDATE];
+const needUpdate = (action) => actions.indexOf(action) !== -1;
 
-export function saver({getState}) {
-  return (next) => (action) => {
-    // todo import
-    return next(action);
-  }
+function* dropboxSync(action) {
+  yield* takeEvery()
+}
+
+export default function* rootSaga() {
+  yield [
+
+  ]
 }
