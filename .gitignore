@@ -67,3 +67,4 @@ ios
 
 !node_modules/react-native-threshold
 android/app/google-services.json
+dropbox-api-key.json
