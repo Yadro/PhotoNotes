@@ -1,16 +1,16 @@
-//<reference path="../../node_modules/retyped-dropboxjs-tsd-ambient/dropboxjs.d.ts"/>
+///<reference path="../declaration/dropbox-sdk.d.ts"/>
 import {NativeModules, Linking} from 'react-native'
 import Dropbox from 'dropbox';
 
 import {DROPBOX_APP_KEY} from "../constants/Config";
 
 export class DropboxApi {
-  dropbox;
+  dbx: DropboxTypes.Dropbox;
   token: string;
   redirectUrl: string;
 
   constructor() {
-    this.dropbox = new Dropbox({
+    this.dbx = new Dropbox({
       clientId: DROPBOX_APP_KEY
     });
   }
@@ -19,11 +19,22 @@ export class DropboxApi {
     if (this.redirectUrl) {
       return this.redirectUrl;
     }
-    return this.redirectUrl = this.dropbox.getAuthenticationUrl(redirectToApp);
+    return this.redirectUrl = this.dbx.getAuthenticationUrl(redirectToApp);
   }
 
   setToken(token: string) {
     this.token = token;
+  }
+
+  async uploadFile() {
+    try {
+      const result = await this.dbx.filesUpload({
+        contents: {},
+        path: './test.txt'
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

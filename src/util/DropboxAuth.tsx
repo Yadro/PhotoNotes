@@ -64,12 +64,21 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
     this.props.navigation.goBack();
   };
 
+  async uploadTestFile() {
+    try {
+      await dbxApi.uploadFile();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     return (
       <View>
         <Button title="Dropbox Login" onPress={this.onLogin} />
         <TextInput value={this.state.token} onChangeText={token => this.setState({token})}/>
         <Button title="Set token" onPress={this.setToken} />
+        <Button title="Test" onPress={this.uploadTestFile} />
       </View>
     )
   }
