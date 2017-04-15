@@ -61,6 +61,11 @@ class Settings extends React.Component<SettingsP, SettingsS> {
       })
     },
   }, {
+    title: 'Dropbox auth',
+    onPress: () => {
+      this.props.navigation.navigate('DropboxAuth');
+    },
+  }, {
     title: 'Отправить отзыв',
     onPress() {
       sendEmail(emailSendFeedback);

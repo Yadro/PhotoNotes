@@ -12,6 +12,7 @@ import Password from "../screens/Password";
 import Settings from "../screens/Settings";
 import EditFilter from '../screens/EditFilter';
 import NavigationDrawer from "../screens/NavigationDrawer";
+import {DropboxAuth} from "../util/DropboxAuth";
 
 export const AppRouteConfig = {
   Main: {screen: NoteList},
@@ -24,6 +25,7 @@ export const AppRouteConfig = {
   Threshold: {screen: Threshold},
   Settings: {screen: Settings},
   Password: {screen: Password},
+  DropboxAuth: {screen: DropboxAuth},
 };
 
 export const App = StackNavigator(
