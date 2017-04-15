@@ -27,7 +27,7 @@
     "react-navigation": "https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
+    "redux-saga": "^0.14.6",
     "simple-markdown": "^0.2.1"
   },
   "devDependencies": {
@@ -36,6 +36,7 @@
     "@types/react-native": "^0.41.0",
     "@types/react-redux": "^4.4.36",
     "@types/redux": "3.6.0",
+    "@types/redux-saga": "^0.10.5",
     "babel-jest": "18.0.0",
     "babel-preset-exponent": "1.0.0",
     "babel-preset-react-native": "1.9.1",
