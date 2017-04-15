@@ -65,10 +65,12 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
   };
 
   async uploadTestFile() {
+    let result;
     try {
-      const files = await dbxApi.getFiles();
-      console.log(files);
-      const result = await dbxApi.uploadFile('/file1', 'content');
+      // const files = await dbxApi.getListFiles();
+      // result = await dbxApi.uploadFile('/file1', 'content');
+      result = await dbxApi.downloadFile('/file1');
+
       console.log(result);
     } catch (e) {
       console.log(e);

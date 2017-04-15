@@ -31,9 +31,7 @@ export class DropboxApi {
     try {
       const result = await RNFetchBlob.fetch('POST', 'https://content.dropboxapi.com/2/files/upload', {
         Authorization: 'Bearer ' + this.dbx.getAccessToken(),
-        'Dropbox-API-Arg': JSON.stringify({
-          path,
-        }),
+        'Dropbox-API-Arg': JSON.stringify({path}),
         'Content-Type': 'text/plain; charset=dropbox-cors-hack',
       }, contents);
       return JSON.parse(result.data);
@@ -42,7 +40,20 @@ export class DropboxApi {
     }
   }
 
-  async getFiles() {
+  async downloadFile(path: string): Promise<FileMetadata> {
+    try {
+      const result = await RNFetchBlob.fetch('POST', 'https://content.dropboxapi.com/2/files/download', {
+        Authorization: 'Bearer ' + this.dbx.getAccessToken(),
+        'Dropbox-API-Arg': JSON.stringify({path}),
+        'Content-Type': ' ',
+      });
+      return result.data;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async getListFiles() {
     try {
       const result = await this.dbx.filesListFolder({path: ''});
       console.log(result);
