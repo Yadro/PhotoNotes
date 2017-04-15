@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {Button, Linking, Navigator, TextInput, View} from "react-native";
+import {AsyncStorage, Button, Linking, Navigator, TextInput, View} from "react-native";
 import {dbxApi, DropboxApi} from "./DropboxApi";
+import {STORE_KEYS} from "../constants/ActionTypes";
+import {ScreenNavigationProp} from "react-navigation";
 
-interface DropboxAuthP {
+interface DropboxAuthP extends ScreenNavigationProp {
 }
 interface DropboxAuthS {
   redirect: string;
@@ -19,6 +21,11 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
       token: '',
     };
     this.dbx = dbxApi;
+    AsyncStorage.getItem(STORE_KEYS.accessToken).then(token => {
+      if (token) {
+        this.setState({token});
+      }
+    });
   }
 
   componentDidMount() {
@@ -28,11 +35,8 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
       }
     }).catch(err => console.error('An error occurred', err));
     Linking.addEventListener('url', this._handleOpenURL);
-
     const redirect = this.dbx.getAuthenticationUrl('android-app://index/');
-    console.log(redirect);
     this.setState({redirect});
-
   }
 
   componentWillUnmount() {
@@ -56,6 +60,8 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
 
   setToken = () => {
     this.dbx.setToken(this.state.token);
+    AsyncStorage.setItem(STORE_KEYS.accessToken, this.state.token);
+    this.props.navigation.goBack();
   };
 
   render() {

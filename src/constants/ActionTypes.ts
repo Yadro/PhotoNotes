@@ -30,4 +30,5 @@ export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const STORE_KEYS = {
   tags: '@Store:tags',
   folder: '@Store:folder',
+  accessToken: '@Store:accessToken',
 };
