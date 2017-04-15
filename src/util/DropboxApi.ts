@@ -1,10 +1,11 @@
 ///<reference path="../declaration/dropbox-sdk.d.ts"/>
 import RNFetchBlob from 'react-native-fetch-blob';
-import {NativeModules, Linking} from 'react-native'
 import Dropbox from 'dropbox';
-import {DROPBOX_APP_KEY} from "../constants/Config";
 import FileMetadataReference = DropboxTypes.files.FileMetadataReference;
 import FileMetadata = DropboxTypes.files.FileMetadata;
+import {DROPBOX_APP_KEY} from "../constants/Config";
+import {STORE_KEYS} from "../constants/ActionTypes";
+import {AsyncStorage} from "react-native";
 
 export class DropboxApi {
   dbx: DropboxTypes.Dropbox;
@@ -13,6 +14,11 @@ export class DropboxApi {
   constructor() {
     this.dbx = new Dropbox({
       clientId: DROPBOX_APP_KEY
+    });
+    AsyncStorage.getItem(STORE_KEYS.accessToken).then(token => {
+      if (token) {
+        this.setToken(token);
+      }
     });
   }
 
@@ -25,6 +31,7 @@ export class DropboxApi {
 
   setToken(token: string) {
     this.dbx.setAccessToken(token);
+    AsyncStorage.setItem(STORE_KEYS.accessToken, token);
   }
 
   async uploadFile(path: string, contents: string): Promise<FileMetadata> {
