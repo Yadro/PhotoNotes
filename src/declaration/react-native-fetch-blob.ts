@@ -1,7 +1,31 @@
 declare module 'react-native-fetch-blob' {
   export default class RNFetchBlob {
     static fetch(method, url, head?, content?): Promise<RNFetchBlobResponse>;
+
+    static fs: FsMethods;
   }
+}
+
+interface FsMethods {
+  asset: Function;
+  dirs: Function;
+  createFile: Function;
+  writeFile: (path: string, content: string | any[], encoding:string) => Promise<any>;
+  appendFile: Function;
+  readFile: (path: string, encoding:string) => Promise<any>;
+  readStream: Function;
+  writeStream: Function;
+  unlink: Function;
+  mkdir: Function;
+  ls: Function;
+  mv: Function;
+  cp: Function;
+  exists: Function;
+  isDir: Function;
+  stat: Function;
+  lstat: Function;
+  scanFile: Function;
+  df: Function;
 }
 
 interface FetchConfig {

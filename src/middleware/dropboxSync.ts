@@ -9,20 +9,14 @@ function getNotes(state: AppStore) {
   return state.notes;
 }
 
-function* addFileSync(action) {
+export function* addFileSync(action) {
   console.log(action.note);
   const res = yield call(dbxApi.addNote.bind(dbxApi), action.note);
   console.log(res);
   // yield put(ActionNote.setSaved(action.note.id));
 }
 
-function* dropBoxSync(action) {
+export function* dropBoxSync(action) {
   const notes = yield select(getNotes);
   yield call(dbxApi.synchronizeFromDevice.bind(dbxApi), notes);
-}
-
-export default function* rootSaga() {
-  /*yield takeEvery(ADD, addFileSync);
-  yield takeEvery(UPDATE, dropBoxSync);
-  yield takeEvery(REMOVE, dropBoxSync);*/
 }

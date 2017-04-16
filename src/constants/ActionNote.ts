@@ -5,6 +5,7 @@ export const ActionNote = {
   SET_SAVED: 'SET_SAVED',
   SET_FILE_NAME: 'SET_FILE_NAME',
   IMPORT: 'IMPORT',
+  DO_IMPORT: 'DO_IMPORT',
   REMOVE: 'REMOVE',
   REMOVE_ARR: 'REMOVE_ARR',
   RESTORE: 'RESTORE',
@@ -50,5 +51,9 @@ export const ActionNote = {
 
   importNotes(data) {
     return {type: ActionNote.IMPORT, data};
+  },
+
+  doImportNotes() {
+    return {type: ActionNote.DO_IMPORT};
   },
 };

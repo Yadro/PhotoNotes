@@ -6,7 +6,7 @@ import filter from '../reducers/filter';
 import {AppStore} from "./IAppStore";
 import {analytics} from "../middleware/analytics";
 import {filterCounter} from "../middleware/filterCounter";
-import rootSaga from "../middleware/dropboxSync";
+import {rootSaga} from "../middleware/rootSaga";
 
 const reducers = combineReducers<AppStore>({
   notes: noteReducer,

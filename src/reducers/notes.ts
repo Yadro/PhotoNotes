@@ -80,7 +80,7 @@ export function noteReducer(state: NoteState = [], actions): NoteState {
       return state.filter(e => !actions.ids.includes(e.id));
 
     case IMPORT:
-      return actions.data.notes || state;
+      return actions.data || state;
 
     default:
       return state;

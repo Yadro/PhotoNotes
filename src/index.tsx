@@ -4,15 +4,10 @@ import {View, StatusBar, Text} from 'react-native';
 import {Provider} from 'react-redux'
 import store from "./redux/Store";
 import {tracker} from "./Analytics";
-import {Actions} from "./redux/Actions";
-import {importNotes} from "./redux/StoreImport";
 import {AppDrawer} from "./router/AppRouteConfigs";
+import {ActionNote} from "./constants/ActionNote";
 
-importNotes().then(data => {
-  Actions.importNotes(data);
-}).catch(e => {
-  console.log(e)
-});
+store.dispatch(ActionNote.doImportNotes());
 
 export default class AppWithStore extends Component<any, any> {
   constructor(props) {
