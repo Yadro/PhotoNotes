@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "build": "tsc -w --pretty",
-    "run": "cd ./android && gradlew installDebug",
+    "run": "cd android && gradlew.bat installDebug",
     "apk": "tsc && cd ./android && gradlew assembleRelease",
     "test": "jest"
   },
