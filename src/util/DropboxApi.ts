@@ -2,16 +2,18 @@
 ///<reference path="../declaration/react-native-fetch-blob.ts"/>
 import RNFetchBlob from 'react-native-fetch-blob';
 import Dropbox from 'dropbox';
-import FileMetadataReference = DropboxTypes.files.FileMetadataReference;
-import FileMetadata = DropboxTypes.files.FileMetadata;
 import {DROPBOX_APP_KEY} from "../constants/Config";
 import {STORE_KEYS} from "../constants/ActionTypes";
 import {AsyncStorage} from "react-native";
 import Note from "../redux/Note";
+import FileMetadataReference = DropboxTypes.files.FileMetadataReference;
+import FileMetadata = DropboxTypes.files.FileMetadata;
+import FullAccount = DropboxTypes.users.FullAccount;
 
 export class DropboxApi {
   dbx: DropboxTypes.Dropbox;
-  redirectUrl: string;
+  private redirectUrl: string;
+  private account: FullAccount;
 
   constructor() {
     this.dbx = new Dropbox({
@@ -19,7 +21,12 @@ export class DropboxApi {
     });
     AsyncStorage.getItem(STORE_KEYS.accessToken).then(token => {
       if (token) {
-        this.setToken(token);
+        this.dbx.setAccessToken(token);
+        this.dbx.usersGetCurrentAccount(null).then(response => {
+          this.account = response;
+        }).catch(err => {
+          console.log('ERROR usersGetCurrentAccount', err);
+        })
       }
     });
   }
@@ -34,6 +41,10 @@ export class DropboxApi {
   setToken(token: string) {
     this.dbx.setAccessToken(token);
     AsyncStorage.setItem(STORE_KEYS.accessToken, token);
+  }
+
+  getUserName() {
+    return this.account.name;
   }
 
   async uploadFile(path: string, contents: string): Promise<FileMetadata | IDropboxApiError> {
@@ -90,7 +101,7 @@ export class DropboxApi {
     }
   }
 
-  async chunkAction(action, dataArr: any[], chunkSize) {
+  private async chunkAction(action, dataArr: any[], chunkSize) {
     const size = dataArr.length;
     let result = [];
     let operationNum = Math.min(size - 1, chunkSize);
@@ -98,13 +109,11 @@ export class DropboxApi {
       operationNum = Math.min(size - 1, i + chunkSize);
       const chunk = [];
       for (let j = i; j < operationNum; j++) {
-        console.log(j);
         chunk.push(action.call(this, dataArr[j]));
       }
       const chunkResult = await Promise.all(chunk);
       console.log(chunkResult);
       result = result.concat(chunkResult);
-      console.log('====');
     }
     return result;
   }
