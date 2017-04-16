@@ -1,9 +1,6 @@
-import {call, put, select, takeEvery} from 'redux-saga/effects';
-import {ADD, REMOVE, UPDATE} from "../constants/ActionTypes";
+import {call, select} from 'redux-saga/effects';
 import {dbxApi} from '../util/DropboxApi';
 import {AppStore} from "../redux/IAppStore";
-import {ActionNote} from "../constants/ActionNote";
-const actions = [UPDATE, REMOVE];
 
 function getNotes(state: AppStore) {
   return state.notes;
