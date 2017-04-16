@@ -1,8 +1,30 @@
-export interface FetchConfig {
+declare module 'react-native-fetch-blob' {
+  export default class RNFetchBlob {
+    static fetch(method, url, head?, content?): Promise<RNFetchBlobResponse>;
+  }
+}
+
+interface FetchConfig {
 
 }
 
-export interface RNFetchBlobConfig {
+interface RNFetchBlobResponse {
+  data: any;
+  base64(): string;
+  json(): any;
+  text(): string;
+  path(): string;
+  readFile<T>(encoding: string): Promise<T>;
+  readStream<T>(encoding: string, bufferSize: number): Promise<T>;
+  session(name: string);
+  info(): RNFetchBlobResponseInfo;
+}
+
+interface RNFetchBlobSession {
+
+}
+
+interface RNFetchBlobConfig {
   fileCache: boolean,
   path: string,
   appendExt: string,
@@ -11,7 +33,7 @@ export interface RNFetchBlobConfig {
   indicator: boolean
 }
 
-export interface RNFetchBlobNative {
+interface RNFetchBlobNative {
   // API for fetch octet-stream data
   fetchBlob: (options: FetchConfig,
               taskId: string,
@@ -39,16 +61,16 @@ export interface RNFetchBlobNative {
   ls: (path: string, callback: (err: any) => void) => void,
 }
 
-export interface RNFetchBlobResponseInfo {
-  taskId: string,
-  state: number,
-  headers: any,
-  status: number,
-  respType: 'text' | 'blob' | '' | 'json',
-  rnfbEncode: 'path' | 'base64' | 'ascii' | 'utf8'
+interface RNFetchBlobResponseInfo {
+  taskId: string;
+  state: string;
+  headers: any;
+  status: number; // 200 / 400
+  respType: 'text' | 'blob' | '' | 'json';
+  rnfbEncode: 'path' | 'base64' | 'ascii' | 'utf8';
 }
 
-export class RNFetchBlobStream {
+class RNFetchBlobStream {
   onData: () => void;
   onError: () => void;
   onEnd: () => void;
