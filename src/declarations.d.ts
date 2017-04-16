@@ -132,6 +132,7 @@ declare module 'react-navigation' {
   }
 
   export interface ScreenNavigationProp {
+    screenProps: any;
     navigation: {
       navigate: (routeName, params?, action?) => any;
       state: {

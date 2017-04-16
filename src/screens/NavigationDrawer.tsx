@@ -9,11 +9,12 @@ import {connect} from "react-redux";
 import {selectFilter, FilterState, Filter} from "../reducers/filter";
 import {gray, green} from "../constants/theme";
 import {delay} from "../constants/Config";
-import {Actions} from "../redux/Actions";
 import DialogAndroid from 'react-native-dialogs';
 import {NoteState} from "../reducers/notes";
 import {equalObject, notEqualArray} from "../util/equalsCheck";
 import l from '../constants/Localization';
+import {IReduxProp} from "../declaration/types";
+import {ActionFilter} from "../constants/ActionFilter";
 const L = l.DrawerMenu;
 
 function showDialog() {
@@ -33,7 +34,7 @@ function showDialog() {
   });
 }
 
-interface TagsLayerP extends ScreenNavigationProp {
+interface TagsLayerP extends ScreenNavigationProp, IReduxProp {
   filter: FilterState;
   notes: NoteState;
 }
@@ -59,25 +60,26 @@ class FilterTags extends React.Component<TagsLayerP, TagsLayerS> {
   }
 
   setFilter = (id) => {
-    this.props.filter.current != id &&
-      Actions.setCurrentFilter(id);
-    this.props.navigation.navigate('DrawerClose');
+    const {filter, navigation, dispatch} = this.props;
+    filter.current != id && dispatch(ActionFilter.setCurrentFilter(id));
+    navigation.navigate('DrawerClose');
   };
 
   goToEditFilter = id => () => {
+    const {dispatch, navigation} = this.props;
     if (id < 0) {
-      this.props.navigation.navigate('EditFilter', {id});
+      navigation.navigate('EditFilter', {id});
       return;
     }
     showDialog().then(selectedId => {
       switch (selectedId) {
         case 0:
-          this.props.navigation.navigate('EditFilter', {id});
+          navigation.navigate('EditFilter', {id});
           break;
         case 1:
-          Actions.removeFilter(id);
-          Actions.setCurrentFilter(-1);
-          this.props.navigation.navigate('DrawerClose');
+          dispatch(ActionFilter.removeFilter(id));
+          dispatch(ActionFilter.setCurrentFilter(-1));
+          navigation.navigate('DrawerClose');
           break;
       }
     }).catch(e => {

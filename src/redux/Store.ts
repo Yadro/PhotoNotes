@@ -1,15 +1,15 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import notes from '../reducers/notes';
+import {noteReducer} from '../reducers/notes';
 import other from '../reducers/other';
 import filter from '../reducers/filter';
 import {AppStore} from "./IAppStore";
 import {analytics} from "../middleware/analytics";
 import {filterCounter} from "../middleware/filterCounter";
-import rootSaga from "../middleware/saver";
+import rootSaga from "../middleware/dropboxSync";
 
 const reducers = combineReducers<AppStore>({
-  notes,
+  notes: noteReducer,
   other,
   filter,
 });

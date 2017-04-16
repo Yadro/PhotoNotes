@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Dialog from 'react-native-dialogs';
-import {Actions} from "../redux/Actions";
 import Note from "../redux/Note";
 import {NavigationActions} from "react-navigation";
 import {ScreenNavigationProp} from "react-navigation";
@@ -21,6 +20,8 @@ import l from '../constants/Localization';
 import {connect} from "react-redux";
 import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
 import {EditBar} from "../components/EditBar";
+import {IReduxProp} from "../declaration/types";
+import {ActionNote} from "../constants/ActionNote";
 const {remove} = l.Alert;
 const {toolbar, editor, window} = l.NoteEdit;
 const {
@@ -72,7 +73,7 @@ const tools = [
 ];
 
 
-interface NoteEditP extends ScreenNavigationProp {
+interface NoteEditP extends ScreenNavigationProp, IReduxProp {
   notes: Note[];
   currentFilter: Filter;
 }
@@ -211,14 +212,14 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
 
   onSave = () => {
     const {note, save} = this.state;
+    const {dispatch, navigation} = this.props;
     if (save) {
-      Actions.update(note);
+      dispatch(ActionNote.update(note));
     } else {
       note.title = note.title || moment().format('YYYY-MM-DD');
-      Actions.add(note);
+      dispatch(ActionNote.add(note));
     }
-    // this.props.navigation.goBack();
-    this.props.navigation.dispatch(NoteEdit.resetAction);
+    navigation.dispatch(NoteEdit.resetAction);
   };
 
   onDelete = () => {
@@ -229,8 +230,9 @@ class NoteEdit extends Component<NoteEditP, NoteEditS> {
     }, {
       text: remove.buttons.remove,
       onPress: () => {
-        Actions.remove(this.state.note.id);
-        this.props.navigation.dispatch(NoteEdit.resetAction);
+        const {dispatch, navigation} = this.props;
+        dispatch(ActionNote.remove(this.state.note.id));
+        navigation.dispatch(NoteEdit.resetAction);
       }
     }], {cancelable: true});
   };

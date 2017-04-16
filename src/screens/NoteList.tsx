@@ -4,7 +4,6 @@ import {StyleSheet, View, ListView, Vibration, Alert, ListViewDataSource} from '
 import {ScreenNavigationProp} from "react-navigation";
 import ActionButton from 'react-native-action-button';
 import Note from "../redux/Note";
-import {Actions} from "../redux/Actions";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import l from '../constants/Localization';
@@ -15,6 +14,8 @@ import {Filter, selectCurrentFilter, selectFilter} from "../reducers/filter";
 import {selectNotes} from "../reducers/notes";
 import DialogAndroid from 'react-native-dialogs';
 import {equalObject} from "../util/equalsCheck";
+import {ActionNote} from "../constants/ActionNote";
+import {IReduxProp} from "../declaration/types";
 const {toolbar} = l.NoteList;
 const {removeMulti} = l.Alert;
 
@@ -60,7 +61,7 @@ function showSortDialog(selectedIndex) {
 
 const SortMethods = ['name', 'create', 'edit'];
 type SortMethod = 'name' | 'create' | 'edit';
-interface NoteListP extends ScreenNavigationProp {
+interface NoteListP extends ScreenNavigationProp, IReduxProp {
   filter: Filter;
   notes: Note[];
 }
@@ -153,7 +154,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
     }, {
       text: removeMulti.buttons.remove,
       onPress: () => {
-        Actions.removes(ids);
+        const {dispatch} = this.props;
+        dispatch(ActionNote.removes(ids));
         this.disableMultiSelect();
       }
     }], {cancelable: true});

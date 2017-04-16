@@ -9,6 +9,8 @@ import Note from "../redux/Note";
 import FileMetadataReference = DropboxTypes.files.FileMetadataReference;
 import FileMetadata = DropboxTypes.files.FileMetadata;
 import FullAccount = DropboxTypes.users.FullAccount;
+import ListFolderResult = DropboxTypes.files.ListFolderResult;
+import {transliterate} from "./transliterate";
 
 export class DropboxApi {
   dbx: DropboxTypes.Dropbox;
@@ -81,24 +83,17 @@ export class DropboxApi {
     }
   }
 
-  async uploadNote(note: Note) {
+  async uploadNote(note: Note): Promise<FileMetadata | IDropboxApiError> {
     return this.uploadFile('/' + note.fileName + '.md', note.title);
   }
 
-  async getListFiles() {
-    try {
-      const response = await this.dbx.filesListFolder({path: ''});
-      const files = response.entries.filter(file => file['.tag'] === 'file');
-      return files.map((file: FileMetadataReference) => {
-        return {
-          file: file.name,
-          client_modified: file.client_modified,
-          content_hash: file.content_hash,
-        }
-      })
-    } catch (err) {
-      return responseError(err);
-    }
+  async filesList(): Promise<FileMetadataReference[]> {
+    const response = await this.getListFiles();
+    return response.entries.filter(file => file['.tag'] === 'file') as FileMetadataReference[];
+  }
+
+  async getListFiles(): Promise<ListFolderResult> {
+    return await this.dbx.filesListFolder({path: ''});
   }
 
   private async chunkAction(action, dataArr: any[], chunkSize) {
@@ -118,6 +113,28 @@ export class DropboxApi {
     return result;
   }
 
+  async addNote(note: Note) {
+    note = Object.assign({}, note);
+    try {
+      const filesList = await this.filesList();
+      let fileName = '/' + transliterate(note.title) + '.md';
+      const existFile = filesList.find(e => e.path_display === fileName);
+      if (existFile) {
+        fileName += note.createdAt;
+      }
+      note.fileName = fileName;
+      const response = await this.uploadNote(note);
+      const responseErr = response as IDropboxApiError;
+      if (responseErr.error) {
+        console.log(responseErr);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async synchronizeFromDevice(notes: Note[]) {
     try {
       const serverFiles = await this.getListFiles();
@@ -131,8 +148,8 @@ export class DropboxApi {
 }
 
 interface IDropboxApiError {
-  message: string;
   error: any;
+  message: string;
 }
 
 function responseError(message, error): IDropboxApiError {

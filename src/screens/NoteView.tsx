@@ -18,7 +18,6 @@ import moment from 'moment';
 import Note from "../redux/Note";
 import icons, {paths} from '../components/Icons'
 import NoteEdit from "./NoteEdit";
-import {Actions} from "../redux/Actions";
 import {Markdown} from "../components/Markdown";
 import {getResizedImage, getSizePexel, pixelToDimensions} from "../util/util";
 import l from '../constants/Localization';
@@ -26,6 +25,8 @@ import {tracker} from "../Analytics";
 import {gray} from "../constants/theme";
 import {connect} from "react-redux";
 import {parse} from "../components/SimpleMarkdown";
+import {IReduxProp} from "../declaration/types";
+import {ActionNote} from "../constants/ActionNote";
 const {remove} = l.Alert;
 const {toolbar} = l.NoteView;
 const {editWhite, shareWhite, arrowWhite, deleteIconWhite, undoWhite} = icons;
@@ -41,7 +42,7 @@ const trashActions = [
 ];
 
 type TypeFromView = 'trash' | 'list';
-interface NoteViewP extends ScreenNavigationProp {
+interface NoteViewP extends ScreenNavigationProp, IReduxProp {
   notes: Note[];
   type?: TypeFromView;
 }
@@ -58,12 +59,13 @@ class NoteView extends Component<NoteViewP, NoteViewS> {
 
   constructor(props: NoteViewP) {
     super(props);
-    const {id, type} = props.navigation.state.params;
+    const {dispatch, navigation} = props;
+    const {id, type} = navigation.state.params;
     const fromTrash = type == 'trash';
     if (fromTrash) {
       this.toolbarActions = toolbarActions;
       this.callbackActions = [() => {
-        Actions.restore(this.state.note.id);
+        dispatch(ActionNote.restore(this.state.note.id));
         this.props.navigation.dispatch(NoteEdit.resetAction);
       }];
     } else {
@@ -111,8 +113,9 @@ class NoteView extends Component<NoteViewP, NoteViewS> {
     }, {
       text: remove.buttons.remove,
       onPress: () => {
-        Actions.remove(this.state.note.id);
-        this.props.navigation.dispatch(NoteEdit.resetAction);
+        const {dispatch, navigation} = this.props;
+        dispatch(ActionNote.remove(this.state.note.id));
+        navigation.dispatch(NoteEdit.resetAction);
       }
     }], {cancelable: true});
   };

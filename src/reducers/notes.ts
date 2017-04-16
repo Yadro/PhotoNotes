@@ -30,7 +30,7 @@ const lensNoteTags = id => compose(
   lensTags
 );
 
-export default (state: NoteState = [], actions): NoteState => {
+export function noteReducer(state: NoteState = [], actions): NoteState {
   let note: Note;
   switch (actions.type) {
     case ADD:
@@ -85,7 +85,7 @@ export default (state: NoteState = [], actions): NoteState => {
     default:
       return state;
   }
-};
+}
 
 export function selectNotesAll(state: AppStore) {
   return state.notes;

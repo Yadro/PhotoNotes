@@ -1,3 +1,6 @@
+// todo remove file
+
+
 import store from './Store';
 import {exportNotes, removeFile} from "./StoreImport";
 import {

@@ -1,19 +1,20 @@
 import * as React from 'react';
 import {View, Text, TextInput, Alert, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import {selectFilter, FilterState, Filter} from "../reducers/filter";
+import {selectFilter, FilterState} from "../reducers/filter";
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons';
 import {ScreenNavigationProp} from "react-navigation";
-import {Actions} from "../redux/Actions";
 import CheckboxList from "../components/CheckboxList";
 import {green} from "../constants/theme";
 import DropdownPicker from "../components/material/DropdownPicker";
 import Localization from '../constants/Localization';
+import {IReduxProp} from "../declaration/types";
+import {ActionFilter} from "../constants/ActionFilter";
 const L = Localization.Filter;
 const {checkWhite} = icons;
 
-interface EditFilterP extends ScreenNavigationProp {
+interface EditFilterP extends ScreenNavigationProp, IReduxProp {
   filter: FilterState;
 }
 interface EditFilterS {
@@ -32,6 +33,7 @@ const actions = [{
   icon: checkWhite,
   show: 'always',
   onPress: function () {
+    const {dispatch} = this.props;
     const {title, type, data, id} = this.state;
     const filter = {
       title,
@@ -41,9 +43,9 @@ const actions = [{
     };
     if ((filter.tags.length || filter.type == 'black') && title.length) {
       if (id > -1) {
-        Actions.updateFilter(filter);
+        dispatch(ActionFilter.updateFilter(filter));
       } else {
-        Actions.addFilter(filter);
+        dispatch(ActionFilter.addFilter(filter));
       }
     } else {
       Alert.alert(L.alert.title, L.alert.content, [{text: 'Ok'}]);
