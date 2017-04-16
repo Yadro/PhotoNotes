@@ -17,7 +17,6 @@ interface IMarkdownItem {
 
 export function parse(text) {
   let data = defaultBlockParse(text);
-  console.log(data);
   return generate(data);
 }
 

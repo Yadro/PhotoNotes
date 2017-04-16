@@ -208,7 +208,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
   };
 
   render() {
-    console.log('render');
+    // console.log('render');
 
     const {filter} = this.props;
     const {multi, dataSource, selected} = this.state;

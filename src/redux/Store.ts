@@ -6,6 +6,7 @@ import filter from '../reducers/filter';
 import {AppStore} from "./IAppStore";
 import {analytics} from "../middleware/analytics";
 import {filterCounter} from "../middleware/filterCounter";
+import rootSaga from "../middleware/saver";
 
 const reducers = combineReducers<AppStore>({
   notes,
@@ -24,6 +25,6 @@ const store = createStore<AppStore>(
   )
 );
 
-// sagaMiddleware.run(helloSaga);
+sagaMiddleware.run(rootSaga);
 
 export default store;
