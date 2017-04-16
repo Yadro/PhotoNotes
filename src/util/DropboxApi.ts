@@ -84,7 +84,7 @@ export class DropboxApi {
   }
 
   async uploadNote(note: Note): Promise<FileMetadata | IDropboxApiError> {
-    return this.uploadFile('/' + note.fileName + '.md', note.title);
+    return this.uploadFile(note.fileName, note.title);
   }
 
   async filesList(): Promise<FileMetadataReference[]> {
@@ -118,11 +118,13 @@ export class DropboxApi {
     try {
       const filesList = await this.filesList();
       let fileName = '/' + transliterate(note.title) + '.md';
+      console.log(fileName);
       const existFile = filesList.find(e => e.path_display === fileName);
       if (existFile) {
         fileName += note.createdAt;
       }
       note.fileName = fileName;
+      console.log(fileName);
       const response = await this.uploadNote(note);
       const responseErr = response as IDropboxApiError;
       if (responseErr.error) {
