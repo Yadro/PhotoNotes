@@ -74,12 +74,12 @@ declare module 'react-native-image-picker' {
 }
 
 declare module "react-native-button" {
-  import * as React from 'react';
   import {Component} from 'react';
+  import {ViewStyle} from 'react-native';
 
   interface Props {
-    style?: React.ViewStyle;
-    styleDisabled?: React.ViewStyle;
+    style?: ViewStyle;
+    styleDisabled?: ViewStyle;
     onPress?: () => any;
   }
 
@@ -163,5 +163,3 @@ declare module 'react-native-bottom-sheet-behavior' {
 declare interface Window {
   __REDUX_DEVTOOLS_EXTENSION__;
 }
-
-declare const __DEV__;

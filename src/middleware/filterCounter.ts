@@ -1,15 +1,13 @@
-import {
-  ADD, ADD_FILTER, IMPORT, REMOVE, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR, REMOVE_ARR, RESTORE, SET_FILTER_COUNT, SET_TAGS,
-  UPDATE, UPDATE_FILTER
-} from "../constants/ActionTypes";
 import {AppStore} from "../redux/IAppStore";
 import {check} from "../util/tagUtil";
+import {ActionNote} from "../constants/ActionNote";
+import {ActionFilter} from "../constants/ActionFilter";
 
 const ACTIONS = [
   // notes change
-  ADD, UPDATE, SET_TAGS, REMOVE, RESTORE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR, IMPORT,
+  ActionNote.ADD, ActionNote.UPDATE, ActionNote.SET_TAGS, ActionNote.REMOVE, ActionNote.RESTORE, ActionNote.REMOVE_ARR, ActionNote.REMOVE_ANYWAY, ActionNote.REMOVE_ANYWAY_ARR, ActionNote.IMPORT,
   // filter change
-  ADD_FILTER, UPDATE_FILTER
+  ActionFilter.ADD_FILTER, ActionFilter.UPDATE_FILTER,
 ];
 
 export function filterCounter({getState}) {
@@ -25,7 +23,7 @@ export function filterCounter({getState}) {
             return counter + (+checker(note.tags));
           }, 0);
           if (filter.noteCount !== count) {
-            next({type: SET_FILTER_COUNT, id: filter.id, count});
+            next({type: ActionFilter.SET_FILTER_COUNT, id: filter.id, count});
           }
         });
       }

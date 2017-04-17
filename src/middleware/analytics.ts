@@ -1,12 +1,10 @@
-import {
-  ADD, UPDATE, RESTORE, REMOVE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR,
-  ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER,
-} from "../constants/ActionTypes";
 import {tracker} from "../Analytics";
+import {ActionNote} from "../constants/ActionNote";
+import {ActionFilter} from "../constants/ActionFilter";
 
 const SCREEN_ACTIONS = {
-  Note: [ADD, UPDATE, RESTORE, REMOVE, REMOVE_ARR, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR],
-  Filter: [ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER],
+  Note: [ActionNote.ADD, ActionNote.UPDATE, ActionNote.RESTORE, ActionNote.REMOVE, ActionNote.REMOVE_ARR, ActionNote.REMOVE_ANYWAY, ActionNote.REMOVE_ANYWAY_ARR],
+  Filter: [ActionFilter.ADD_FILTER, ActionFilter.UPDATE_FILTER, ActionFilter.REMOVE_FILTER],
 };
 
 export function analytics({getState}) {

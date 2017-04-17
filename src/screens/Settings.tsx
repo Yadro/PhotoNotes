@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {
-  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, TextStyle, ViewStyle, ToastAndroid, Share,
+  StyleSheet, View, Text, ScrollView, TouchableNativeFeedback, ToastAndroid, Share,
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
 import icons from '../components/Icons'
 import DialogAndroid from 'react-native-dialogs';
 import {ScreenNavigationProp} from "react-navigation";
 import fs from 'react-native-fs';
-import {ActionOther} from "../redux/Actions";
 import {downloadUrl, emailSendFeedback, emailSendThx, version} from "../constants/Config";
 import {sendEmail} from "../util/util";
 import {OtherState} from "../reducers/other";
@@ -53,7 +52,7 @@ class Settings extends React.Component<SettingsP, SettingsS> {
       }).then(exist => {
         if (exist) {
           console.log(folder);
-          ActionOther.setSaveFolder(folder);
+          console.info('TODO: ActionOther.setSaveFolder(folder);');
           ToastAndroid.show('Ясно, а теперь перезапустите приложение', ToastAndroid.LONG);
         } else {
           ToastAndroid.show('Папка не найдена', ToastAndroid.LONG);

@@ -13,7 +13,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import Toolbar from "../components/Toolbar";
-import {ScreenNavigationProp} from "react-navigation";
+import {NavigationActions, ScreenNavigationProp} from "react-navigation";
 import moment from 'moment';
 import Note from "../redux/Note";
 import icons, {paths} from '../components/Icons'
@@ -56,6 +56,13 @@ interface NoteViewS {
 class NoteView extends Component<NoteViewP, NoteViewS> {
   toolbarActions;
   callbackActions;
+  static resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({routeName: 'Main'})
+    ]
+  });
+
 
   constructor(props: NoteViewP) {
     super(props);
@@ -66,7 +73,7 @@ class NoteView extends Component<NoteViewP, NoteViewS> {
       this.toolbarActions = toolbarActions;
       this.callbackActions = [() => {
         dispatch(ActionNote.restore(this.state.note.id));
-        this.props.navigation.dispatch(NoteEdit.resetAction);
+        this.props.navigation.dispatch(NoteView.resetAction);
       }];
     } else {
       this.toolbarActions = trashActions;
@@ -115,7 +122,7 @@ class NoteView extends Component<NoteViewP, NoteViewS> {
       onPress: () => {
         const {dispatch, navigation} = this.props;
         dispatch(ActionNote.remove(this.state.note.id));
-        navigation.dispatch(NoteEdit.resetAction);
+        navigation.dispatch(NoteView.resetAction);
       }
     }], {cancelable: true});
   };

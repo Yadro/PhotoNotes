@@ -1,12 +1,9 @@
 import {set, compose, append, concat} from 'ramda';
-import {lensProp, lensById, over, lensByIndex} from "../util/lens";
-import {
-  ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER, SET_CURRENT_FILTER, IMPORT,
-  SET_FILTER_COUNT
-} from "../constants/ActionTypes";
+import {lensProp, lensById, over} from "../util/lens";
 import {getMaxId} from "../util/util";
 import {paths} from '../components/Icons';
 import {AppStore} from "../redux/IAppStore";
+import {ActionFilter} from "../constants/ActionFilter";
 
 const lensId = lensProp('id');
 const lensNoteCount= lensProp('noteCount');
@@ -38,15 +35,15 @@ const defaultState: FilterState = {
 export default (state: FilterState, action): FilterState => {
   state = state || defaultState;
   switch (action.type) {
-    case SET_CURRENT_FILTER:
+    case ActionFilter.SET_CURRENT_FILTER:
       return set(lensCurrent, action.current, state);
 
-    case SET_FILTER_COUNT:
+    case ActionFilter.SET_FILTER_COUNT:
       return over(lensFilterByIdx(action.id), filter => {
         return set(lensNoteCount, action.count, filter)
       }, state);
 
-    case ADD_FILTER:
+    case ActionFilter.ADD_FILTER:
       return over(lensFilters, filters => {
         return append(
           set(lensId, getMaxId(filters) + 1, action.filter),
@@ -54,13 +51,13 @@ export default (state: FilterState, action): FilterState => {
         );
       }, state);
 
-    case REMOVE_FILTER:
+    case ActionFilter.REMOVE_FILTER:
       return over(lensFilters, filters => filters.filter(e => e.id != action.id), state);
 
-    case UPDATE_FILTER:
+    case ActionFilter.UPDATE_FILTER:
       return over(lensFilterByIdx(action.filter.id), () => action.filter, state);
 
-    case IMPORT:
+    case ActionFilter.IMPORT_FILTER:
       return action.data.tags || state;
   }
   return state;

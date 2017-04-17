@@ -98,26 +98,9 @@ function parseNoteContent(text: string) {
   };
 }
 
+// todo remove
 function writeFileNote(note: Note) {
-  if (note.saved) {
-    return false;
-  }
-  let fileName;
-  return createName(note, note.fileName)
-    .then(name => {
-      fileName = name;
-      if (!note.fileName) {
-        Actions.setFileName(note.id, fileName);
-      }
-      return fs.writeFile(genPath(fileName), note.title + '\n' + note.content, 'utf8')
-    }).then(e => {
-      Actions.setSaved(note.id);
-      return true;
-    }).catch(e => {
-      console.log('fail to save file note', e);
-      console.error(e);
-      return note.id;
-    });
+  console.warn('TODO: writeFileNote');
 }
 
 function createName(note: Note, name) {

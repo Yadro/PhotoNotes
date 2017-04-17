@@ -49,6 +49,7 @@ export class Circle extends React.Component<any, any> {
     this.setState({r: this.state.r + this.state.rEnd});
   };
 
+  onPress() {}
   render() {
     const {size} = this.props;
     const {r} = this.state;
