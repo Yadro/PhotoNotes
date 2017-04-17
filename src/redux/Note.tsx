@@ -1,6 +1,7 @@
+import uuid from 'uuid';
 
 export default class Note {
-  id: number;
+  id: string = uuid();
   title: string;
   content: string;
   image;

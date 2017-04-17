@@ -5,6 +5,7 @@ export const ActionFilter = {
   ADD_FILTER: 'ADD_FILTER',
   REMOVE_FILTER: 'REMOVE_FILTER',
   UPDATE_FILTER: 'UPDATE_FILTER',
+  DO_EXPORT_FILTER: 'DO_EXPORT_FILTER',
 
   addFilter(filter) {
     return {type: ActionFilter.ADD_FILTER, filter};
@@ -20,5 +21,9 @@ export const ActionFilter = {
 
   setCurrentFilter(id) {
     return {type: ActionFilter.SET_CURRENT_FILTER, current: id};
+  },
+
+  doExportFilter() {
+    return {type: ActionFilter.DO_EXPORT_FILTER};
   }
 };

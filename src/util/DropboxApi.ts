@@ -113,12 +113,11 @@ export class DropboxApi {
     return result;
   }
 
-  async addNote(note: Note) {
+  async addNote(note: Note): Promise<string | boolean> {
     note = Object.assign({}, note);
     try {
       const filesList = await this.filesList();
       let fileName = '/' + transliterate(note.title) + '.md';
-      console.log(fileName);
       const existFile = filesList.find(e => e.path_display === fileName);
       if (existFile) {
         fileName += note.createdAt;
@@ -131,7 +130,7 @@ export class DropboxApi {
         console.log(responseErr);
         return false;
       }
-      return true;
+      return fileName;
     } catch (e) {
       console.log(e);
     }

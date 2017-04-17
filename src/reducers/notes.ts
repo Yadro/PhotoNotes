@@ -1,20 +1,15 @@
 import Note from "../redux/Note";
-import {
-  SET_FILE_NAME, SET_SAVED, ADD, UPDATE, REMOVE_ANYWAY, REMOVE_ANYWAY_ARR,
-  REMOVE, REMOVE_ARR, IMPORT, RESTORE, SET_TAGS
-} from "../constants/ActionTypes";
-import {set, view, compose, append} from 'ramda';
+import {set, compose, append} from 'ramda';
 import {lensProp, lensById, over} from "../util/lens";
-import {getMaxId} from "../util/util";
 import {AppStore} from "../redux/IAppStore";
 import {check} from "../util/tagUtil";
-import {Filter, FilterState} from "./filter";
+import {Filter} from "./filter";
+import {ActionNote} from "../constants/ActionNote";
 
 export type NoteState = Note[];
 
 const lensCreatedAt = lensProp('createdAt');
 const lensUpdatedAt = lensProp('updatedAt');
-const lensId = lensProp('id');
 const lensTags = lensProp('tags');
 
 const lensNoteFilename = id => compose(
@@ -31,37 +26,37 @@ const lensNoteTags = id => compose(
 );
 
 export function noteReducer(state: NoteState = [], actions): NoteState {
-  let note: Note;
+  let note: Note, newState;
   switch (actions.type) {
-    case ADD:
-      note = set(lensId, getMaxId(state) + 1, actions.note);
-      note = set(lensCreatedAt, actions.createdAt, note);
+    case ActionNote.ADD:
+      note = set(lensCreatedAt, actions.createdAt, actions.note);
       return append(note, state);
 
-    case UPDATE:
+    case ActionNote.UPDATE:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
       return set(lensById(actions.note.id), note, state);
 
-    case SET_TAGS:
+    case ActionNote.SET_TAGS:
       return over(lensNoteTags(actions.id), () => actions.tags, state);
 
-    case SET_FILE_NAME:
-      return set(lensNoteFilename(actions.id), actions.fileName, state);
+    case ActionNote.SET_FILE_NAME:
+      newState = set(lensNoteFilename(actions.id), actions.fileName, state);
+      return set(lensNoteSaved(actions.id), true, newState);
 
-    case SET_SAVED:
+    case ActionNote.SET_SAVED:
       return set(lensNoteSaved(actions.id), true, state);
 
-    case RESTORE:
+    case ActionNote.RESTORE:
       return over(lensNoteTags(actions.id), tags => tags.filter(tag => tag != 'trash'), state);
 
-    case REMOVE:
+    case ActionNote.REMOVE:
       return over(
         lensNoteTags(actions.id),
         tags => Array.from(new Set(append('trash', tags))),
         state
       );
 
-    case REMOVE_ARR:
+    case ActionNote.REMOVE_ARR:
       return state.map(note => {
         if (actions.ids.includes(note.id)) {
           return over(
@@ -73,13 +68,13 @@ export function noteReducer(state: NoteState = [], actions): NoteState {
         return note;
       });
 
-    case REMOVE_ANYWAY:
+    case ActionNote.REMOVE_ANYWAY:
       return state.filter(e => e.id != actions.id);
 
-    case REMOVE_ANYWAY_ARR:
+    case ActionNote.REMOVE_ANYWAY_ARR:
       return state.filter(e => !actions.ids.includes(e.id));
 
-    case IMPORT:
+    case ActionNote.IMPORT:
       return actions.data || state;
 
     default:
