@@ -15,20 +15,31 @@ export class DropboxNoteApi extends DropboxApi {
   async addNote(note: Note): Promise<string | boolean> {
     note = Object.assign({}, note);
     try {
-      const filesList = await this.filesList();
-      let fileName = '/' + transliterate(note.title) + '.md';
-      const existFile = filesList.find(e => e.path_display === fileName);
-      if (existFile) {
-        fileName += note.createdAt;
-      }
-      note.fileName = fileName;
-      console.log(fileName);
+      note.fileName = await this.getFileName(note);
       const response = await this.uploadNote(note);
       const responseErr = response as IDropboxApiError;
       if (responseErr.error) {
         console.log(responseErr);
         return false;
       }
+      return note.fileName;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async getFileName(note: Note) {
+    if (note.fileName) {
+      return note.fileName;
+    }
+    try {
+      const filesList = await this.filesList();
+      let fileName = '/' + transliterate(note.title) + '.md';
+      const existFile = filesList.find(e => e.path_display === fileName);
+      if (existFile) {
+        fileName += note.createdAt;
+      }
+      console.log(fileName);
       return fileName;
     } catch (e) {
       console.log(e);
