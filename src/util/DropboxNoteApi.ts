@@ -34,11 +34,13 @@ export class DropboxNoteApi extends DropboxApi {
     }
     try {
       const filesList = await this.filesList();
-      let fileName = '/' + transliterate(note.title) + '.md';
-      const existFile = filesList.find(e => e.path_display === fileName);
+      let fileName = transliterate(note.title);
+      const path = `/${fileName}.md`;
+      const existFile = filesList.find(e => e.path_display === path);
       if (existFile) {
-        fileName += note.createdAt;
+        fileName += '_' + note.createdAt;
       }
+      fileName = `/${fileName}.md`;
       console.log(fileName);
       return fileName;
     } catch (e) {

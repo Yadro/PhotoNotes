@@ -14,12 +14,11 @@ export const ActionNote = {
   REMOVE_ANYWAY_ARR: 'REMOVE_ANYWAY_ARR',
   
   add(note) {
-    return {type: ActionNote.ADD, note, createdAt: Date.now()};
+    return {type: ActionNote.ADD, note};
   },
 
   update(note) {
-    note.saved = false;
-    return {type: ActionNote.UPDATE, note, updatedAt: Date.now()};
+    return {type: ActionNote.UPDATE, note};
   },
 
   restore(id) {

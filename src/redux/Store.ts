@@ -7,6 +7,7 @@ import {AppStore} from "./IAppStore";
 import {analytics} from "../middleware/analytics";
 import {filterCounter} from "../middleware/filterCounter";
 import {rootSaga} from "../middleware/rootSaga";
+import {noteMiddleware} from "../middleware/noteMiddleware";
 
 const reducers = combineReducers<AppStore>({
   notes: noteReducer,
@@ -21,7 +22,8 @@ const store = createStore<AppStore>(
   composeEnhancers(
     applyMiddleware(sagaMiddleware),
     applyMiddleware(analytics),
-    applyMiddleware(filterCounter)
+    applyMiddleware(filterCounter),
+    applyMiddleware(noteMiddleware),
   )
 );
 

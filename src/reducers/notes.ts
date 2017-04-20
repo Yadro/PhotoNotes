@@ -10,6 +10,7 @@ export type NoteState = Note[];
 
 const lensCreatedAt = lensProp('createdAt');
 const lensUpdatedAt = lensProp('updatedAt');
+const lensSaved = lensProp('saved');
 const lensTags = lensProp('tags');
 
 const lensNoteFilename = id => compose(
@@ -29,11 +30,11 @@ export function noteReducer(state: NoteState = [], actions): NoteState {
   let note: Note, newState;
   switch (actions.type) {
     case ActionNote.ADD:
-      note = set(lensCreatedAt, actions.createdAt, actions.note);
-      return append(note, state);
+      return append(actions.note, state);
 
     case ActionNote.UPDATE:
       note = set(lensUpdatedAt, actions.updatedAt, actions.note);
+      note = set(lensSaved, false, note);
       return set(lensById(actions.note.id), note, state);
 
     case ActionNote.SET_TAGS:
