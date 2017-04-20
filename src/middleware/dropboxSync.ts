@@ -1,5 +1,5 @@
 import {call, put, select} from 'redux-saga/effects';
-import {dbxApi} from '../util/DropboxApi';
+import {dbxApi} from '../util/DropboxNoteApi';
 import {AppStore} from "../redux/IAppStore";
 import {ActionNote} from "../constants/ActionNote";
 
