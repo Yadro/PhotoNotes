@@ -1,7 +1,7 @@
 import {takeEvery, takeLatest} from 'redux-saga/effects';
 import {ActionNote} from "../constants/ActionNote";
-import {addNoteSync, dropboxSync} from "./dropboxSync";
-import {doExportNotesSaga, exportNotesSaga, importNotesSaga} from "./localSync";
+import {addNoteSync, dropboxSync} from "./dropboxSaga";
+import {doExportNotesSaga, exportNotesSaga, importNotesSaga} from "./localSyncSaga";
 
 export function* rootSaga() {
   yield takeEvery(ActionNote.ADD, addNoteSync);
