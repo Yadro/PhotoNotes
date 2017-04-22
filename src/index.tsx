@@ -6,8 +6,10 @@ import store from "./redux/Store";
 import {tracker} from "./Analytics";
 import {AppDrawer} from "./router/AppRouteConfigs";
 import {ActionNote} from "./constants/ActionNote";
+import {ActionFilter} from "./constants/ActionFilter";
 
 store.dispatch(ActionNote.doImportNotes());
+store.dispatch(ActionFilter.doImportFilter());
 
 export default class AppWithStore extends Component<any, any> {
   constructor(props) {

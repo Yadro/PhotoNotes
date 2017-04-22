@@ -15,6 +15,15 @@ export function* importNotesSaga() {
   }
 }
 
+export function* importFilterSaga() {
+  try {
+    const filter = yield AsyncStorage.getItem(STORE_KEYS.tags);
+    yield put(ActionFilter.setFilter(JSON.parse(filter)));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* exportNotesSaga() {
   try {
     const notes = yield select((state: AppStore) => state.notes);
@@ -27,17 +36,8 @@ export function* exportNotesSaga() {
 export function* exportFilterSaga() {
   try {
     const filters = yield select((state: AppStore) => state.filter);
-    AsyncStorage.setItem(STORE_KEYS.tags, filters);
+    AsyncStorage.setItem(STORE_KEYS.tags, JSON.stringify(filters));
   } catch (err) {
     console.log(err);
   }
-}
-
-
-export function* doExportNotesSaga() {
-  yield put(ActionNote.doExportNotes());
-}
-
-export function* doExportFilterSaga() {
-  yield put(ActionFilter.doExportFilter());
 }
