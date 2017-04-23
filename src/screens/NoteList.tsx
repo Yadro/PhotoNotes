@@ -72,6 +72,7 @@ interface NoteListS {
   sortMethod: SortMethod;
   reverse: boolean;
   search: string;
+  isTrash: boolean;
 }
 
 const sortMethods = {
@@ -99,6 +100,7 @@ class NoteList extends Component<NoteListP, NoteListS> {
       selected: [],
       sortMethod,
       reverse,
+      isTrash: props.filter.id === -2,
     };
     if (!__DEV__) tracker.trackScreenView('NoteList');
   }
@@ -123,7 +125,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
   componentWillReceiveProps(newProps: NoteListP) {
     const {sortMethod, reverse} = this.state;
     this.setState({
-      dataSource: this.ds.cloneWithRows(sortMethods[sortMethod](newProps.notes, reverse))
+      dataSource: this.ds.cloneWithRows(sortMethods[sortMethod](newProps.notes, reverse)),
+      isTrash: newProps.filter.id === -2,
     });
   }
 
@@ -155,7 +158,8 @@ class NoteList extends Component<NoteListP, NoteListS> {
       text: removeMulti.buttons.remove,
       onPress: () => {
         const {dispatch} = this.props;
-        dispatch(ActionNote.removes(ids));
+        const action = this.state.isTrash ? ActionNote.removesAnyway: ActionNote.removes;
+        dispatch(action(ids));
         this.disableMultiSelect();
       }
     }], {cancelable: true});
