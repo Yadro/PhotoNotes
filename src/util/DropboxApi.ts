@@ -1,4 +1,4 @@
-///<reference path="../declaration/dropbox-sdk.d.ts"/>
+///<reference path="../declaration/dropbox/dropbox-sdk.d.ts"/>
 ///<reference path="../declaration/react-native-fetch-blob.ts"/>
 import RNFetchBlob from 'react-native-fetch-blob';
 import Dropbox from 'dropbox';
@@ -82,12 +82,34 @@ export class DropboxApi {
   }
 
   async filesList(): Promise<FileMetadataReference[]> {
-    const response = await this.getListFiles();
+    const response = await this.filesListFolder();
     return response.entries.filter(file => file['.tag'] === 'file') as FileMetadataReference[];
   }
 
-  async getListFiles(): Promise<ListFolderResult> {
+  async filesListFolder(): Promise<ListFolderResult> {
     return await this.dbx.filesListFolder({path: ''});
+  }
+
+  protected async chunkAction(action: Function, dataArr: any[], chunkSize: number): Promise<FileMetadata[]> {
+    const size = dataArr.length;
+    if (size <= 0) {
+      return [];
+    }
+    let result = [];
+    let operationNum = Math.min(size, chunkSize);
+    const chunks = Math.ceil(size / chunkSize);
+    console.log(`chunks: ${chunks}, operationNum: ${operationNum}`);
+    for (let i = 0; i < chunks; i += operationNum) {
+      operationNum = Math.min(size - 1, i + chunkSize);
+      const chunk = [];
+      for (let j = i; j < operationNum; j++) {
+        chunk.push(action.call(this, dataArr[j]));
+      }
+      const chunkResult = await Promise.all(chunk);
+      console.log(chunkResult);
+      result = result.concat(chunkResult);
+    }
+    return result;
   }
 }
 

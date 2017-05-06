@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {AsyncStorage, Button, Linking, Navigator, TextInput, View} from "react-native";
-import {dbxApi, DropboxApi} from "./DropboxApi";
+import {AsyncStorage, Button, Linking, TextInput, View} from "react-native";
+import {dbxApi} from "./DropboxNoteApi";
 import {STORE_KEYS} from "../constants/ActionTypes";
 import {ScreenNavigationProp} from "react-navigation";
+import {DropboxApi} from "./DropboxApi";
 
 interface DropboxAuthP extends ScreenNavigationProp {
 }
@@ -67,7 +68,7 @@ export class DropboxAuth extends React.Component<DropboxAuthP, DropboxAuthS> {
   async uploadTestFile() {
     let result;
     try {
-      // const files = await dbxApi.getListFiles();
+      // const files = await dbxApi.filesListFolder();
       // result = await dbxApi.uploadFile('/file1', 'content');
       result = await dbxApi.downloadFile('/file1');
 

@@ -8,8 +8,10 @@ import {ActionFilter} from "../constants/ActionFilter";
 
 export function* rootSaga() {
   yield takeEvery(ActionNote.ADD, addNoteSync);
-  yield takeEvery(ActionNote.UPDATE, dropboxSync);
-  yield takeEvery(ActionNote.REMOVE, dropboxSync);
+  yield takeLatest([
+    ActionNote.UPDATE,
+    ActionNote.REMOVE
+  ], dropboxSync);
 
   yield takeEvery(ActionNote.DO_IMPORT, importNotesSaga);
   yield takeLatest([

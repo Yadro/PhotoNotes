@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {Image, Text, TouchableNativeFeedback, StyleSheet, View, ViewStyle} from 'react-native';
 import PreviewCircle from './PreviewCircle';
+import {Icon, paths} from "./Icons";
 
-export const ListItem = ({id, image, title, images, onPress}) => {
+export const ListItem = ({id, image, title, images, onPress, saved}) => {
   const thumbnail = images && images.thumbnail && images.thumbnail['50'] || image;
   return (
     <TouchableNativeFeedback onPress={onPress(id)}>
@@ -13,6 +14,7 @@ export const ListItem = ({id, image, title, images, onPress}) => {
             <PreviewCircle text={title}/>}
         </View>
         <Text style={css.text}>{title}</Text>
+        {saved && <Icon uri={paths.checkBlack}/>}
       </View>
     </TouchableNativeFeedback>
   );
